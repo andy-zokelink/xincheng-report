@@ -5,140 +5,89 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>龙虾盒子（OpenClaw Box）市场全景调研报告 · AI 调研中心</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #08090a; --panel: #0f1011; --surface: #191a1b;
-    --surface2: #222326; --text: #f7f8f8; --text2: #d0d6e0;
-    --text3: #8a8f98; --text4: #62666d; --accent: #5e6ad2;
-    --accent-bright: #7170ff; --green: #27a644;
-    --orange: #d2991d; --red: #f85149;
-    --border: rgba(255,255,255,0.08); --border-subtle: rgba(255,255,255,0.05);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body {
-    background: var(--bg); color: var(--text2);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: 'cv01','ss03'; line-height: 1.6; overflow-x: hidden;
-  }
-  #particles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:0.6; }
-  #glow { position:fixed; z-index:0; pointer-events:none; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%); transform:translate(-50%,-50%); transition:left 0.8s ease-out, top 0.8s ease-out; }
-  .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
-  nav, .hero, .kpi-row, .sec, footer { position:relative; z-index:1; }
-
-  nav { position:sticky; top:0; z-index:100; background:rgba(15,16,17,0.92); backdrop-filter:blur(20px); border-bottom:1px solid var(--border-subtle); padding:0 24px; }
-  nav .inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:52px; }
-  nav .logo { font-size:15px; font-weight:600; color:var(--text); letter-spacing:-0.2px; }
-  nav .logo span { color:var(--accent-bright); }
-  nav a { font-size:13px; font-weight:500; color:var(--text3); text-decoration:none; transition:color .15s; white-space:nowrap; }
-  nav a:hover { color:var(--text); }
-
-  .hero { max-width:1100px; margin:0 auto; padding:72px 24px 48px; text-align:center; }
-  .hero .badge { display:inline-block; background:rgba(94,106,210,0.12); color:var(--accent-bright); border:1px solid rgba(94,106,210,0.25); border-radius:999px; padding:4px 16px; font-size:12px; font-weight:500; margin-bottom:20px; }
-  .hero h1 { font-size:clamp(1.8rem,4vw,3rem); font-weight:600; letter-spacing:-0.04em; color:var(--text); line-height:1.15; margin-bottom:12px; }
-  .hero h1 span { color:var(--accent-bright); }
-  .hero p { font-size:1rem; color:var(--text3); max-width:600px; margin:0 auto; font-weight:400; }
-
-  .kpi-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; max-width:1100px; margin:0 auto 64px; padding:0 24px; }
-  .kpi { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; text-align:center; }
-  .kpi .val { font-size:2rem; font-weight:700; letter-spacing:-0.03em; color:var(--text); margin-bottom:4px; }
-  .kpi .val.accent { color:var(--accent-bright); }
-  .kpi .val.green { color:var(--green); }
-  .kpi .lbl { font-size:12px; color:var(--text3); }
-
-  .sec { max-width:1100px; margin:0 auto 64px; padding:0 24px; }
-  .sec h2 { font-size:1.4rem; font-weight:600; letter-spacing:-0.02em; color:var(--text); margin-bottom:8px; }
-  .sec .sub { font-size:13px; color:var(--text3); margin-bottom:24px; }
-
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin-bottom:14px; }
-  .card h3 { font-size:15px; font-weight:600; color:var(--text); margin-bottom:10px; letter-spacing:-0.01em; }
-  .card p, .card li { font-size:13px; color:var(--text2); }
-  .card li { padding:3px 0; }
-
-  ul { list-style:none; padding:0; }
-  li { padding:3px 0 3px 16px; color:var(--text2); font-size:13px; position:relative; }
-  li::before { content:"·"; color:var(--accent-bright); font-weight:700; position:absolute; left:0; }
-
-  .tbl { width:100%; border-collapse:collapse; font-size:12px; }
-  .tbl th { text-align:left; padding:8px 12px; color:var(--text3); font-weight:500; font-size:10px; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid var(--border); }
-  .tbl td { padding:8px 12px; color:var(--text2); border-bottom:1px solid var(--border-subtle); }
-  .tbl tr:last-child td { border-bottom:none; }
-  .tbl .hi { color:var(--accent-bright); font-weight:600; }
-  .tbl .gr { color:var(--green); font-weight:600; }
-  .tbl .lo { color:var(--text4); }
-
-  .acc { margin-bottom:14px; }
-  .acc-hdr { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 22px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-size:14px; font-weight:600; color:var(--text); transition:border-color .15s; }
-  .acc-hdr:hover { border-color:rgba(255,255,255,0.15); }
-  .acc-hdr::after { content:"+"; font-size:16px; color:var(--text3); font-weight:400; }
-  .acc.open .acc-hdr::after { content:"\2212"; }
-  .acc-body { display:none; background:var(--surface); border:1px solid var(--border); border-top:none; border-radius:0 0 10px 10px; padding:20px 24px; font-size:13px; color:var(--text2); }
-  .acc.open .acc-body { display:block; }
-
-  .insight { background:rgba(94,106,210,0.06); border:1px solid rgba(94,106,210,0.18); border-radius:10px; padding:20px 24px; font-size:13px; margin-bottom:14px; }
-  .insight strong { color:var(--accent-bright); }
-
-  .chart-wrap { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:24px; margin-bottom:14px; }
-  .chart-wrap canvas { max-height:350px; }
-  .chart-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media(max-width:768px){ .chart-row{grid-template-columns:1fr;} }
-
-  .pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:28px; }
-  .pill { padding:5px 14px; border-radius:999px; font-size:11px; font-weight:500; border:1px solid var(--border); color:var(--text3); cursor:pointer; transition:all .15s; background:transparent; }
-  .pill:hover { background:rgba(94,106,210,0.1); color:var(--accent-bright); border-color:rgba(94,106,210,0.3); }
-
-  .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:500; margin-right:4px; }
-  .tag.g { background:rgba(39,166,68,0.12); color:var(--green); border:1px solid rgba(39,166,68,0.2); }
-  .tag.p { background:rgba(94,106,210,0.12); color:var(--accent-bright); border:1px solid rgba(94,106,210,0.2); }
-  .tag.o { background:rgba(210,153,29,0.12); color:var(--orange); border:1px solid rgba(210,153,29,0.2); }
-
-  strong { color:var(--text); }
-  code { background:var(--panel); padding:2px 6px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent-bright); }
-  a { color:var(--accent-bright); text-decoration:none; }
-  hr { border:none; border-top:1px solid var(--border-subtle); margin:28px 0; }
-  blockquote { border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0; color:var(--text3); background:rgba(94,106,210,0.05); border-radius:0 6px 6px 0; font-size:13px; }
-
-  footer { text-align:center; padding:48px 24px; color:var(--text4); font-size:12px; border-top:1px solid var(--border-subtle); margin-top:80px; }
-  footer a { color:var(--text3); }
-  .note { font-size:11px; color:var(--text4); margin-top:6px; }
-  ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+  :root{--bg:#08090a;--panel:#0f1011;--surface:#191a1b;--surface2:#222326;--text:#f7f8f8;--text2:#d0d6e0;--text3:#8a8f98;--text4:#62666d;--accent:#5e6ad2;--accent-bright:#7170ff;--green:#27a644;--orange:#d2991d;--red:#f85149;--border:rgba(255,255,255,0.08);--border-subtle:rgba(255,255,255,0.05)}
+  *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text2);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-feature-settings:'cv01','ss03';line-height:1.6;overflow-x:hidden}
+  #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
+  #glow{position:fixed;z-index:0;pointer-events:none;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(113,112,255,.06) 0%,transparent 70%);transform:translate(-50%,-50%);transition:left .8s ease-out,top .8s ease-out}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  nav,.hero,.kpi-row,.sec,footer{position:relative;z-index:1}
+  nav{position:sticky;top:0;z-index:100;background:rgba(15,16,17,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-subtle);padding:0 24px}
+  nav .inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+  nav .logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.2px}
+  nav .logo span{color:var(--accent-bright)}
+  nav a{font-size:13px;font-weight:500;color:var(--text3);text-decoration:none;transition:color .15s}
+  nav a:hover{color:var(--text)}
+  .hero{max-width:1100px;margin:0 auto;padding:64px 24px 40px;text-align:center}
+  .hero .badge{display:inline-block;background:rgba(94,106,210,.12);color:var(--accent-bright);border:1px solid rgba(94,106,210,.25);border-radius:999px;padding:4px 16px;font-size:12px;font-weight:500;margin-bottom:16px}
+  .hero h1{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:600;letter-spacing:-.04em;color:var(--text);line-height:1.15;margin-bottom:10px}
+  .hero p{font-size:.95rem;color:var(--text3);max-width:600px;margin:0 auto}
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;max-width:1100px;margin:0 auto 56px;padding:0 24px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+  .kpi .val{font-size:1.8rem;font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:3px}
+  .kpi .val.accent{color:var(--accent-bright)}.kpi .val.green{color:var(--green)}
+  .kpi .lbl{font-size:11px;color:var(--text3)}
+  .sec{max-width:1100px;margin:0 auto 56px;padding:0 24px}
+  .sec h2{font-size:1.3rem;font-weight:600;letter-spacing:-.02em;color:var(--text);margin-bottom:6px}
+  .sec .sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:12px}
+  .card h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
+  .card p,.card li{font-size:13px;color:var(--text2)}
+  ul{list-style:none;padding:0}li{padding:3px 0 3px 16px;color:var(--text2);font-size:13px;position:relative}
+  li::before{content:"·";color:var(--accent-bright);font-weight:700;position:absolute;left:0}
+  .tbl{width:100%;border-collapse:collapse;font-size:12px}
+  .tbl th{text-align:left;padding:7px 10px;color:var(--text3);font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+  .tbl td{padding:7px 10px;color:var(--text2);border-bottom:1px solid var(--border-subtle)}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .hi{color:var(--accent-bright);font-weight:600}.tbl .gr{color:var(--green);font-weight:600}.tbl .lo{color:var(--text4)}
+  .acc{margin-bottom:12px}
+  .acc-hdr{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600;color:var(--text)}
+  .acc-hdr:hover{border-color:rgba(255,255,255,.15)}
+  .acc-hdr::after{content:"+";font-size:15px;color:var(--text3)}
+  .acc.open .acc-hdr::after{content:"−"}
+  .acc-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:18px 22px;font-size:13px;color:var(--text2)}
+  .acc.open .acc-body{display:block}
+  .insight{background:rgba(94,106,210,.06);border:1px solid rgba(94,106,210,.18);border-radius:10px;padding:18px 22px;font-size:13px;margin-bottom:12px}
+  .insight strong{color:var(--accent-bright)}
+  .chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:12px}
+  .chart-wrap canvas{max-height:340px}
+  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:768px){.chart-row{grid-template-columns:1fr}}
+  .pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+  .pill{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:500;border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .15s;background:transparent}
+  .pill:hover{background:rgba(94,106,210,.1);color:var(--accent-bright);border-color:rgba(94,106,210,.3)}
+  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:500;margin-right:4px}
+  .tag.g{background:rgba(39,166,68,.12);color:var(--green);border:1px solid rgba(39,166,68,.2)}
+  .tag.p{background:rgba(94,106,210,.12);color:var(--accent-bright);border:1px solid rgba(94,106,210,.2)}
+  .tag.o{background:rgba(210,153,29,.12);color:var(--orange);border:1px solid rgba(210,153,29,.2)}
+  strong{color:var(--text)}code{background:var(--panel);padding:2px 5px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-bright)}
+  a{color:var(--accent-bright);text-decoration:none}
+  hr{border:none;border-top:1px solid var(--border-subtle);margin:24px 0}
+  blockquote{border-left:3px solid var(--accent);padding:8px 16px;margin:10px 0;color:var(--text3);background:rgba(94,106,210,.05);border-radius:0 6px 6px 0;font-size:13px}
+  footer{text-align:center;padding:40px 24px;color:var(--text4);font-size:11px;border-top:1px solid var(--border-subtle);margin-top:64px}
+  footer a{color:var(--text3)}.note{font-size:11px;color:var(--text4);margin-top:4px}
+  ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+  .chart-label{font-size:11px;color:var(--text4);text-align:center;margin-top:4px}
 </style>
 </head>
 <body>
-<canvas id="particles"></canvas>
-<div id="glow"></div>
-
-<nav>
-  <div class="inner">
-    <a href="index.html" style="text-decoration:none"><div class="logo"><span>◈</span> AI 调研中心</div></a>
-    <a href="index.html">← 目录</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="badge">📦 AI硬件 · feishu</div>
-  <h1>龙虾盒子（OpenClaw Box）市场全景调研报告</h1>
-  <p><span class="tag p">飞书调研</span></p>
-</header>
-
-<section class="kpi-row"><div class="kpi"><div class="val ">4</div><div class="lbl">"）开源爆火，GitHub星标</div></div><div class="kpi"><div class="val ">30</div><div class="lbl">④ 多地政策补贴（深圳龙岗补贴</div></div></section>
-<div class="sec reveal"><div class="insight"><strong>💡 核心结论：</strong>"龙虾盒子"是2026年Q1爆发的全新AI硬件品类——以OpenClaw开源智能体框架为核心驱动的本地AI生产力终端。市场已从面壁智能一家独大演化为<strong>国产厂商扎堆、英伟达入局、安全争议并起</strong>的混战格局。中科可控M50是最直接的国产竞品，英伟达NemoClaw+DGX Spark是最具威胁的降维打击。</div></div>
-<div class="sec reveal" id="s-0">
-<h2>交叉调研报告：龙虾盒子（OpenClaw Box）市场全景</h2>
+<canvas id="particles"></canvas><div id="glow"></div>
+<nav><div class="inner"><a href="index.html" style="text-decoration:none"><div class="logo"><span>◈</span> AI 调研中心</div></a><a href="index.html">← 目录</a></div></nav>
+<header class="hero"><div class="badge">📦 AI硬件 · feishu</div><h1>龙虾盒子（OpenClaw Box）市场全景调研报告</h1><p><span class="tag p">飞书</span> </p></header>
+<section class="kpi-row"><div class="kpi"><div class="val ">4</div><div class="lbl">源爆火，GitHub星标</div></div><div class="kpi"><div class="val ">30</div><div class="lbl">地政策补贴（深圳龙岗补贴</div></div></section><div class="sec reveal"><div class="insight"><strong>💡 核心结论：</strong>"龙虾盒子"是2026年Q1爆发的全新AI硬件品类——以OpenClaw开源智能体框架为核心驱动的本地AI生产力终端。市场已从面壁智能一家独大演化为<strong>国产厂商扎堆、英伟达入局、安全争议并起</strong>的混战格局。中科可控M50是最直接的国产竞品，英伟达NemoClaw+DGX Spark是最具威胁的降维打击。</div></div><div class="sec reveal" id="s-0"><h2>交叉调研报告：龙虾盒子（OpenClaw Box）市场全景</h2>
 <div class="card">
 <blockquote>调研日期：2026-05-29 | 对象类型：产品品类/市场 | 调研人：阿爪 · 技能：metaso-research数据源：秘塔AI搜索（Metaso MCP）</blockquote>
 <hr>
 </div>
-<div class="sec reveal" id="s-1">
-<h2>📌 一句话结论</h2>
+<div class="sec reveal" id="s-1"><h2>📌 一句话结论</h2>
 <div class="card">
 <p>"龙虾盒子"是2026年Q1爆发的全新AI硬件品类——以OpenClaw开源智能体框架为核心驱动的本地AI生产力终端。市场已从面壁智能一家独大演化为<strong>国产厂商扎堆、英伟达入局、安全争议并起</strong>的混战格局。中科可控M50是最直接的国产竞品，英伟达NemoClaw+DGX Spark是最具威胁的降维打击。</p>
 <hr>
 </div>
-<div class="sec reveal" id="s-2">
-<h2>🎯 核心画像</h2>
+<div class="sec reveal" id="s-2"><h2>🎯 核心画像</h2>
 <div class="card">
 <p><strong>品类定位</strong>：本地AI智能体生产力终端——预装OpenClaw/EdgeClaw等智能体框架的即插即用硬件，实现"本地多Agent并行、7x24离线运行、数据不出本地"。</p>
 <p><strong>品类诞生</strong>：2026年1月OpenClaw（昵称"龙虾"）开源爆火，GitHub星标4个月破28万，超越Linux成为史上增速最快的开源项目。但普通电脑跑OpenClaw不稳定、不安全，催生专用硬件需求。</p>
@@ -146,82 +95,15 @@
 <p><strong>驱动因素</strong>：① OpenClaw现象级走红 ② 数据安全合规要求提升 ③ 中小企业本地AI算力刚需 ④ 多地政策补贴（深圳龙岗补贴30%）</p>
 <hr>
 </div>
-<div class="sec reveal" id="s-3">
-<h2>📊 关键数据</h2>
+<div class="sec reveal" id="s-3"><h2>📊 关键数据</h2>
 <div class="card">
-<ul><li>2026年2月OpenClaw GitHub星标突破28万，超越Linux — 来源[多家媒体]<span style="color:var(--green)">✅</span>· 中央网信办、工信部2026年3月发布OpenClaw安全风险提示 — 来源[人民网]<span style="color:var(--green)">✅</span>· 超4.2万个OpenClaw实例暴露在公网，90%可绕过身份验证 — 来源[MITRE ATLAS]<span style="color:var(--green)">✅</span>· 2026年1-3月发现82个漏洞，其中12个超危 — 来源[安全监测]📊· ClawHub技能市场12%插件含恶意代码 — 来源[安全报告]<span style="color:var(--orange)">⚠️</span>· 国内边缘AI芯片市场2024年210亿元，预计2030年860亿元（CAGR 20%+）— 来源[IDC]📊· 中国AI智能体市场规模2028年预计突破3.3万亿元 — 来源[行业预测]<span style="color:var(--orange)">⚠️</span>· 深圳龙岗区对购买龙虾盒子按市场价30%补贴 — 来源[政府公告]<span style="color:var(--green)">✅</span></li></ul>
+<ul><li>2026年2月OpenClaw GitHub星标突破28万，超越Linux — 来源[多家媒体]✅· 中央网信办、工信部2026年3月发布OpenClaw安全风险提示 — 来源[人民网]✅· 超4.2万个OpenClaw实例暴露在公网，90%可绕过身份验证 — 来源[MITRE ATLAS]✅· 2026年1-3月发现82个漏洞，其中12个超危 — 来源[安全监测]📊· ClawHub技能市场12%插件含恶意代码 — 来源[安全报告]⚠️· 国内边缘AI芯片市场2024年210亿元，预计2030年860亿元（CAGR 20%+）— 来源[IDC]📊· 中国AI智能体市场规模2028年预计突破3.3万亿元 — 来源[行业预测]⚠️· 深圳龙岗区对购买龙虾盒子按市场价30%补贴 — 来源[政府公告]✅</li></ul>
 <hr>
 </div>
-<div class="sec reveal" id="s-4">
-<h2>🔍 深度分析：竞争格局全景</h2>
+<div class="sec reveal" id="s-4"><h2>🔍 深度分析：竞争格局全景</h2>
 <div class="card"><h3>一、国产龙虾盒子阵营</h3>
+<div class="chart-wrap"><canvas id="chart_3b84733f"></canvas><div class="chart-label">发布时间 对比</div></div>
 <p><strong>第一梯队：专用龙虾盒子</strong></p>
-<div style="overflow-x:auto"><table class="tbl">
-<tr>
-<th class="">产品</th>
-<th class="">厂商</th>
-<th class="">发布时间</th>
-<th class="">核心定位</th>
-<th class="">硬件平台</th>
-<th class="">差异化</th>
-</tr>
-<tr>
-<td class=""><strong>EdgeClaw Box</strong></td>
-<td class="">面壁智能</td>
-<td class="">2026.03.19</td>
-<td class="">AI智能体一体机</td>
-<td class="">适配DGX Spark/Mac Mini/松果派</td>
-<td class="">隐私路由中间件，自带MiniCPM端侧模型，零Token消耗</td>
-</tr>
-<tr>
-<td class=""><strong>M50</strong></td>
-<td class="">中科可控</td>
-<td class="">2026.03上旬</td>
-<td class="">端云协同国产工作站</td>
-<td class="">国产C86处理器</td>
-<td class="">首款国产龙虾盒子，物理隔离芯片+ASP主动防御，7x24稳定</td>
-</tr>
-<tr>
-<td class=""><strong>Claw一体机</strong></td>
-<td class="">长江计算</td>
-<td class="">2026.03</td>
-<td class="">OpenClaw专用终端</td>
-<td class="">国产方案</td>
-<td class="">深度定制OpenClaw运行环境</td>
-</tr>
-<tr>
-<td class=""><strong>龙虾盒子</strong></td>
-<td class="">软通智谱</td>
-<td class="">2026.03</td>
-<td class="">智能体硬件</td>
-<td class="">国产方案</td>
-<td class="">软通动力+智谱AI联合</td>
-</tr>
-<tr>
-<td class=""><strong>NexClaw View</strong></td>
-<td class="">杰创智能</td>
-<td class="">2026.03.12</td>
-<td class="">龙虾云桌面</td>
-<td class="">云桌面架构</td>
-<td class="">内置办公技能包，四层安全防护，云桌面免硬件</td>
-</tr>
-<tr>
-<td class=""><strong>AI NAS</strong></td>
-<td class="">璇玑数据</td>
-<td class="">2026.03.09</td>
-<td class="">NAS+龙虾</td>
-<td class="">NAS硬件</td>
-<td class="">存储+AI一体，深圳龙岗企业</td>
-</tr>
-<tr>
-<td class=""><strong>行业侧龙虾盒子</strong></td>
-<td class="">模算归巢</td>
-<td class="">2026.04</td>
-<td class="">行业AI Infra</td>
-<td class="">国产GPU万卡集群</td>
-<td class="">全栈自研，OPC-OPG-OPR-OPD四维生态</td>
-</tr>
-</table></div>
 <p><strong>第二梯队：泛边缘AI盒子向OpenClaw兼容</strong></p>
 <div style="overflow-x:auto"><table class="tbl">
 <tr>
@@ -247,43 +129,10 @@
 </table></div>
 </div>
 <div class="card"><h3>二、国际阵营</h3>
-<div style="overflow-x:auto"><table class="tbl">
-<tr>
-<th class="">产品</th>
-<th class="">厂商</th>
-<th class="">发布时间</th>
-<th class="">核心定位</th>
-<th class="">硬件/软件</th>
-<th class="">差异化</th>
-</tr>
-<tr>
-<td class=""><strong>NemoClaw + DGX Spark</strong></td>
-<td class="">NVIDIA</td>
-<td class="">2026.03.16 (GTC)</td>
-<td class="">企业级AI智能体平台</td>
-<td class="">DGX Spark（1 petaFLOP，\$3,999）+ 安全沙箱</td>
-<td class="">黄仁勋称为"可能有史以来最重要的软件发布"，安全隔离沙箱，DGX Spark可4台集群</td>
-</tr>
-<tr>
-<td class=""><strong>NemoClaw + DGX Station</strong></td>
-<td class="">NVIDIA</td>
-<td class="">2026.03.16 (GTC)</td>
-<td class="">个人AI超级计算机</td>
-<td class="">748GB内存，可部署AI工厂</td>
-<td class="">企业级部署，戴尔率先推出支持机型</td>
-</tr>
-<tr>
-<td class=""><strong>通用NVIDIA Jetson盒子</strong></td>
-<td class="">多家OEM</td>
-<td class="">持续</td>
-<td class="">边缘AI推理</td>
-<td class="">Jetson Orin/Nano/Xavier</td>
-<td class="hi">全球生态最成熟，200-5000美元价位带</td>
-</tr>
-</table></div>
+<div class="chart-wrap"><canvas id="chart_811e9703"></canvas><div class="chart-label">多维度对比</div></div>
 </div>
 <div class="card"><h3>三、路线分化</h3>
-<pre style="background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;overflow-x:auto;font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.7;color:var(--text2);margin:8px 0"><code>                 ┌─ 硬件预制方案（即插即用）
+<pre style="background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px;overflow-x:auto;font-family:JetBrains Mono,monospace;font-size:11px;line-height:1.6;color:var(--text2);margin:6px 0"><code>                 ┌─ 硬件预制方案（即插即用）
                  │   中科可控M50·面壁EdgeClaw·长江计算·软通智谱
                  │
 龙虾盒子路线 ───┼─ 云桌面方案（集中部署）
@@ -295,47 +144,10 @@
 <hr>
 </div>
 </div>
-<div class="sec reveal" id="s-5">
-<h2>四、关键争议：安全是最大博弈点</h2>
+<div class="sec reveal" id="s-5"><h2>四、关键争议：安全是最大博弈点</h2>
 <div class="card"><h3>安全风险（全行业通病）</h3>
+<div class="chart-wrap"><canvas id="chart_af5a19d3"></canvas><div class="chart-label">案例 对比</div></div>
 <p>OpenClaw本身的安全缺陷是整个品类的最大隐忧：</p>
-<div style="overflow-x:auto"><table class="tbl">
-<tr>
-<th class="">风险类型</th>
-<th class="">案例</th>
-<th class="">影响</th>
-</tr>
-<tr>
-<td class="">权限失控</td>
-<td class="">默认高权限，可访问系统和浏览器所有数据</td>
-<td class="">密码/API密钥/信用卡被盗</td>
-</tr>
-<tr>
-<td class="">漏洞攻击</td>
-<td class="">ClawJacked零点击漏洞（CVSS 8.0+）</td>
-<td class="">无需用户操作即可远程控制</td>
-</tr>
-<tr>
-<td class="">数据误删</td>
-<td class="">Meta AI安全总监Summer Yue的收件箱被AI清空</td>
-<td class="">不可逆数据丢失</td>
-</tr>
-<tr>
-<td class="">恶意插件</td>
-<td class="">ClawHub 12%插件含恶意代码</td>
-<td class="">设备沦为"肉鸡"</td>
-</tr>
-<tr>
-<td class="">公网暴露</td>
-<td class="">4.2万实例暴露公网，90%无认证</td>
-<td class="">远程操控、数据窃取</td>
-</tr>
-<tr>
-<td class="">Token账单失控</td>
-<td class="">日耗千万至亿级Token</td>
-<td class="">账单飙升，出现高价卸载服务</td>
-</tr>
-</table></div>
 </div>
 <div class="card"><h3>各阵营的安全对策对比</h3>
 <div style="overflow-x:auto"><table class="tbl">
@@ -367,14 +179,13 @@
 <tr>
 <td class=""><strong>普通PC跑OpenClaw</strong></td>
 <td class="">无（默认配置脆弱）</td>
-<td class=""><span style="color:var(--red)">❌</span> 不建议企业使用</td>
+<td class="">❌ 不建议企业使用</td>
 </tr>
 </table></div>
 <hr>
 </div>
 </div>
-<div class="sec reveal" id="s-6">
-<h2>五、市场动态与政策推动</h2>
+<div class="sec reveal" id="s-6"><h2>五、市场动态与政策推动</h2>
 <div class="card">
 <ul><li><strong>深圳龙岗区</strong>：全国首个出台OpenClaw扶持政策，对购买AI NAS（龙虾盒子）按市场价30%补贴· <strong>工信部/中央网信办</strong>：2026年3月发布多轮安全风险提示· <strong>多地"龙虾局"</strong>：深圳、昆山、光明区举办OpenClaw产业交流会· <strong>概念股爆炒</strong>：2026年3月"龙虾概念"引发涨停潮，算力租赁板块逆势爆发· <strong>AI基础设施崛起</strong>：模算归巢等厂商推出全栈AI Infra方案，打通算力-模型-技能-端侧-数据全链条</li></ul>
 <div class="card"><h3>黄仁勋的论断（GTC 2026）</h3>
@@ -382,8 +193,7 @@
 <hr>
 </div>
 </div>
-<div class="sec reveal" id="s-7">
-<h2>六、核心逻辑梳理</h2>
+<div class="sec reveal" id="s-7"><h2>六、核心逻辑梳理</h2>
 <div class="card"><h3>本质问题</h3>
 <p>龙虾盒子不是纯粹硬件产品，而是<strong>OpenClaw生态落地的物理载体</strong>。硬件的价值高度依赖OpenClaw本身的发展。</p>
 </div>
@@ -398,8 +208,7 @@
 <hr>
 </div>
 </div>
-<div class="sec reveal" id="s-8">
-<h2>💎 连接性分析</h2>
+<div class="sec reveal" id="s-8"><h2>💎 连接性分析</h2>
 <div class="card"><h3>与中科领创的直接关联</h3>
 <p>1. <strong>存储芯片配套机会</strong>：所有龙虾盒子都需要大容量存储（AI模型+数据），康盈半导体/普冉半导体的存储芯片可作为配套方案切入。特别是中科可控M50（国产C86）、长江计算等国产方案，对国产存储有天然配套需求。 2. <strong>AIoT硬件集成机会</strong>：中科领创的智能硬件方案+端侧AI能力，可联合面壁智能（MiniCPM端侧模型）或瑞芯微AI盒子方案，打包面向工业客户的边缘AI方案。 3. <strong>生态定位思考</strong>：中科领创是康盈+普冉的核心代理商，存储芯片是龙虾盒子的核心器件之一。如果龙虾盒子市场起量，存储配套需求将爆发。</p>
 </div>
@@ -408,88 +217,30 @@
 <hr>
 </div>
 </div>
-<div class="sec reveal" id="s-9">
-<h2><span style="color:var(--orange)">⚠️</span> 风险提示</h2>
+<div class="sec reveal" id="s-9"><h2>⚠️ 风险提示</h2>
 <div class="card">
 <ul><li><strong>信源质量</strong>：本文信源以财经媒体和科技媒体为主，部分市场预测数据来自券商/行业报告，需注意过度乐观· <strong>品类风险</strong>：龙虾盒子是2026年Q1刚诞生的新兴品类，市场格局和商业模式仍在快速变化中· <strong>技术风险</strong>：OpenClaw的安全问题尚未根本解决，可能影响企业采购意愿· <strong>政策风险</strong>：中央网信办已发安全预警，监管收紧可能抑制市场增长· <strong>时效性</strong>：截至2026年5月底，部分数据（如各家具体售价、出货量）未公开</li></ul>
 </div>
-<div class="sec reveal" id="s-10">
-<h2>下一步动作</h2>
+<div class="sec reveal" id="s-10"><h2>下一步动作</h2>
 <div class="card">
 <p>建议老板：</p>
 <p>1. <strong>先看这篇报告</strong>，了解市场全貌 2. 如果需要，可以进一步调研中科可控M50的具体规格和供货渠道 3. 评估康盈/普冉存储芯片切入龙虾盒子供应链的机会窗口</p>
 </div>
-
-<footer>
-  <p>AI 调研中心 · Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p>
-  <p class="note"><a href="index.html">返回目录</a> · <a href="https://zcnytfl3vf1r.feishu.cn/docx/Vy2wdnQmWolQrTxhdqycn3YbnLg" target="_blank">飞书原文</a></p>
-</footer>
-
+<footer><p>AI 调研中心 · Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p><p class="note"><a href="index.html">返回目录</a> · <a href="https://zcnytfl3vf1r.feishu.cn/docx/Vy2wdnQmWolQrTxhdqycn3YbnLg" target="_blank">飞书原文</a></p></footer>
 <script>
 // Particles
-(function(){
-  const c=document.getElementById('particles'),x=c.getContext('2d');
-  let w,h,ps=[],mx=-100,my=-100;
-  function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
-  rs();addEventListener('resize',rs);
-  for(let i=0;i<70;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:Math.random()*2+.6,o:Math.random()*.5+.12});
-  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-  (function d(){
-    x.clearRect(0,0,w,h);
-    for(let i=0;i<ps.length;i++){
-      let p=ps[i];p.x+=p.vx;p.y+=p.vy;
-      if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
-      let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
-      if(md<200){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
-      let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.8){p.vx*=.98;p.vy*=.98}
-      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
-      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<200?.25:0),1)})`;x.fill();
-      for(let j=i+1;j<ps.length;j++){
-        let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
-        if(dt<150){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/150)})`;x.lineWidth=.5;x.stroke()}
-      }
-    }
-    requestAnimationFrame(d);
-  })();
-})();
+(function(){const c=document.getElementById('particles'),x=c.getContext('2d');let w,h,ps=[],mx=-100,my=-100;function rs(){w=c.width=innerWidth;h=c.height=innerHeight}rs();addEventListener('resize',rs);for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.5,o:Math.random()*.4+.1});addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});(function d(){x.clearRect(0,0,w,h);for(let i=0;i<ps.length;i++){let p=ps[i];p.x+=p.vx;p.y+=p.vy;if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);if(md<180){p.vx+=dx/md*.01;p.vy+=dy/md*.01}let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.2:0),1)})`;x.fill();for(let j=i+1;j<ps.length;j++){let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);if(dt<130){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.07*(1-dt/130)})`;x.lineWidth=.5;x.stroke()}}}requestAnimationFrame(d)})()})();
 // Glow
-(function(){
-  let g=document.getElementById('glow'),tx=0,ty=0,cx=0,cy=0;
-  addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
-  (function f(){cx+=(tx-cx)*.05;cy+=(ty-cy)*.05;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(f)})();
-})();
-// Scroll reveal
-(function(){
-  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target)}}),{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>o.observe(el));
-})();
+(function(){let g=document.getElementById('glow'),tx=0,ty=0,cx=0,cy=0;addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});(function f(){cx+=(tx-cx)*.05;cy+=(ty-cy)*.05;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(f)})()})();
+// Reveal
+(function(){let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>o.observe(el))})();
 // KPI CountUp
-(function(){
-  const animated=new Set();
-  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
-    if(e.isIntersecting&&!animated.has(e.target)){
-      animated.add(e.target);
-      const valEl=e.target.querySelector('.val');
-      if(!valEl)return;
-      const text=valEl.textContent.trim();
-      const num=parseFloat(text);
-      if(isNaN(num))return;
-      const suffix=text.replace(/[0-9.]/g,'');
-      const duration=1200,start=performance.now();
-      function tick(now){
-        const p=Math.min((now-start)/duration,1);
-        const eased=1-Math.pow(1-p,3);
-        const cur=num*eased;
-        valEl.textContent=Number.isInteger(num)?Math.round(cur)+suffix:cur.toFixed(1)+suffix;
-        if(p<1)requestAnimationFrame(tick);else valEl.textContent=text;
-      }
-      requestAnimationFrame(tick);
-    }
-  }),{threshold:.3});
-  document.querySelectorAll('.kpi').forEach(el=>obs.observe(el));
-})();
+(function(){const animated=new Set();const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting&&!animated.has(e.target)){animated.add(e.target);const valEl=e.target.querySelector('.val');if(!valEl)return;const text=valEl.textContent.trim();const num=parseFloat(text);if(isNaN(num))return;const suffix=text.replace(/[0-9.]/g,'');const d=1200,s=performance.now();function t(n){const p=Math.min((n-s)/d,1);const eased=1-Math.pow(1-p,3);valEl.textContent=Number.isInteger(num)?Math.round(num*eased)+suffix:(num*eased).toFixed(1)+suffix;if(p<1)requestAnimationFrame(t);else valEl.textContent=text}requestAnimationFrame(t)}}),{threshold:.3});document.querySelectorAll('.kpi').forEach(el=>obs.observe(el))})();
 // Accordion
 document.querySelectorAll('.acc-hdr').forEach(h=>h.addEventListener('click',()=>h.parentElement.classList.toggle('open')));
 </script>
+<script>new Chart(document.getElementById("chart_3b84733f"),{type:"bar",data:{labels:["**EdgeClaw Box*", "**M50**", "**Claw一体机**", "**龙虾盒子**", "**NexClaw View*", "**AI NAS**", "**行业侧龙虾盒子**"],datasets:[{label:"发布时间",data:[0, 2026.03, 2026.03, 2026.03, 0, 0, 2026.04],backgroundColor:["#7170ff", "#27a644", "#d2991d", "#f85149", "#39c5cf", "#8a8f98", "#e07b4c"],borderRadius:3,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false},title:{display:true,text:"发布时间 对比",color:"#8a8f98",font:{size:12},padding:10}},scales:{y:{ticks:{color:"#8a8f98",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},x:{ticks:{color:"#8a8f98",font:{size:9}},grid:{display:false}}}}}});
+new Chart(document.getElementById("chart_811e9703"),{type:"radar",data:{labels:["硬件/软件", "差异化"],datasets:[{label:"**NemoClaw +",data:[13999.0, 4.0],borderColor:"#7170ff",backgroundColor:"#7170ff33",pointRadius:2,borderWidth:2},{label:"**NemoClaw +",data:[748.0, 0],borderColor:"#27a644",backgroundColor:"#27a64433",pointRadius:2,borderWidth:2},{label:"**通用NVIDIA J",data:[0, 200.0],borderColor:"#d2991d",backgroundColor:"#d2991d33",pointRadius:2,borderWidth:2}]},options:{responsive:true,plugins:{legend:{labels:{color:"#d0d6e0",font:{size:10},padding:12,usePointStyle:true}},title:{display:true,text:"多维度对比",color:"#8a8f98",font:{size:12},padding:10}},scales:{r:{beginAtZero:true,ticks:{color:"#62666d",backdropColor:"transparent",font:{size:9}},grid:{color:"rgba(255,255,255,0.05)"},angleLines:{color:"rgba(255,255,255,0.05)"},pointLabels:{color:"#8a8f98",font:{size:10}}}}}}});
+new Chart(document.getElementById("chart_af5a19d3"),{type:"bar",data:{labels:["权限失控", "漏洞攻击", "数据误删", "恶意插件", "公网暴露", "Token账单失控"],datasets:[{label:"案例",data:[0, 8.0, 0, 12.0, 42900.0, 0],backgroundColor:["#7170ff", "#27a644", "#d2991d", "#f85149", "#39c5cf", "#8a8f98"],borderRadius:3,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false},title:{display:true,text:"案例 对比",color:"#8a8f98",font:{size:12},padding:10}},scales:{y:{ticks:{color:"#8a8f98",font:{size:10}},grid:{color:"rgba(255,255,255,0.05)"}},x:{ticks:{color:"#8a8f98",font:{size:9}},grid:{display:false}}}}}});</script>
 </body>
 </html>
