@@ -570,6 +570,122 @@
     </div>
   </section>
 
+  <!-- 竞品分析 -->
+  <section>
+    <h2><span class="icon">⚡</span> 竞品全景：谁在对标？谁可替代？</h2>
+
+    <div class="card">
+      <h3>一图看懂竞品格局</h3>
+      <p style="color:var(--muted);margin-bottom:16px">新程 Alpha 同时踩中三条赛道，每条赛道都有不同的对手：</p>
+      <div class="hw-table">
+        <div class="hw-label">赛道</div><div style="font-weight:700">新程 Alpha → 竞品</div>
+        <div class="hw-label">4B 级别小模型</div><div>MiniCPM 3.0 · Phi-3.5-mini · Qwen2.5-3B · Gemma 4 E2B</div>
+        <div class="hw-label">认知/群体智能</div><div>Isara · AutoGen · CrewAI · LangGraph · OpenAI Harness</div>
+        <div class="hw-label">端侧部署国产</div><div>面壁 MiniCPM · 商汤 SenseChat-Lite · RockAI</div>
+      </div>
+    </div>
+
+    <!-- 方向1 -->
+    <div class="card">
+      <h3>🏷️ 方向一：4B 级别高性能小模型（参数量直接对标）</h3>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">注意：这些模型走「通用语言模型」路线，跑 MMLU / HumanEval 等标准 benchmark；新程 Alpha 走「认知模型」路线，比的是群体决策/辩论/反思的思维质量——benchmark 维度不同，不可直接比分数。</p>
+
+      <div style="overflow-x:auto">
+      <div class="compare">
+        <div class="header">模型</div>
+        <div class="header">参数</div>
+        <div class="header">核心能力 &amp; 差异化</div>
+
+        <div class="dim">面壁 MiniCPM 3.0</div>
+        <div>4B</div>
+        <div class="highlight">国产端侧第一梯队，MMLU ~65+，仅需 2.2GB 内存。路线：通用端侧智能，让手机/设备完成日常对话+工具调用。下载量破千万。2025 升级 MiniCPM 4.0（8B），2026 MiniCPM5-1B。</div>
+
+        <div class="dim">微软 Phi-3.5-mini</div>
+        <div>3.8B</div>
+        <div class="highlight">MMLU 69%，MT-Bench 8.38，128K 上下文。超越 Llama 3.1 8B。合成数据训练，强在知识问答和代码。联发科天玑平台已适配。</div>
+
+        <div class="dim">Qwen2.5-3B / Qwen3-4B</div>
+        <div>3B / 4B</div>
+        <div class="highlight">Qwen3-4B 媲美 Qwen2.5-72B，参数效率极高。支持思考/非思考模式切换。通用基座模型路线，覆盖面广。</div>
+
+        <div class="dim">Gemma 4 E2B</div>
+        <div>2.3B 有效</div>
+        <div class="highlight">Google 出品，128K 上下文，140+ 语言，文本+图像+视频+音频。MMLU Pro 85.2%，AIME 89.2%。每参数智能密度的极致追求，4-bit 仅 7.2GB。</div>
+
+        <div class="dim">阶跃 Step-2-mini</div>
+        <div>~3% Step-2</div>
+        <div class="highlight">用不到 3% 参数保留 80%+ 性能。走性价比路线，主攻编程智能体和多模态。</div>
+      </div>
+      </div>
+
+      <div class="warn-box" style="margin-top:16px">
+        <strong>🔑 关键区别：</strong>以上所有模型都能在端侧跑，都能做问答/编程/工具调用。但没有一个像新程 Alpha 那样专门为「群体辩论/反思/投票」场景训练认知能力。如果你只是想找个 4B 模型跑日常任务，上面任何一个都比新程 Alpha 更成熟——因为它们开源、有文档、社区活跃。
+      </div>
+    </div>
+
+    <!-- 方向2 -->
+    <div class="card">
+      <h3>🧠 方向二：认知模型 / 群体多智能体竞品（核心赛道）</h3>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">这是新程 Alpha 最想守住的护城河，也是竞品格局最复杂的方向。</p>
+
+      <div style="overflow-x:auto">
+      <div class="compare">
+        <div class="header">选手</div>
+        <div class="header">层级</div>
+        <div class="header">核心信息</div>
+
+        <div class="dim">Isara</div>
+        <div>框架层</div>
+        <div class="highlight">2025.6 成立，OpenAI 参投，$94M 融资，估值 $6.5B，23岁创始人（前 OpenAI 安全研究员）。2000 个智能体协同预测金价已 demo。不自己训模型，依赖 GPT/Claude 等作为 Agent 大脑。定位：多智能体协调平台。与新程 Alpha 是上下游关系——Isara 可以买新程 Alpha 做底层引擎。</div>
+
+        <div class="dim">AutoGen（微软）</div>
+        <div>框架层</div>
+        <div class="highlight">微软系多 Agent 框架，对话式多智能体协作。编排已有模型，不训练模型本身。</div>
+
+        <div class="dim">CrewAI</div>
+        <div>框架层</div>
+        <div class="highlight">角色分工 + 快速开发，初创友好。编排已有模型，不训练模型本身。</div>
+
+        <div class="dim">LangGraph</div>
+        <div>框架层</div>
+        <div class="highlight">图状工作流 + 状态管理，生产级。编排已有模型，不训练模型本身。</div>
+
+        <div class="dim">OpenAI Harness</div>
+        <div>框架+模型</div>
+        <div class="highlight">2026.2 发布 Harness 概念，用最强通用模型做多智能体引擎。Nextie 在 Harness 赛道最大潜在对手——OpenAI 有最强基座模型但认知模型非重点布局；Nextie 认知模型先发但基座能力远弱。</div>
+      </div>
+      </div>
+
+      <p style="margin-top:16px;color:var(--muted);font-size:0.85rem">
+        <strong>框架层 vs 模型层：</strong>AutoGen/CrewAI/LangGraph 是框架——编排已有模型；新程 Alpha 是模型——改变模型内部的认知架构。不构成直接替代，但如果框架+GPT-5.4 效果超过团子+新程 Alpha，Nextie 壁垒就会被削弱。
+      </p>
+    </div>
+
+    <!-- 方向3 -->
+    <div class="card">
+      <h3>📱 方向三：端侧部署国产小模型</h3>
+
+      <ul>
+        <li><strong>面壁智能 MiniCPM 系列</strong>——国产端侧第一梯队，All in 端侧。"大模型摩尔定律"：知识密度每 8 个月翻番。MiniCPM 3.0（4B）→ 4.0（8B/0.5B）→ MiniCPM-o 4.5（9B 多模态）→ MiniCPM5-1B。下载量破千万。与新程 Alpha 定位差异：面壁做通用端侧智能（对话/视觉/语音全覆盖），不专注认知模型</li>
+        <li><strong>商汤 SenseChat-Lite</strong>——手机/IoT 端侧方案，"模型+芯片适配"一体化，安防/车载有落地。参数估计 1-4B。走行业解决方案路线，不追求认知泛化</li>
+        <li><strong>RockAI（岩芯数智）</strong>——同样押注"群体智能"概念，2024 年 9 月发声，国产群体智能赛道最早玩家之一。但未见与 Nextie 同级别的产品化深度和 benchmark 数据</li>
+        <li><strong>广和通「星云」系列</strong>——通信模组厂商，非模型公司，整合外部模型做"硬件+模型打包"交付，支持 7B 及轻量级小模型，覆盖 1T-50T 算力</li>
+      </ul>
+    </div>
+
+    <!-- 总结 -->
+    <div class="insight" style="margin-top:24px">
+      <p><strong>🔑 核心结论</strong></p>
+      <p style="margin-top:12px">新程 Alpha 在<strong>认知模型</strong>这个品类里目前没有直接竞品——其他 4B 模型做的是"小号百科全书"，它做的是"思考引擎"。但问题在于：</p>
+      <ul style="margin-top:12px">
+        <li><strong>可替代性强</strong>——如果你只需要一个 4B 端侧模型处理日常任务，MiniCPM / Phi / Qwen 更成熟（开源、有文档、社区活跃）</li>
+        <li><strong>护城河待验证</strong>——"4B 打平 GPT-5.4"的数据来自 Nextie 自建的 IDI 评测，缺少第三方独立复现</li>
+        <li><strong>框架层威胁</strong>——Isara+GPT-5.4 的组合可能从框架侧绕过认知模型的壁垒</li>
+        <li><strong>最大变数</strong>——如果认知模型的效果能在独立 benchmark 上复现，品类的壁垒就成立；如果不能，就只是一个经过特定场景 RL 微调的小模型</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- 一句话 -->
   <section>
     <h2><span class="icon">💡</span> 核心判断</h2>
