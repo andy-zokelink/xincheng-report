@@ -3,857 +3,535 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新程 Alpha · 国产认知模型深度调研</title>
+<title>4B 级小模型深度调研 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #c9d1d9;
-    --muted: #8b949e;
-    --accent: #58a6ff;
-    --green: #3fb950;
+    --bg: #08090a;
+    --panel: #0f1011;
+    --surface: #191a1b;
+    --surface2: #222326;
+    --text: #f7f8f8;
+    --text2: #d0d6e0;
+    --text3: #8a8f98;
+    --text4: #62666d;
+    --accent: #5e6ad2;
+    --accent-bright: #7170ff;
+    --green: #27a644;
     --orange: #d2991d;
     --red: #f85149;
-    --purple: #a371f7;
+    --border: rgba(255,255,255,0.08);
+    --border-subtle: rgba(255,255,255,0.05);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
   body {
     background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
-    line-height: 1.7;
-    min-height: 100vh;
+    color: var(--text2);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv01','ss03';
+    line-height: 1.6;
   }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,16,17,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; gap: 24px;
+    height: 52px;
+  }
+  nav .logo {
+    font-size: 15px; font-weight: 600; color: var(--text);
+    letter-spacing: -0.2px; white-space: nowrap;
+  }
+  nav .logo span { color: var(--accent-bright); }
+  nav a {
+    font-size: 13px; font-weight: 500; color: var(--text3);
+    text-decoration: none; transition: color .15s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--text); }
 
   /* Hero */
   .hero {
-    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a0d2e 100%);
-    border-bottom: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
     padding: 80px 24px 64px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 50%, rgba(88,166,255,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 20%, rgba(163,113,247,0.05) 0%, transparent 50%);
-    pointer-events: none;
+  .hero .badge {
+    display: inline-block;
+    background: rgba(94,106,210,0.12);
+    color: var(--accent-bright);
+    border: 1px solid rgba(94,106,210,0.25);
+    border-radius: 999px; padding: 4px 16px;
+    font-size: 12px; font-weight: 500;
+    margin-bottom: 24px;
   }
   .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    position: relative;
-    background: linear-gradient(135deg, #58a6ff, #a371f7, #58a6ff);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 600; letter-spacing: -0.04em;
+    color: var(--text); line-height: 1.15;
+    margin-bottom: 16px;
   }
-  @keyframes shimmer {
-    to { background-position: 200% center; }
+  .hero h1 span { color: var(--accent-bright); }
+  .hero p {
+    font-size: 1.1rem; color: var(--text3);
+    max-width: 640px; margin: 0 auto;
+    font-weight: 400;
   }
-  .hero .subtitle {
-    color: var(--muted);
-    font-size: 1.15rem;
-    margin-top: 16px;
-    position: relative;
+
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+    gap: 16px;
+    max-width: 1200px; margin: 0 auto 80px;
+    padding: 0 24px;
   }
-  .hero .meta {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 24px;
-    position: relative;
-  }
-  .hero .meta span {
-    background: var(--card);
+  .kpi {
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 16px;
-    font-size: 0.9rem;
-    color: var(--muted);
+    border-radius: 10px; padding: 24px; text-align: center;
   }
-  .hero .meta span strong { color: var(--accent); }
+  .kpi .val {
+    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .kpi .val.accent { color: var(--accent-bright); }
+  .kpi .val.green { color: var(--green); }
+  .kpi .lbl { font-size: 13px; color: var(--text3); }
 
-  /* Container */
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 48px 24px;
+  /* Section container */
+  .sec {
+    max-width: 1200px; margin: 0 auto 72px;
+    padding: 0 24px;
   }
-
-  /* Sections */
-  section { margin-bottom: 56px; }
-  h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .sec h2 {
+    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--text); margin-bottom: 8px;
   }
-  h2 .icon { font-size: 1.4rem; }
+  .sec .sub {
+    font-size: 14px; color: var(--text3); margin-bottom: 32px;
+  }
 
   /* Cards */
   .card {
-    background: var(--card);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px 32px;
-    margin-bottom: 20px;
+    border-radius: 10px; padding: 28px;
+    margin-bottom: 16px;
   }
   .card h3 {
-    font-size: 1.15rem;
-    color: var(--accent);
-    margin-bottom: 12px;
+    font-size: 16px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px; letter-spacing: -0.01em;
   }
-  .card p, .card li { color: var(--text); font-size: 0.95rem; }
-
-  /* Stat grid */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-  }
-  .stat {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-  }
-  .stat .value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #58a6ff, #a371f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .stat .label {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* Compare table */
-  .compare {
-    display: grid;
-    grid-template-columns: 160px 1fr 1fr;
-    font-size: 0.9rem;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .compare > div {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-  }
-  .compare .header {
-    background: var(--card);
-    font-weight: 700;
-    color: var(--accent);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-  }
-  .compare .dim { color: var(--muted); font-weight: 600; }
-  .compare .highlight { color: var(--green); }
-  .compare .dimmed { color: var(--muted); }
-
-  /* List */
+  .card p, .card li { font-size: 14px; color: var(--text2); }
+  .card li { padding: 4px 0; }
   ul { list-style: none; padding: 0; }
-  li { padding: 6px 0; display: flex; gap: 10px; align-items: baseline; }
-  li::before { content: "·"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  li::before { content: "·"; color: var(--accent-bright); font-weight: 700; margin-right: 8px; }
 
-  /* Key insight */
-  .insight {
-    background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(163,113,247,0.1));
-    border: 1px solid rgba(88,166,255,0.25);
-    border-radius: 12px;
-    padding: 28px 32px;
-    font-size: 1.05rem;
-    font-weight: 500;
-  }
-  .insight strong { color: var(--accent); }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    padding: 40px 24px;
-    color: var(--muted);
-    font-size: 0.8rem;
-    border-top: 1px solid var(--border);
-  }
-
-  /* Badge */
-  .badge {
-    display: inline-block;
-    background: rgba(88,166,255,0.12);
-    color: var(--accent);
-    border: 1px solid rgba(88,166,255,0.3);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-
-  /* Tag */
-  .tag {
-    display: inline-block;
-    background: rgba(63,185,80,0.12);
-    color: var(--green);
-    border: 1px solid rgba(63,185,80,0.3);
-    border-radius: 4px;
-    padding: 2px 10px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-right: 6px;
-    margin-bottom: 6px;
-  }
-  .tag.warn {
-    background: rgba(210,153,29,0.12);
-    color: var(--orange);
-    border-color: rgba(210,153,29,0.3);
-  }
-  .tag.purple {
-    background: rgba(163,113,247,0.12);
-    color: var(--purple);
-    border-color: rgba(163,113,247,0.3);
-  }
-
-  /* Warning box */
-  .warn-box {
-    background: rgba(210,153,29,0.06);
-    border: 1px solid rgba(210,153,29,0.25);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-top: 16px;
-    font-size: 0.88rem;
-    color: var(--orange);
-  }
-  .warn-box strong { color: var(--orange); }
-
-  /* Hardware spec table */
-  .hw-table {
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    font-size: 0.9rem;
+  /* Charts */
+  .chart-wrap {
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 16px;
+    border-radius: 10px; padding: 28px;
+    margin-bottom: 16px;
   }
-  .hw-table > div {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .hw-table .hw-label {
-    background: var(--card);
-    font-weight: 600;
-    color: var(--accent);
-  }
+  .chart-wrap canvas { max-height: 380px; }
 
-  /* Scenario cards */
-  .scenario-grid {
+  .chart-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-  .scenario {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-  }
-  .scenario .icon-big { font-size: 2rem; margin-bottom: 8px; }
-  .scenario h4 { font-size: 1rem; margin-bottom: 8px; color: var(--text); }
-  .scenario p { font-size: 0.85rem; color: var(--muted); }
+  @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
 
-  @media (max-width: 640px) {
-    .compare { grid-template-columns: 1fr 1fr; }
-    .compare .header { display: none; }
-    .compare .dim { grid-column: 1 / -1; background: var(--card); font-weight: 700; padding: 8px 16px; }
-    .container { padding: 32px 16px; }
+  /* Table styled */
+  .tbl {
+    width: 100%; border-collapse: collapse; font-size: 13px;
   }
+  .tbl th {
+    text-align: left; padding: 10px 14px;
+    color: var(--text3); font-weight: 500; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 10px 14px; color: var(--text2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl .hi { color: var(--accent-bright); font-weight: 600; }
+  .tbl .lo { color: var(--text4); }
+  .tbl .cl { color: var(--red); }
+
+  /* Accordion */
+  .acc { margin-bottom: 16px; }
+  .acc-hdr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 24px;
+    cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; font-size: 15px; font-weight: 600;
+    color: var(--text); transition: border-color .15s;
+  }
+  .acc-hdr:hover { border-color: rgba(255,255,255,0.15); }
+  .acc-hdr::after { content: "+"; font-size: 18px; color: var(--text3); font-weight: 400; transition: transform .2s; }
+  .acc.open .acc-hdr::after { content: "−"; }
+  .acc-body {
+    display: none; background: var(--surface);
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 10px 10px; padding: 24px;
+    font-size: 14px; color: var(--text2);
+  }
+  .acc.open .acc-body { display: block; }
+
+  /* Insight box */
+  .insight {
+    background: rgba(94,106,210,0.06);
+    border: 1px solid rgba(94,106,210,0.18);
+    border-radius: 10px; padding: 24px 28px;
+    font-size: 14px;
+  }
+  .insight strong { color: var(--accent-bright); }
+
+  /* Tags */
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 500; margin-right: 6px;
+  }
+  .tag.g { background: rgba(39,166,68,0.12); color: var(--green); border: 1px solid rgba(39,166,68,0.2); }
+  .tag.p { background: rgba(94,106,210,0.12); color: var(--accent-bright); border: 1px solid rgba(94,106,210,0.2); }
+  .tag.o { background: rgba(210,153,29,0.12); color: var(--orange); border: 1px solid rgba(210,153,29,0.2); }
+  .tag.r { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.18); }
+
+  /* Section nav pills */
+  .pills {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .pill {
+    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border); color: var(--text3);
+    cursor: pointer; transition: all .15s; background: transparent;
+  }
+  .pill:hover, .pill.active {
+    background: rgba(94,106,210,0.1); color: var(--accent-bright);
+    border-color: rgba(94,106,210,0.3);
+  }
+
+  /* Tooltip-style note */
+  .note {
+    font-size: 12px; color: var(--text4); margin-top: 8px;
+  }
+
+  footer {
+    text-align: center; padding: 48px 24px;
+    color: var(--text4); font-size: 12px;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 80px;
+  }
+  footer a { color: var(--text3); }
 </style>
 </head>
 <body>
 
+<!-- Nav -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span>◈</span> 4B 模型深度调研</div>
+    <a href="#summary">总览</a>
+    <a href="#benchmarks">数据</a>
+    <a href="#models">模型</a>
+    <a href="#competitors">竞品</a>
+    <a href="#verdict">结论</a>
+  </div>
+</nav>
+
 <!-- Hero -->
 <header class="hero">
-  <span class="badge">2026.06 · 秘塔AI搜索调研</span>
-  <h1>新程 Alpha</h1>
-  <p class="subtitle">行业首个"认知模型"——用 4B 参数击穿千亿级性能天花板</p>
-  <div class="meta">
-    <span>公司 <strong>明日新程 (Nextie)</strong></span>
-    <span>创始人 <strong>李笛</strong></span>
-    <span>成立 <strong>2025.12</strong></span>
-  </div>
+  <div class="badge">2026.06 · 秘塔AI搜索 × 15轮交叉验证</div>
+  <h1><span>5个4B级</span>小模型<br>深度交叉对比</h1>
+  <p>MiniCPM 3.0 · Phi-3.5-mini · Qwen3-4B · Gemma 4 E2B · 新程 Alpha —— 10个维度，数据可查，来源透明</p>
 </header>
 
-<main class="container">
+<!-- KPI -->
+<section class="kpi-row">
+  <div class="kpi">
+    <div class="val accent">36T</div>
+    <div class="lbl">最大训练数据量 (Qwen3)</div>
+  </div>
+  <div class="kpi">
+    <div class="val">156</div>
+    <div class="lbl">最快推理 t/s (Gemma 4)</div>
+  </div>
+  <div class="kpi">
+    <div class="val green">128K</div>
+    <div class="lbl">最长上下文 (Phi-3.5 / Gemma 4)</div>
+  </div>
+  <div class="kpi">
+    <div class="val">1.3GB</div>
+    <div class="lbl">最轻量部署 (Gemma 4 INT4)</div>
+  </div>
+  <div class="kpi">
+    <div class="val accent">4/5</div>
+    <div class="lbl">开源可验证 (新程 Alpha 除外)</div>
+  </div>
+</section>
 
-  <!-- 关键数据 -->
-  <section>
-    <h2><span class="icon">📊</span> 关键数据</h2>
-    <div class="stat-grid">
-      <div class="stat">
-        <div class="value">4B</div>
-        <div class="label">模型参数</div>
-      </div>
-      <div class="stat">
-        <div class="value">2轮</div>
-        <div class="label">融资（4个月内）</div>
-      </div>
-      <div class="stat">
-        <div class="value">GPT-5.4</div>
-        <div class="label">对标的性能级别</div>
-      </div>
-      <div class="stat">
-        <div class="value">220年</div>
-        <div class="label">论文研究跨度</div>
-      </div>
+<!-- Section: 总览 -->
+<div class="sec" id="summary">
+  <h2>📊 核心发现</h2>
+  <p class="sub">五款模型走三条路线：全科生、偏科生、另类专家</p>
+
+  <div class="chart-row">
+    <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+    <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+  </div>
+
+  <div class="insight" style="margin-top:16px">
+    <strong>🔑 快速选型：</strong>
+    · 通用中文助手 → Qwen3-4B（双模推理，36T tokens，119语言）<br>
+    · 端侧多模态 → Gemma 4 E2B（156 t/s，树莓派可跑，唯一多模态）<br>
+    · 长文本处理 → Phi-3.5-mini（128K 原生上下文）<br>
+    · RAG/工具调用 → MiniCPM 3.0（Function Calling 接近 GPT-4o）<br>
+    · 群体智能决策 → 新程 Alpha（独特价值，但闭源待验证）
+  </div>
+</div>
+
+<!-- Section: Benchmarks -->
+<div class="sec" id="benchmarks">
+  <h2>📐 硬指标对比</h2>
+  <p class="sub">数据来源：OpenLaboratory · gemma4-ai.com · llmtrust.com · NVIDIA · EmergentMind</p>
+
+  <div style="overflow-x:auto">
+  <table class="tbl">
+    <tr><th>指标</th><th>MiniCPM 3.0</th><th>Phi-3.5</th><th>Qwen2.5-3B</th><th>Qwen3-4B</th><th>Gemma 4 E2B</th><th>新程 Alpha</th></tr>
+    <tr><td>参数量</td><td>4B</td><td>3.8B</td><td>3.09B</td><td>4.0B</td><td>2.3B 有效</td><td class="lo">4B</td></tr>
+    <tr><td>上下文</td><td>32K/无限</td><td class="hi">128K 原生</td><td>32K</td><td>32K→131K</td><td class="hi">128K 原生</td><td class="lo">未公开</td></tr>
+    <tr><td>发布日期</td><td>2024.9</td><td>2024.8</td><td>2024</td><td>2025.4</td><td>2026.4</td><td>2026.6</td></tr>
+    <tr><td>MMLU</td><td>~68%</td><td>69.0%</td><td>65.6%</td><td class="hi">Redux 83.7</td><td>68.2%</td><td class="lo">未公开</td></tr>
+    <tr><td>C-Eval (中文)</td><td class="hi">强</td><td class="lo">弱</td><td>强</td><td class="hi">77.5</td><td>—</td><td class="lo">未公开</td></tr>
+    <tr><td>HumanEval</td><td>优异</td><td>60.4%</td><td>—</td><td>优异</td><td>54.3%</td><td class="lo">未公开</td></tr>
+    <tr><td>GSM8K</td><td>优异</td><td>—</td><td>—</td><td class="hi">Think 高</td><td>65.1%</td><td class="lo">未公开</td></tr>
+    <tr><td>训练数据</td><td>未公开</td><td>3.4T tokens</td><td>18T tokens</td><td class="hi">36T tokens</td><td>未公开</td><td class="lo">非传统</td></tr>
+    <tr><td>INT4 部署</td><td>~2GB</td><td>~2.2GB</td><td>~2-3GB</td><td>~3-4GB</td><td class="hi">1.3GB</td><td class="lo">未公开</td></tr>
+    <tr><td>推理速度</td><td>未公开</td><td>未公开</td><td>未公开</td><td>—</td><td class="hi">156 t/s</td><td class="lo">未公开</td></tr>
+    <tr><td>开源</td><td class="hi">✅ Apache</td><td class="hi">✅ MIT</td><td class="hi">✅ Apache</td><td class="hi">✅ Apache</td><td class="hi">✅ Apache</td><td class="cl">❌ 闭源</td></tr>
+  </table>
+  </div>
+  <div class="note">* MMLU-Redux 与经典 MMLU 计分方式不同，不可直接对比。新程 Alpha 无公开 benchmark 数据。</div>
+</div>
+
+<!-- Section: 模型详解 (Accordion) -->
+<div class="sec" id="models">
+  <h2>🔍 逐模型深度解析</h2>
+  <p class="sub">点击展开每个模型的架构、训练方法、特色能力</p>
+
+  <div class="acc">
+    <div class="acc-hdr" onclick="this.parentElement.classList.toggle('open')">Qwen3-4B（阿里）<span class="tag g" style="margin-left:12px">🏆 综合最强</span></div>
+    <div class="acc-body">
+      <p><strong>架构：</strong>36层 Dense Transformer，GQA（32Q/8KV），SwiGLU，RMSNorm，RoPE+ABF，QK-Norm。<strong>双模推理</strong>是独有创新——同一 checkpoint 支持 Thinking / No-Thinking 动态切换。</p>
+      <p style="margin-top:12px"><strong>训练数据：</strong>36T tokens，119种语言，三阶段预训练（通用→推理→长文），strong-to-weak 蒸馏。</p>
+      <p style="margin-top:12px"><strong>中文：</strong>C-Eval 77.5，原生中文最强档。部署：GGUF Q4 约3-4GB。开源：Apache 2.0。</p>
+      <p style="margin-top:12px"><strong>推荐场景：</strong>中文通用对话、工具调用（Qwen-Agent）、需要快/深切换的推理任务。</p>
     </div>
-  </section>
+  </div>
 
-  <!-- 公司背景 -->
-  <section>
-    <h2><span class="icon">🏢</span> 公司背景</h2>
-    <div class="card">
-      <p>明日新程（Nextie）是一家成立于 <strong>2025 年 12 月</strong> 的中国 AI 初创公司，由微软小冰创始团队原班人马打造。</p>
-      <ul style="margin-top:16px">
-        <li><strong>创始人/CEO：李笛</strong>——微软亚洲工程院前常务副院长，被称为"小冰之父"，主持开发了全球用户量最大的对话式 AI 产品</li>
-        <li><strong>曾敏</strong>——小冰联合创始人</li>
-        <li><strong>王文斓</strong>——小冰前大模型负责人，曾在日本主导开源模型 rinna（3.6B 参数打榜日本 HuggingFace 第一，碾压 65B Llama）</li>
-      </ul>
+  <div class="acc">
+    <div class="acc-hdr" onclick="this.parentElement.classList.toggle('open')">MiniCPM 3.0（面壁智能）<span class="tag p" style="margin-left:12px">RAG/Agent 专家</span></div>
+    <div class="acc-body">
+      <p><strong>架构：</strong>Dense Decoder-only + MLA注意力，自研LLMxMapReduce实现理论无限长文本。</p>
+      <p style="margin-top:12px"><strong>特色：</strong>RAG三件套（检索+重排序+生成），Function Calling 接近 GPT-4o（BFCL评测），自研CPM.cu推理框架。</p>
+      <p style="margin-top:12px"><strong>中文：</strong>基因级优势，CMMLU/CEVAL/AlignBench 均优。部署：GGUF Q4 约2GB。开源：Apache 2.0。</p>
+      <p style="margin-top:12px"><strong>推荐场景：</strong>中文RAG系统、端侧Agent、需要工具调用的场景。2024发布至今依然有竞争力。</p>
     </div>
+  </div>
 
-    <div class="card">
-      <h3>🟢 融资情况</h3>
-      <p>成立仅 4 个月完成两轮融资，投资方包括：</p>
-      <ul style="margin-top:12px">
-        <li><strong>创新工场</strong>（李开复创立）</li>
-        <li><strong>Atypical Ventures</strong></li>
-        <li><strong>奇绩创坛</strong>（陆奇创立）</li>
-      </ul>
-      <p style="margin-top:12px;color:var(--muted);font-size:0.85rem">三位中国 AI 圈最具分量的投资人/机构联合押注，属罕见同框。</p>
+  <div class="acc">
+    <div class="acc-hdr" onclick="this.parentElement.classList.toggle('open')">Gemma 4 E2B（Google）<span class="tag g" style="margin-left:12px">端侧多模态王</span></div>
+    <div class="acc-body">
+      <p><strong>架构：</strong>Dense + PLE（逐层嵌入参数缓存），混合滑动/全局注意力（5:1），2.3B有效/5.1B含嵌入。唯一支持文本+图像+视频+原生音频的小参数模型。</p>
+      <p style="margin-top:12px"><strong>性能：</strong>MMLU 68.2%，MMLU Pro 60.0%，MT-Bench 6.89。RTX 4090 <strong>156 t/s</strong>，M2 Ultra 124 t/s，树莓派5 7.6 t/s 解码。INT4 仅1.3GB，手机端1.1GB。</p>
+      <p style="margin-top:12px"><strong>中文：</strong>MMLU 63.1%，支持但不主攻。开源：Apache 2.0（Gemma系列首次）。</p>
+      <p style="margin-top:12px"><strong>推荐场景：</strong>IoT/手机端侧多模态、语音助手、需要极低延迟的实时推理。</p>
     </div>
-  </section>
+  </div>
 
-  <!-- 技术路线 -->
-  <section>
-    <h2><span class="icon">🧠</span> 技术路线：什么是"认知模型"？</h2>
-
-    <div class="card">
-      <h3>大白话解释</h3>
-      <p>传统大模型（DeepSeek、Qwen、Kimi）像是一座<strong>超级图书馆</strong>——把所有书都背下来，你问什么它从记忆里找答案。</p>
-      <p style="margin-top:12px">新程 Alpha 像一个<strong>聪明人</strong>——不背书，但知道怎么思考、怎么推理、怎么查资料、怎么知道自己不知道什么。图书馆越大越重，而聪明人只需要一个好脑子。</p>
+  <div class="acc">
+    <div class="acc-hdr" onclick="this.parentElement.classList.toggle('open')">Phi-3.5-mini（微软）<span class="tag o" style="margin-left:12px">128K 长文王</span></div>
+    <div class="acc-body">
+      <p><strong>架构：</strong>Dense Decoder-only，标准Transformer，3.4T tokens合成数据+筛选网页训练，512×H100耗时10天。</p>
+      <p style="margin-top:12px"><strong>最大卖点：</strong>128K 原生上下文（同级别最长），MMLU 69.0%，HumanEval 60.4%。MIT许可开源。</p>
+      <p style="margin-top:12px"><strong>中文：</strong>最弱——纯英文模型，无C-Eval/CMMLU公开数据。</p>
+      <p style="margin-top:12px"><strong>推荐场景：</strong>英文长文档QA/摘要、微软Azure生态集成、不需要中文的场景。</p>
     </div>
+  </div>
 
-    <div class="card">
-      <h3>🔧 技术原理</h3>
-      <ul>
-        <li><strong>知识-认知解耦</strong>：把模型的"知识储备"和"思考能力"拆开，剥离死记硬背的部分，只保留纯推理核心</li>
-        <li><strong>强化学习驱动</strong>：对开源推理模型做大规模 RL 训练，让模型学会"怎么想"而不是"记什么"</li>
-        <li><strong>群体智能研究</strong>：梳理了 1800-2020 年共 220 年人类学术论文，归纳出群体智能的演化规律，指导模型设计</li>
-        <li><strong>泛化优先</strong>：不追求在特定数据集上刷分，追求跨领域、跨任务的抽象推理能力</li>
-      </ul>
+  <div class="acc">
+    <div class="acc-hdr" onclick="this.parentElement.classList.toggle('open')">新程 Alpha（明日新程）<span class="tag r" style="margin-left:12px">认知模型 · 闭源</span></div>
+    <div class="acc-body">
+      <p><strong>路线：</strong>行业首个"认知模型"——基于开源推理模型做RL，将知识记忆与认知能力解耦。团队梳理220年学术论文方法论指导训练。</p>
+      <p style="margin-top:12px"><strong>性能声明：</strong>群体智能任务对标GPT-5.4，算力仅千亿模型1/250，MacBook可跑。但——无开源权重、无标准benchmark、无第三方验证。</p>
+      <p style="margin-top:12px"><strong>使用方式：</strong>仅通过团子平台（mytuanzi.com）体验，API未开放。创始人李笛（微软小冰之父），创新工场+奇绩创坛联合押注。</p>
+      <p style="margin-top:12px"><strong>推荐场景：</strong>相信认知模型路线、愿意等待开源验证的前瞻性关注。不适合需要当下可用的生产场景。</p>
     </div>
-  </section>
-
-  <!-- 对比 -->
-  <section>
-    <h2><span class="icon">⚔️</span> 与主流国产模型对比</h2>
-
-    <div style="overflow-x:auto">
-    <div class="compare">
-      <div class="header">维度</div>
-      <div class="header">新程 Alpha</div>
-      <div class="header">DeepSeek / Qwen / Kimi</div>
-
-      <div class="dim">技术路线</div>
-      <div class="highlight">认知模型（会思考）</div>
-      <div class="dimmed">知识型推理模型（懂很多）</div>
-
-      <div class="dim">参数量</div>
-      <div class="highlight">4B（40亿）</div>
-      <div class="dimmed">百亿 ~ 万亿级</div>
-
-      <div class="dim">部署方式</div>
-      <div class="highlight">端侧可跑（MacBook、机器人、嵌入式设备）</div>
-      <div class="dimmed">需云端 GPU 集群</div>
-
-      <div class="dim">推理成本</div>
-      <div class="highlight">"交电费"级别</div>
-      <div class="dimmed">"烧显卡"级别</div>
-
-      <div class="dim">核心场景</div>
-      <div class="highlight">群体多智能体协作（Harness 框架）</div>
-      <div class="dimmed">单模型问答 / 编程 / 推理</div>
-
-      <div class="dim">运行模式</div>
-      <div class="highlight">Proactive（7×24h 自主决策）</div>
-      <div class="dimmed">Reactive（等用户发指令）</div>
-
-      <div class="dim">技术壁垒</div>
-      <div class="highlight">认知架构设计</div>
-      <div class="dimmed">参数规模 + 数据量</div>
-
-      <div class="dim">性能表现</div>
-      <div class="highlight">群体智能任务匹配 GPT-5.4</div>
-      <div class="dimmed">通用知识/编程任务全面领先</div>
-    </div>
-    </div>
-  </section>
-
-  <!-- 部署和使用 -->
-  <section>
-    <h2><span class="icon">🚀</span> 怎么部署和使用？</h2>
-
-    <div class="card">
-      <h3><span class="tag">当前状态</span> 模型权重未开源，只能通过平台使用</h3>
-      <ul>
-        <li>HuggingFace 和 GitHub 上目前<strong>搜不到新程 Alpha 的模型权重</strong>，不能用 Ollama 拉、不能本地下载自己跑</li>
-        <li>李笛在 2026 年 2 月专访中表示："未来几个月可能会开源部分认知模型相关工作"，但"不会走数量很多的路线"</li>
-        <li>团队训练方法基于开源推理模型做强化学习，技术上开源可行——只是时间问题</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>🌐 团子平台（当前唯一使用方式）</h3>
-      <p><strong>网址：</strong><a href="https://mytuanzi.com/" target="_blank" style="color:var(--accent)">https://mytuanzi.com/</a></p>
-      <p style="margin-top:12px">Nextie 的多智能体平台，新程 Alpha 作为底层认知模型驱动其中的智能体。工作机制是：用户提问 → 多个智能体辩论/反思/投票 → 达成共识 → 输出结论。<strong>不是单模型给答案，是群体辩论后收敛出结论。</strong></p>
-      <ul style="margin-top:12px">
-        <li><strong>姐妹团</strong>——偏个人生活理解、情感问题，多视角共情分析</li>
-        <li><strong>研究团</strong>——对标 Deep Research，跨学科深入分析复杂问题</li>
-        <li><strong>问奇绩</strong>——创业咨询，模拟投委会质询（与奇绩创坛合作）</li>
-      </ul>
-      <p style="margin-top:12px;color:var(--muted);font-size:0.85rem">平台按周迭代（每周三更新），持续上线新团/新角色/新能力。近期计划：专业写作团、千人以上群体仿真团。</p>
-    </div>
-
-    <div class="card">
-      <h3>🔌 API 和商业化</h3>
-      <ul>
-        <li><strong>已实现商业化部署</strong>（2026 年 6 月确认）</li>
-        <li>目前<strong>没有公开 API</strong>，只能通过团子网页端使用</li>
-        <li>李笛表示未来会开放用户自定义更换底层模型——团队定位是做"Agent OS / 平台层"，API 化是确定性方向</li>
-        <li>底层认知模型支持端侧部署（MacBook、机器人等设备原生运行）</li>
-      </ul>
-    </div>
-
-    <div class="warn-box">
-      <strong>⚠️ 当前实操结论：</strong>想用 → 去 mytuanzi.com 体验团子；想本地部署 → 等开源。
-    </div>
-  </section>
-
-  <!-- 硬件条件 -->
-  <section>
-    <h2><span class="icon">💻</span> 需要什么硬件？</h2>
-
-    <div class="card">
-      <h3>官方说法</h3>
-      <ul>
-        <li>明确支持 MacBook（Apple Silicon）端侧直接部署</li>
-        <li>也支持具身智能设备（机器人等嵌入式平台）</li>
-        <li>算力消耗 = 同类千亿模型的 <strong>1/250</strong></li>
-        <li>原文："从烧显卡变成了交电费"，"只需消耗几格电池"</li>
-        <li>支持 7×24 小时不间断运行</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>📐 基于 4B 参数的理论推算</h3>
-      <p style="color:var(--muted);margin-bottom:12px">（非官方公布数据，基于通用模型推理规律）</p>
-
-      <div class="hw-table">
-        <div class="hw-label">FP16 精度</div><div>约 <strong>8GB</strong> 显存/内存</div>
-        <div class="hw-label">INT8 量化</div><div>约 <strong>4GB</strong> 显存/内存</div>
-        <div class="hw-label">INT4 量化</div><div>约 <strong>2GB</strong> 显存/内存</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>🖥️ 实际硬件推荐（假设未来开源）</h3>
-      <p><strong>Mac 用户：</strong></p>
-      <ul>
-        <li>16GB 统一内存 → 流畅运行（可同时跑系统和模型）</li>
-        <li>8GB 也有可能，需 INT4 量化版本</li>
-        <li>M 系列芯片对推理优化好，速度通常比同级别 NVIDIA 卡更快</li>
-      </ul>
-      <p style="margin-top:12px"><strong>Windows / Linux 用户：</strong></p>
-      <ul>
-        <li>8GB 显存 GPU（如 RTX 3060/4060）绰绰有余</li>
-        <li>纯 CPU 也能跑（16GB 内存以上），只是速度慢</li>
-        <li>对比参考：一般 7B 模型需约 14-16GB 显存（FP16），4B 只需一半</li>
-      </ul>
-      <p style="margin-top:12px;color:var(--green);font-weight:600">一句话：硬件门槛极低，普通笔记本就能跑。</p>
-    </div>
-  </section>
-
-  <!-- 应用案例 -->
-  <section>
-    <h2><span class="icon">🎯</span> 应用案例和落地场景</h2>
-
-    <div class="card">
-      <h3><span class="tag">已落地</span> 真实在用的场景</h3>
-      <div class="scenario-grid" style="margin-top:12px">
-        <div class="scenario">
-          <div class="icon-big">🔬</div>
-          <h4>跨学科深度研究</h4>
-          <p>研究团解决多学科交叉复杂问题，效果超越单一旗舰大模型</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">💼</div>
-          <h4>创业投委会模拟</h4>
-          <p>问奇绩内置奇绩创坛合伙人数字分身，模拟投委会质询创业者</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">🧭</div>
-          <h4>个人决策辅助</h4>
-          <p>姐妹团解决生活困惑、情感问题，群体辩论避免单一视角误导</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">🎭</div>
-          <h4>群体仿真</h4>
-          <p>千人级群体仿真，预演公关稿/政策/产品投放后果，遍历风险点</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="tag purple">规划中</span> 即将推进的方向</h3>
-      <div class="scenario-grid" style="margin-top:12px">
-        <div class="scenario">
-          <div class="icon-big">🤖</div>
-          <h4>具身智能 / 机器人</h4>
-          <p>4B 端侧运行让家务机器人经济可行——千亿模型调一次家务的 Token 成本可能比请真人保姆还贵</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">⚡</div>
-          <h4>Proactive 主动智能体</h4>
-          <p>传统 AI 被动等指令；4B 低成本让 24×7 主动规划执行变成可能，商业规模远超被动模式</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">✍️</div>
-          <h4>专业写作团</h4>
-          <p>多智能体协作写作，近期即将推出</p>
-        </div>
-        <div class="scenario">
-          <div class="icon-big">🏢</div>
-          <h4>企业决策智囊团</h4>
-          <p>用群体智能替代昂贵的人类专家团队，降低决策成本</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>🎯 与 ChatGPT / Claude 的差异化场景</h3>
-      <p style="color:var(--muted);margin-bottom:8px">不是替代，是互补：</p>
-      <ul>
-        <li>需要<strong>多视角碰撞</strong>的决策场景（战略规划、风险评估）</li>
-        <li><strong>跨学科难题</strong>（单一模型知识面偏窄）</li>
-        <li>需要<strong>可解释性</strong>的复杂推理（群体辩论过程天然可追溯）</li>
-        <li><strong>成本敏感</strong>的长周期 Agent 任务（24×7 运行不心疼 Token）</li>
-        <li><strong>认知平权</strong>：普通人也能拥有 AI 智囊团，不再依赖昂贵的人类顾问</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 竞品分析 -->
-  <section>
-    <h2><span class="icon">⚡</span> 竞品全景：谁在对标？谁可替代？</h2>
-
-    <div class="card">
-      <h3>一图看懂竞品格局</h3>
-      <p style="color:var(--muted);margin-bottom:16px">新程 Alpha 同时踩中三条赛道，每条赛道都有不同的对手：</p>
-      <div class="hw-table">
-        <div class="hw-label">赛道</div><div style="font-weight:700">新程 Alpha → 竞品</div>
-        <div class="hw-label">4B 级别小模型</div><div>MiniCPM 3.0 · Phi-3.5-mini · Qwen2.5-3B · Gemma 4 E2B</div>
-        <div class="hw-label">认知/群体智能</div><div>Isara · AutoGen · CrewAI · LangGraph · OpenAI Harness</div>
-        <div class="hw-label">端侧部署国产</div><div>面壁 MiniCPM · 商汤 SenseChat-Lite · RockAI</div>
-      </div>
-    </div>
-
-    <!-- 方向1 -->
-    <div class="card">
-      <h3>🏷️ 方向一：4B 级别高性能小模型（参数量直接对标）</h3>
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">注意：这些模型走「通用语言模型」路线，跑 MMLU / HumanEval 等标准 benchmark；新程 Alpha 走「认知模型」路线，比的是群体决策/辩论/反思的思维质量——benchmark 维度不同，不可直接比分数。</p>
-
-      <div style="overflow-x:auto">
-      <div class="compare">
-        <div class="header">模型</div>
-        <div class="header">参数</div>
-        <div class="header">核心能力 &amp; 差异化</div>
-
-        <div class="dim">面壁 MiniCPM 3.0</div>
-        <div>4B</div>
-        <div class="highlight">国产端侧第一梯队，MMLU ~65+，仅需 2.2GB 内存。路线：通用端侧智能，让手机/设备完成日常对话+工具调用。下载量破千万。2025 升级 MiniCPM 4.0（8B），2026 MiniCPM5-1B。</div>
-
-        <div class="dim">微软 Phi-3.5-mini</div>
-        <div>3.8B</div>
-        <div class="highlight">MMLU 69%，MT-Bench 8.38，128K 上下文。超越 Llama 3.1 8B。合成数据训练，强在知识问答和代码。联发科天玑平台已适配。</div>
-
-        <div class="dim">Qwen2.5-3B / Qwen3-4B</div>
-        <div>3B / 4B</div>
-        <div class="highlight">Qwen3-4B 媲美 Qwen2.5-72B，参数效率极高。支持思考/非思考模式切换。通用基座模型路线，覆盖面广。</div>
-
-        <div class="dim">Gemma 4 E2B</div>
-        <div>2.3B 有效</div>
-        <div class="highlight">Google 出品，128K 上下文，140+ 语言，文本+图像+视频+音频。MMLU Pro 85.2%，AIME 89.2%。每参数智能密度的极致追求，4-bit 仅 7.2GB。</div>
-
-        <div class="dim">阶跃 Step-2-mini</div>
-        <div>~3% Step-2</div>
-        <div class="highlight">用不到 3% 参数保留 80%+ 性能。走性价比路线，主攻编程智能体和多模态。</div>
-      </div>
-      </div>
-
-      <div class="warn-box" style="margin-top:16px">
-        <strong>🔑 关键区别：</strong>以上所有模型都能在端侧跑，都能做问答/编程/工具调用。但没有一个像新程 Alpha 那样专门为「群体辩论/反思/投票」场景训练认知能力。如果你只是想找个 4B 模型跑日常任务，上面任何一个都比新程 Alpha 更成熟——因为它们开源、有文档、社区活跃。
-      </div>
-    </div>
-
-    <!-- 方向2 -->
-    <div class="card">
-      <h3>🧠 方向二：认知模型 / 群体多智能体竞品（核心赛道）</h3>
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">这是新程 Alpha 最想守住的护城河，也是竞品格局最复杂的方向。</p>
-
-      <div style="overflow-x:auto">
-      <div class="compare">
-        <div class="header">选手</div>
-        <div class="header">层级</div>
-        <div class="header">核心信息</div>
-
-        <div class="dim">Isara</div>
-        <div>框架层</div>
-        <div class="highlight">2025.6 成立，OpenAI 参投，$94M 融资，估值 $6.5B，23岁创始人（前 OpenAI 安全研究员）。2000 个智能体协同预测金价已 demo。不自己训模型，依赖 GPT/Claude 等作为 Agent 大脑。定位：多智能体协调平台。与新程 Alpha 是上下游关系——Isara 可以买新程 Alpha 做底层引擎。</div>
-
-        <div class="dim">AutoGen（微软）</div>
-        <div>框架层</div>
-        <div class="highlight">微软系多 Agent 框架，对话式多智能体协作。编排已有模型，不训练模型本身。</div>
-
-        <div class="dim">CrewAI</div>
-        <div>框架层</div>
-        <div class="highlight">角色分工 + 快速开发，初创友好。编排已有模型，不训练模型本身。</div>
-
-        <div class="dim">LangGraph</div>
-        <div>框架层</div>
-        <div class="highlight">图状工作流 + 状态管理，生产级。编排已有模型，不训练模型本身。</div>
-
-        <div class="dim">OpenAI Harness</div>
-        <div>框架+模型</div>
-        <div class="highlight">2026.2 发布 Harness 概念，用最强通用模型做多智能体引擎。Nextie 在 Harness 赛道最大潜在对手——OpenAI 有最强基座模型但认知模型非重点布局；Nextie 认知模型先发但基座能力远弱。</div>
-      </div>
-      </div>
-
-      <p style="margin-top:16px;color:var(--muted);font-size:0.85rem">
-        <strong>框架层 vs 模型层：</strong>AutoGen/CrewAI/LangGraph 是框架——编排已有模型；新程 Alpha 是模型——改变模型内部的认知架构。不构成直接替代，但如果框架+GPT-5.4 效果超过团子+新程 Alpha，Nextie 壁垒就会被削弱。
-      </p>
-    </div>
-
-    <!-- 方向3 -->
-    <div class="card">
-      <h3>📱 方向三：端侧部署国产小模型</h3>
-
-      <ul>
-        <li><strong>面壁智能 MiniCPM 系列</strong>——国产端侧第一梯队，All in 端侧。"大模型摩尔定律"：知识密度每 8 个月翻番。MiniCPM 3.0（4B）→ 4.0（8B/0.5B）→ MiniCPM-o 4.5（9B 多模态）→ MiniCPM5-1B。下载量破千万。与新程 Alpha 定位差异：面壁做通用端侧智能（对话/视觉/语音全覆盖），不专注认知模型</li>
-        <li><strong>商汤 SenseChat-Lite</strong>——手机/IoT 端侧方案，"模型+芯片适配"一体化，安防/车载有落地。参数估计 1-4B。走行业解决方案路线，不追求认知泛化</li>
-        <li><strong>RockAI（岩芯数智）</strong>——同样押注"群体智能"概念，2024 年 9 月发声，国产群体智能赛道最早玩家之一。但未见与 Nextie 同级别的产品化深度和 benchmark 数据</li>
-        <li><strong>广和通「星云」系列</strong>——通信模组厂商，非模型公司，整合外部模型做"硬件+模型打包"交付，支持 7B 及轻量级小模型，覆盖 1T-50T 算力</li>
-      </ul>
-    </div>
-
-    <!-- 总结 -->
-    <div class="insight" style="margin-top:24px">
-      <p><strong>🔑 核心结论</strong></p>
-      <p style="margin-top:12px">新程 Alpha 在<strong>认知模型</strong>这个品类里目前没有直接竞品——其他 4B 模型做的是"小号百科全书"，它做的是"思考引擎"。但问题在于：</p>
-      <ul style="margin-top:12px">
-        <li><strong>可替代性强</strong>——如果你只需要一个 4B 端侧模型处理日常任务，MiniCPM / Phi / Qwen 更成熟（开源、有文档、社区活跃）</li>
-        <li><strong>护城河待验证</strong>——"4B 打平 GPT-5.4"的数据来自 Nextie 自建的 IDI 评测，缺少第三方独立复现</li>
-        <li><strong>框架层威胁</strong>——Isara+GPT-5.4 的组合可能从框架侧绕过认知模型的壁垒</li>
-        <li><strong>最大变数</strong>——如果认知模型的效果能在独立 benchmark 上复现，品类的壁垒就成立；如果不能，就只是一个经过特定场景 RL 微调的小模型</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 深度交叉对比 -->
-  <section>
-    <h2><span class="icon">📐</span> 深度交叉对比：5个模型 × 10维度</h2>
-
-    <div class="card">
-      <h3>🎯 先看结论：三条路线，五种选择</h3>
-      <p style="color:var(--muted);margin-bottom:12px">这五个 4B 级小模型走了三条完全不同的路：</p>
-      <ul>
-        <li><strong>全科生流派</strong>：MiniCPM 3.0 和 Qwen3-4B ——通用能力最强、中文最好、benchmark 数据最全</li>
-        <li><strong>偏科生流派</strong>：Phi-3.5-mini（128K 长文王但中文弱）＋ Gemma 4 E2B（多模态端侧王、速度碾压全场）</li>
-        <li><strong>另类专家</strong>：新程 Alpha ——不做通用 benchmark，只在群体智能决策场景对标千亿模型，不开源、不公开标准评测，验证门槛最高</li>
-      </ul>
-      <div class="warn-box" style="margin-top:16px">
-        <strong>⚠️ 快速选型指南：</strong><br>
-        · 通用中文助手 → Qwen3-4B &gt; MiniCPM 3.0<br>
-        · 端侧多模态（语音+图像）→ Gemma 4 E2B 唯一选择<br>
-        · 长文本处理 → Phi-3.5-mini 128K 原生最强<br>
-        · 多智能体决策 → 新程 Alpha 有差异化价值，但不可验证
-      </div>
-    </div>
-
-    <!-- 架构与训练数据 -->
-    <div class="card">
-      <h3>🏗️ 维度一+二：架构 &amp; 训练数据</h3>
-      <div class="hw-table">
-        <div class="hw-label">MiniCPM 3.0</div><div>Dense Decoder-only + MLA注意力。训练数据未公开精确 token 数，强调高质量清洗</div>
-        <div class="hw-label">Phi-3.5-mini</div><div>Dense Decoder-only，标准架构。训练数据：3.4T tokens，合成+筛选网页，512×H100 训练 10 天</div>
-        <div class="hw-label">Qwen2.5-3B</div><div>Dense Transformer + RoPE + SwiGLU + GQA。训练数据：18T tokens，29+ 语言</div>
-        <div class="hw-label">Qwen3-4B</div><div>36层 Dense + GQA（32Q/8KV）+ QK-Norm + ABF。训练数据：<strong>36T tokens</strong>，119 语言，三阶段预训练 + strong-to-weak 蒸馏</div>
-        <div class="hw-label">Gemma 4 E2B</div><div>Dense + PLE（逐层嵌入缓存），混合滑动/全局注意力（5:1）。训练数据：Google 规模，强调推理密集数据</div>
-        <div class="hw-label" style="color:var(--orange)">新程 Alpha</div><div style="color:var(--orange)">基于开源推理模型做 RL 训练，非自研架构。训练方法：梳理 220 年学术论文方法论，RL 解耦知识与认知</div>
-      </div>
-    </div>
-
-    <!-- Benchmark -->
-    <div class="card">
-      <h3>📊 维度三：核心 Benchmark（来源可查）</h3>
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">数据来源：OpenLaboratory · gemma4-ai.com · llmtrust.com · NVIDIA Model Card · EmergentMind</p>
-      <div style="overflow-x:auto">
-      <div class="compare">
-        <div class="header">指标</div><div class="header">MiniCPM 3.0</div><div class="header">Phi-3.5</div><div class="header">Qwen2.5-3B</div><div class="header">Qwen3-4B</div><div class="header">Gemma 4 E2B</div><div class="header">新程 Alpha</div>
-
-        <div class="dim">参数量</div><div>4B</div><div>3.8B</div><div>3.09B</div><div>4.0B</div><div>2.3B 有效</div><div class="dimmed">4B</div>
-
-        <div class="dim">上下文</div><div>32K/无限</div><div class="highlight">128K 原生</div><div>32K</div><div>32K→131K YaRN</div><div class="highlight">128K 原生</div><div class="dimmed">未公开</div>
-
-        <div class="dim">MMLU</div><div>~68%</div><div>69.0%</div><div>65.6%</div><div class="highlight">Redux 83.7</div><div>68.2%</div><div class="dimmed">未公开</div>
-
-        <div class="dim">MMLU Pro</div><div class="dimmed">—</div><div class="dimmed">—</div><div class="dimmed">—</div><div class="dimmed">—</div><div>60.0%</div><div class="dimmed">未公开</div>
-
-        <div class="dim">HumanEval</div><div>优异*</div><div>60.4%</div><div class="dimmed">—</div><div>优异*</div><div>54.3%</div><div class="dimmed">未公开</div>
-
-        <div class="dim">GSM8K</div><div>优异*</div><div class="dimmed">—</div><div class="dimmed">—</div><div class="highlight">Thinking 高</div><div>65.1%</div><div class="dimmed">未公开</div>
-
-        <div class="dim">MATH</div><div>优异*</div><div class="dimmed">—</div><div class="dimmed">—</div><div class="highlight">MATH-500 97</div><div>17.3%</div><div class="dimmed">未公开</div>
-
-        <div class="dim">C-Eval</div><div class="highlight">强</div><div class="dimmed">弱</div><div>强</div><div class="highlight">77.5</div><div class="dimmed">—</div><div class="dimmed">未公开</div>
-      </div>
-      </div>
-      <p style="margin-top:8px;color:var(--muted);font-size:0.8rem">* "优异"=官方声称但未搜到精确数字。"—"=未找到公开数据。MMLU-Redux 与经典 MMLU 计分不同。新程 Alpha 全部维度未公开。</p>
-    </div>
-
-    <!-- 中文能力 -->
-    <div class="card">
-      <h3>🇨🇳 维度四：中文能力</h3>
-      <div class="hw-table">
-        <div class="hw-label">Qwen3-4B</div><div class="highlight">🏆 中文最强。C-Eval 77.5，119 语言覆盖，中文核心</div>
-        <div class="hw-label">MiniCPM 3.0</div><div class="highlight">🏆 并列第一。中文基因级优势，CMMLU/CEVAL 均优</div>
-        <div class="hw-label">Qwen2.5-3B</div><div>中文优秀，Qwen 系列一贯优势</div>
-        <div class="hw-label">Gemma 4 E2B</div><div>中文 MMLU 63.1%。支持但不主攻，不如国产</div>
-        <div class="hw-label">Phi-3.5-mini</div><div class="dimmed">中文最弱。纯英文模型，无 C-Eval/CMMLU 数据</div>
-        <div class="hw-label" style="color:var(--orange)">新程 Alpha</div><div style="color:var(--orange)">中国团队，中文原生支持，但无公开评测（推测与 Qwen/MiniCPM 同级）</div>
-      </div>
-    </div>
-
-    <!-- 部署与速度 -->
-    <div class="card">
-      <h3>💾 维度五+六：部署需求 &amp; 推理速度</h3>
-      <div class="hw-table">
-        <div class="hw-label">MiniCPM 3.0</div><div>GGUF Q4 ~2GB。CPM.cu 推理优化。未找到 t/s</div>
-        <div class="hw-label">Phi-3.5-mini</div><div>Ollama Q4 ~2.2GB，FP16 ~7-8GB。未找到 t/s</div>
-        <div class="hw-label">Qwen3-4B</div><div>GGUF Q4 ~3-4GB。Token 消耗较高，效率低于 Gemma</div>
-        <div class="hw-label" style="color:var(--green)">Gemma 4 E2B</div><div class="highlight">🏆 FP16 4GB · INT4 1.3GB · 手机 1.1GB。RTX 4090 <strong>156 t/s</strong> · M2 Ultra 124 t/s · 树莓派 7.6 t/s</div>
-        <div class="hw-label" style="color:var(--orange)">新程 Alpha</div><div style="color:var(--orange)">MacBook 可跑，算力 = 同类 1/250。具体数据未公布</div>
-      </div>
-    </div>
-
-    <!-- 开源与许可证 -->
-    <div class="card">
-      <h3>🔓 维度七：开源状态</h3>
-      <div class="hw-table">
-        <div class="hw-label">Qwen3-4B</div><div>✅ Apache 2.0，HF + ModelScope 可下载</div>
-        <div class="hw-label">Qwen2.5-3B</div><div>✅ Apache 2.0</div>
-        <div class="hw-label">Gemma 4 E2B</div><div>✅ Apache 2.0（Gemma 系列首次 Apache）</div>
-        <div class="hw-label">MiniCPM 3.0</div><div>✅ Apache 2.0，GGUF/MLX 多格式</div>
-        <div class="hw-label">Phi-3.5-mini</div><div>✅ MIT，Ollama/HF/Azure 均可获取</div>
-        <div class="hw-label" style="color:var(--orange)">新程 Alpha</div><div style="color:var(--red);font-weight:700">❌ 不开源。权重未公开，无法独立验证其性能声明</div>
-      </div>
-    </div>
-
-    <!-- 特色能力 -->
-    <div class="card">
-      <h3>⭐ 维度八：特色差异化能力</h3>
-      <ul>
-        <li><strong>MiniCPM 3.0</strong>：RAG 三件套、Function Calling 接近 GPT-4o、LLMxMapReduce 无限长文、自研 CPM.cu</li>
-        <li><strong>Phi-3.5-mini</strong>：128K 原生上下文、微软 Azure 生态、合成数据训练 know-how</li>
-        <li><strong>Qwen3-4B</strong>：双模推理（Thinking/No-Thinking 同 checkpoint 切换）是独有创新、119 语言最广、Qwen-Agent 框架</li>
-        <li><strong>Gemma 4 E2B</strong>：<strong>唯一小参数多模态</strong>（文本+图像+视频+原生音频）、PLE 架构参数效率极高、MTP 加速 3x、树莓派可跑</li>
-        <li><strong>新程 Alpha</strong>：首个认知模型，群体多智能体决策，Proactive 7×24h，团队 3.6B 击败 65B Llama 的验证</li>
-      </ul>
-    </div>
-
-    <!-- 综合矩阵 -->
-    <div class="card">
-      <h3>📈 维度九：综合评价矩阵</h3>
-      <div class="hw-table">
-        <div class="hw-label">通用能力</div><div>Qwen3-4B &gt; MiniCPM ≈ Phi-3.5 &gt; Qwen2.5-3B &gt; Gemma 4 &gt; 新程（无数据）</div>
-        <div class="hw-label">中文能力</div><div>Qwen3 ≈ MiniCPM &gt; Qwen2.5-3B &gt; 新程（推测）&gt; Gemma 4 &gt; Phi-3.5</div>
-        <div class="hw-label">代码能力</div><div>Qwen3-4B &gt; Phi-3.5 &gt; MiniCPM &gt; Gemma 4 &gt; Qwen2.5-3B</div>
-        <div class="hw-label">上下文长度</div><div>Phi-3.5 ≈ Gemma 4（128K 原生）&gt; Qwen3（32K/131K）&gt; MiniCPM（无限 MapReduce）</div>
-        <div class="hw-label">多模态</div><div class="highlight">Gemma 4（唯一，文+图+视+音）&gt; 其他全部纯文本</div>
-        <div class="hw-label">部署轻量</div><div>Gemma 4（1.3GB）&gt; MiniCPM（2GB）&gt; Phi-3.5 ≈ Qwen3（2-4GB）</div>
-        <div class="hw-label">推理速度</div><div class="highlight">Gemma 4（156 t/s）&gt;&gt; 其他</div>
-        <div class="hw-label">工具/Agent</div><div>MiniCPM（FC≈GPT-4o）≈ Qwen3（内置Agent）&gt; 其他</div>
-        <div class="hw-label">群体智能</div><div class="highlight" style="color:var(--orange)">新程 Alpha（独有）&gt; 其他非此方向</div>
-        <div class="hw-label">开源可验证</div><div class="highlight">前五个全开源 &gt; 新程 Alpha（❌闭源）</div>
-      </div>
-    </div>
-
-    <!-- 成熟度 -->
-    <div class="card">
-      <h3>⏳ 维度十：成熟度与风险</h3>
-      <ul>
-        <li><strong>成熟可靠</strong>：Qwen2.5-3B（2024发布）&gt; Phi-3.5-mini（2024.8）&gt; MiniCPM 3.0（2024.9）</li>
-        <li><strong>较新但数据充实</strong>：Qwen3-4B（2025.4，36T tokens）&gt; Gemma 4 E2B（2026.4，Google 背书）</li>
-        <li><strong style="color:var(--red)">早期/验证风险高</strong>：新程 Alpha（2026.6，刚发布一周，无开源权重、无标准 benchmark、无第三方验证、信息仅来自 PR 报道）</li>
-      </ul>
-    </div>
-
-    <!-- 一人一句 -->
-    <div class="insight" style="margin-top:24px">
-      <p><strong>🔑 一人一句总结</strong></p>
-      <ul style="margin-top:12px">
-        <li><strong>MiniCPM 3.0</strong>：端侧小模型老牌劲旅，中文好、Function Calling 强，2024 发布至今依然有竞争力，适合 RAG+工具调用场景</li>
-        <li><strong>Phi-3.5-mini</strong>：128K 长文是独门绝技，英文好中文弱，微软生态用户首选，适合英文长文档 QA</li>
-        <li><strong>Qwen3-4B</strong>：2025 年 4B 新标杆，双模推理是杀手锏，中文最强，36T tokens 覆盖面最广，<strong>通用场景首选</strong></li>
-        <li><strong>Gemma 4 E2B</strong>：端侧多模态之王，2.3B 做到 4B 级文本+原生音频/图像，速度碾压全场，<strong>IoT/手机端侧首选</strong></li>
-        <li><strong>新程 Alpha</strong>：唯一做"怎么思考"的模型，群体智能决策有独特价值——但不开源、无标准 benchmark，<strong>信其价值但需等独立验证</strong></li>
-      </ul>
-      <p style="margin-top:16px;color:var(--muted);font-size:0.8rem">数据来源：OpenLaboratory · gemma4-ai.com · GitHub OpenBMB · Azure AI · llmtrust.com · NVIDIA · EmergentMind · 量子位/新智元 · 秘塔搜索 15 次交叉验证</p>
-    </div>
-  </section>
-
-  <!-- 一句话 -->
-  <section>
-    <h2><span class="icon">💡</span> 核心判断</h2>
-    <div class="insight">
-      <p><strong>DeepSeek / Qwen / Kimi 比的是"谁知道得多"，新程 Alpha 比的是"谁会思考"。</strong></p>
-      <p style="margin-top:12px">用 4B 参数做到千亿模型的多智能体协作效果，把 AI 从"烧显卡"变成"交电费"，押注的是<strong>群体智能 + 端侧部署</strong>这两个下一代方向。</p>
-      <p style="margin-top:16px;color:var(--muted);font-size:0.85rem">风险提示：目前公开 benchmarks 集中在群体智能赛道，通用知识/编程/创作能力尚未见横向对比数据。认知模型路径是否正确，取决于规模化后的表现。</p>
-    </div>
-  </section>
-
-</main>
+  </div>
+</div>
+
+<!-- Section: 竞品格局 -->
+<div class="sec" id="competitors">
+  <h2>⚡ 竞品格局</h2>
+  <p class="sub">三条赛道，不同对手——框架层 vs 模型层 是核心区分</p>
+
+  <div class="card">
+    <h3>🧠 群体智能赛道（新程 Alpha 核心战场）</h3>
+    <table class="tbl">
+      <tr><th>选手</th><th>层级</th><th>关键信息</th></tr>
+      <tr><td><strong>Isara</strong></td><td>框架层</td><td>OpenAI 参投，$94M融资，$6.5B估值，2000 Agent协同预测金价。不训模型，依赖GPT/Claude作为Agent大脑。与新程 Alpha 上下游关系。</td></tr>
+      <tr><td><strong>AutoGen（微软）</strong></td><td>框架层</td><td>对话式多Agent协作，编排已有模型</td></tr>
+      <tr><td><strong>CrewAI</strong></td><td>框架层</td><td>角色分工+快速开发，初创友好</td></tr>
+      <tr><td><strong>LangGraph</strong></td><td>框架层</td><td>图状工作流+状态管理，生产级</td></tr>
+      <tr><td><strong>OpenAI Harness</strong></td><td>框架+模型</td><td>2026.2发布，用最强通用模型做多智能体引擎。Nextie 最大潜在对手</td></tr>
+    </table>
+    <div class="note" style="margin-top:12px">关键区分：Isara/AutoGen等是框架层（编排已有模型），新程 Alpha是模型层（改变模型内部的认知架构）。不构成直接替代，但如果框架+GPT-5.4效果超过团子+新程 Alpha，Nextie壁垒就会被削弱。</div>
+  </div>
+
+  <div class="card">
+    <h3>📱 端侧国产竞品</h3>
+    <table class="tbl">
+      <tr><th>选手</th><th>定位</th><th>差异</th></tr>
+      <tr><td><strong>面壁 MiniCPM 系列</strong></td><td>All in 端侧通用智能</td><td>0.5B~9B全覆盖，下载量破千万，不专注认知模型</td></tr>
+      <tr><td><strong>商汤 SenseChat-Lite</strong></td><td>行业解决方案</td><td>"模型+芯片适配"一体化，安防/车载落地</td></tr>
+      <tr><td><strong>RockAI 岩芯数智</strong></td><td>群体智能概念</td><td>2024.9发声，产品化深度不及Nextie</td></tr>
+    </table>
+  </div>
+
+  <div class="insight">
+    <strong>🔑 核心结论：</strong>新程 Alpha 在"认知模型"品类里目前没有直接竞品。但日常4B端侧任务有大量成熟替代（MiniCPM/Phi/Qwen/Gemma全开源）——选实用还是选前瞻，取决于需求。
+  </div>
+</div>
+
+<!-- Section: 结论 -->
+<div class="sec" id="verdict">
+  <h2>✅ 结论与建议</h2>
+  <p class="sub">基于10个维度的综合评估</p>
+
+  <div class="chart-wrap"><canvas id="radarVerdict"></canvas></div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>一人一句</h3>
+    <ul>
+      <li><strong>Qwen3-4B</strong> — 2025年4B新标杆，双模推理是杀手锏，通用场景首选</li>
+      <li><strong>Gemma 4 E2B</strong> — 端侧多模态之王，2.3B做到4B级能力，速度碾压全场</li>
+      <li><strong>MiniCPM 3.0</strong> — 端侧老牌劲旅，中文好、FC强，RAG+工具调用场景首选</li>
+      <li><strong>Phi-3.5-mini</strong> — 128K长文独门绝技，英文场景专用</li>
+      <li><strong>新程 Alpha</strong> — 认知模型路线独特，但闭源无验证；信其价值，需等开源</li>
+    </ul>
+  </div>
+
+  <div class="insight" style="margin-top:16px">
+    <strong>⚠️ 使用建议：</strong>五个模型里四个可以今天下载跑起来验证，一个只能信PR。<br>
+    生产落地选前四个（开源、成熟、有社区）；前瞻研究关注新程 Alpha 的认知模型路线能否被第三方验证。
+  </div>
+</div>
 
 <footer>
-  <p>调研时间：2026年6月11日 · 工具：秘塔AI搜索 · 仅供研究参考</p>
+  <p>调研时间：2026年6月11日 · 工具：秘塔AI搜索（15次搜索 + 4篇深度阅读）</p>
+  <p style="margin-top:4px">数据来源：OpenLaboratory · gemma4-ai.com · GitHub OpenBMB · Azure AI · llmtrust.com · NVIDIA · EmergentMind · 量子位/新智元</p>
+  <p style="margin-top:4px"><a href="https://github.com/andy-zokelink/xincheng-report">GitHub 仓库</a></p>
 </footer>
 
+<script>
+// Radar: Multi-dimension comparison (subjective scores based on research data)
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['通用能力', '中文能力', '代码能力', '上下文', '多模态', '部署轻量', '推理速度', '成熟度', '开源可验'],
+    datasets: [
+      { label:'Qwen3-4B', data:[9.0,9.5,9.0,5.5,0,6.5,6.0,8.0,10], borderColor:'#7170ff', backgroundColor:'rgba(113,112,255,0.1)', pointRadius:2 },
+      { label:'MiniCPM 3.0', data:[8.0,9.0,7.5,5.0,0,8.0,6.0,8.5,10], borderColor:'#27a644', backgroundColor:'rgba(39,166,68,0.1)', pointRadius:2 },
+      { label:'Gemma 4 E2B', data:[6.5,5.0,6.0,9.0,10,10,10,7.0,10], borderColor:'#d2991d', backgroundColor:'rgba(210,153,29,0.1)', pointRadius:2 },
+      { label:'Phi-3.5', data:[7.5,2.0,7.0,10,0,7.5,6.0,8.0,10], borderColor:'#8a8f98', backgroundColor:'rgba(138,143,152,0.1)', pointRadius:2 },
+      { label:'新程 Alpha', data:[0,5.0,0,0,0,5.0,5.0,2.0,0], borderColor:'#f85149', backgroundColor:'rgba(248,81,73,0.1)', pointRadius:2, borderDash:[4,4] },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color:'#d0d6e0', font:{size:11}, padding:16, usePointStyle:true } },
+      title: { display:true, text:'多维度雷达图（基于调研数据综合评分）', color:'#8a8f98', font:{size:13}, padding:12 }
+    },
+    scales: {
+      r: {
+        beginAtZero: true, max:10, ticks: { stepSize:2, color:'#62666d', backdropColor:'transparent', font:{size:10} },
+        grid: { color:'rgba(255,255,255,0.06)' },
+        angleLines: { color:'rgba(255,255,255,0.06)' },
+        pointLabels: { color:'#8a8f98', font:{size:11} }
+      }
+    }
+  }
+});
+
+// Bar: MMLU comparison
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Qwen3-4B\n(Redux)', 'Phi-3.5', 'MiniCPM 3.0', 'Gemma 4 E2B', 'Qwen2.5-3B'],
+    datasets: [{
+      label: 'MMLU 得分 (%)',
+      data: [83.7, 69.0, 68.0, 68.2, 65.6],
+      backgroundColor: ['#7170ff', '#8a8f98', '#27a644', '#d2991d', '#62666d'],
+      borderRadius: 4, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display:false },
+      title: { display:true, text:'MMLU 得分对比（越高越好）', color:'#8a8f98', font:{size:13}, padding:12 }
+    },
+    scales: {
+      y: { beginAtZero:false, min:60, max:90, ticks: { color:'#8a8f98', font:{size:11} }, grid: { color:'rgba(255,255,255,0.05)' } },
+      x: { ticks: { color:'#8a8f98', font:{size:10} }, grid: { display:false } }
+    }
+  }
+});
+
+// Radar: Verdict summary - weighted scores
+new Chart(document.getElementById('radarVerdict'), {
+  type: 'radar',
+  data: {
+    labels: ['通用能力', '中文能力', '代码', '上下文', '多模态', '部署轻量', '推理速度', '工具/Agent', '开源可验', '成熟度'],
+    datasets: [
+      { label:'Qwen3-4B', data:[9,9.5,9,5.5,0,6.5,6,8.5,10,8], borderColor:'#7170ff', backgroundColor:'rgba(113,112,255,0.12)', pointRadius:2 },
+      { label:'Gemma 4 E2B', data:[6.5,5,6,9,10,10,10,5,10,7], borderColor:'#d2991d', backgroundColor:'rgba(210,153,29,0.12)', pointRadius:2 },
+      { label:'MiniCPM 3.0', data:[8,9,7.5,5,0,8,6,9,10,8.5], borderColor:'#27a644', backgroundColor:'rgba(39,166,68,0.12)', pointRadius:2 },
+      { label:'Phi-3.5', data:[7.5,2,7,10,0,7.5,6,5,10,8], borderColor:'#8a8f98', backgroundColor:'rgba(138,143,152,0.12)', pointRadius:2 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color:'#d0d6e0', font:{size:11}, padding:16, usePointStyle:true } },
+      title: { display:true, text:'开源四模型综合评分雷达图', color:'#8a8f98', font:{size:13}, padding:12 }
+    },
+    scales: {
+      r: {
+        beginAtZero: true, max:10, ticks: { stepSize:2, color:'#62666d', backdropColor:'transparent', font:{size:10} },
+        grid: { color:'rgba(255,255,255,0.06)' },
+        angleLines: { color:'rgba(255,255,255,0.06)' },
+        pointLabels: { color:'#8a8f98', font:{size:11} }
+      }
+    }
+  }
+});
+</script>
 </body>
 </html>
