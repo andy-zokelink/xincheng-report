@@ -4,285 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>基座大模型全景调研：面壁智能 + 国内外格局 · AI 调研中心</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
   :root {
-    --bg: #08090a;
-    --panel: #0f1011;
-    --surface: #191a1b;
-    --surface2: #222326;
-    --text: #f7f8f8;
-    --text2: #d0d6e0;
-    --text3: #8a8f98;
-    --text4: #62666d;
-    --accent: #5e6ad2;
-    --accent-bright: #7170ff;
-    --green: #27a644;
-    --orange: #d2991d;
-    --red: #f85149;
-    --border: rgba(255,255,255,0.08);
-    --border-subtle: rgba(255,255,255,0.05);
+    --bg: #08090a; --panel: #0f1011; --surface: #191a1b;
+    --surface2: #222326; --text: #f7f8f8; --text2: #d0d6e0;
+    --text3: #8a8f98; --text4: #62666d; --accent: #5e6ad2;
+    --accent-bright: #7170ff; --green: #27a644;
+    --orange: #d2991d; --red: #f85149;
+    --border: rgba(255,255,255,0.08); --border-subtle: rgba(255,255,255,0.05);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
-    background: var(--bg);
-    color: var(--text2);
+    background: var(--bg); color: var(--text2);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: 'cv01','ss03';
-    line-height: 1.6;
-    overflow-x: hidden;
+    line-height: 1.6; overflow-x: hidden;
   }
-
-  /* Particle canvas */
   #particles {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none; opacity: 0.65;
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    z-index:0; pointer-events:none; opacity:0.5;
   }
-  /* Ambient glow orb */
   #glow {
-    position: fixed; z-index: 0; pointer-events: none;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    transition: left 0.8s ease-out, top 0.8s ease-out;
+    position: fixed; z-index:0; pointer-events:none;
+    width:600px; height:600px; border-radius:50%;
+    background: radial-gradient(circle, rgba(113,112,255,0.06) 0%, transparent 70%);
+    transform: translate(-50%,-50%); transition: left 0.8s ease-out, top 0.8s ease-out;
   }
+  nav, .report-body, footer { position:relative; z-index:1; }
 
-  /* Reveal on scroll */
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* Ensure content above particles */
-  nav, .hero, .kpi-row, .sec, footer { position: relative; z-index: 1; }
-
-  /* Nav */
   nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(15,16,17,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0 24px;
+    position:sticky; top:0; z-index:100;
+    background: rgba(15,16,17,0.94); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border-subtle); padding:0 24px;
   }
   nav .inner {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: center; gap: 24px;
-    height: 52px;
+    max-width:1100px; margin:0 auto; display:flex;
+    align-items:center; justify-content:space-between; height:52px;
   }
-  nav .logo {
-    font-size: 15px; font-weight: 600; color: var(--text);
-    letter-spacing: -0.2px; white-space: nowrap;
-  }
-  nav .logo span { color: var(--accent-bright); }
-  nav a {
-    font-size: 13px; font-weight: 500; color: var(--text3);
-    text-decoration: none; transition: color .15s;
-    white-space: nowrap;
-  }
-  nav a:hover { color: var(--text); }
+  nav .logo { font-size:15px; font-weight:600; color:var(--text); }
+  nav .logo span { color:var(--accent-bright); }
+  nav a { font-size:13px; font-weight:500; color:var(--text3); text-decoration:none; }
+  nav a:hover { color:var(--text); }
 
-  /* Hero */
-  .hero {
-    max-width: 1200px; margin: 0 auto;
-    padding: 80px 24px 64px;
-    text-align: center;
-  }
-  .hero .badge {
-    display: inline-block;
-    background: rgba(94,106,210,0.12);
-    color: var(--accent-bright);
-    border: 1px solid rgba(94,106,210,0.25);
-    border-radius: 999px; padding: 4px 16px;
-    font-size: 12px; font-weight: 500;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 600; letter-spacing: -0.04em;
-    color: var(--text); line-height: 1.15;
-    margin-bottom: 16px;
-  }
-  .hero h1 span { color: var(--accent-bright); }
-  .hero p {
-    font-size: 1.1rem; color: var(--text3);
-    max-width: 640px; margin: 0 auto;
-    font-weight: 400;
-  }
+  .report-body { max-width:900px; margin:0 auto; padding:32px 24px 80px; }
 
-  /* KPI row */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-    gap: 16px;
-    max-width: 1200px; margin: 0 auto 80px;
-    padding: 0 24px;
-  }
-  .kpi {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 24px; text-align: center;
-  }
-  .kpi .val {
-    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
-    color: var(--text); margin-bottom: 4px;
-  }
-  .kpi .val.accent { color: var(--accent-bright); }
-  .kpi .val.green { color: var(--green); }
-  .kpi .lbl { font-size: 13px; color: var(--text3); }
-
-  /* Section container */
-  .sec {
-    max-width: 1200px; margin: 0 auto 72px;
-    padding: 0 24px;
-  }
-  .sec h2 {
-    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
-    color: var(--text); margin-bottom: 8px;
-  }
-  .sec .sub {
-    font-size: 14px; color: var(--text3); margin-bottom: 32px;
-  }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .card h3 {
-    font-size: 16px; font-weight: 600; color: var(--text);
-    margin-bottom: 12px; letter-spacing: -0.01em;
-  }
-  .card p, .card li { font-size: 14px; color: var(--text2); }
-  .card li { padding: 4px 0; }
-  ul { list-style: none; padding: 0; }
-  li::before { content: "·"; color: var(--accent-bright); font-weight: 700; margin-right: 8px; }
-
-  /* Charts */
-  .chart-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .chart-wrap canvas { max-height: 380px; }
-
-  .chart-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-
-  /* Table styled */
-  .tbl {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .tbl th {
-    text-align: left; padding: 10px 14px;
-    color: var(--text3); font-weight: 500; font-size: 11px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--border);
-  }
-  .tbl td {
-    padding: 10px 14px; color: var(--text2);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .tbl tr:last-child td { border-bottom: none; }
-  .tbl .hi { color: var(--accent-bright); font-weight: 600; }
-  .tbl .lo { color: var(--text4); }
-  .tbl .cl { color: var(--red); }
-
-  /* Accordion */
-  .acc { margin-bottom: 16px; }
-  .acc-hdr {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px 24px;
-    cursor: pointer; display: flex; justify-content: space-between;
-    align-items: center; font-size: 15px; font-weight: 600;
-    color: var(--text); transition: border-color .15s;
-  }
-  .acc-hdr:hover { border-color: rgba(255,255,255,0.15); }
-  .acc-hdr::after { content: "+"; font-size: 18px; color: var(--text3); font-weight: 400; transition: transform .2s; }
-  .acc.open .acc-hdr::after { content: "−"; }
-  .acc-body {
-    display: none; background: var(--surface);
-    border: 1px solid var(--border); border-top: none;
-    border-radius: 0 0 10px 10px; padding: 24px;
-    font-size: 14px; color: var(--text2);
-  }
-  .acc.open .acc-body { display: block; }
-
-  /* Insight box */
-  .insight {
-    background: rgba(94,106,210,0.06);
-    border: 1px solid rgba(94,106,210,0.18);
-    border-radius: 10px; padding: 24px 28px;
-    font-size: 14px;
-  }
-  .insight strong { color: var(--accent-bright); }
-
-  /* Tags */
-  .tag {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: 11px; font-weight: 500; margin-right: 6px;
-  }
-  .tag.g { background: rgba(39,166,68,0.12); color: var(--green); border: 1px solid rgba(39,166,68,0.2); }
-  .tag.p { background: rgba(94,106,210,0.12); color: var(--accent-bright); border: 1px solid rgba(94,106,210,0.2); }
-  .tag.o { background: rgba(210,153,29,0.12); color: var(--orange); border: 1px solid rgba(210,153,29,0.2); }
-  .tag.r { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.18); }
-
-  /* Section nav pills */
-  .pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
-  }
-  .pill {
-    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
-    border: 1px solid var(--border); color: var(--text3);
-    cursor: pointer; transition: all .15s; background: transparent;
-  }
-  .pill:hover, .pill.active {
-    background: rgba(94,106,210,0.1); color: var(--accent-bright);
-    border-color: rgba(94,106,210,0.3);
-  }
-
-  /* Tooltip-style note */
-  .note {
-    font-size: 12px; color: var(--text4); margin-top: 8px;
-  }
-
-  footer {
-    text-align: center; padding: 48px 24px;
-    color: var(--text4); font-size: 12px;
-    border-top: 1px solid var(--border-subtle);
-    margin-top: 80px;
-  }
-  footer a { color: var(--text3); }
-
-  .report-body {
-    max-width:860px; margin:0 auto; padding:24px 24px 80px;
-  }
-  .report-body h1 { font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.03em; margin:32px 0 16px; line-height:1.2; }
-  .report-body h2 { font-size:1.4rem; font-weight:600; color:var(--text); letter-spacing:-0.02em; margin:28px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border-subtle); }
   .back-link {
-    display:inline-flex; align-items:center; gap:6px; color:var(--text3);
-    text-decoration:none; font-size:13px; margin-bottom:24px; transition:color 0.2s;
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--text3); text-decoration:none; font-size:13px;
+    margin-bottom:32px; transition:color 0.2s;
   }
   .back-link:hover { color:var(--text); }
-  .report-meta {
-    display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 28px;
+
+  /* Hero */
+  .report-hero { text-align:center; padding:32px 0 24px; border-bottom:1px solid var(--border-subtle); margin-bottom:32px; }
+  .report-hero .badge {
+    display:inline-block; background:rgba(94,106,210,0.12); color:var(--accent-bright);
+    border:1px solid rgba(94,106,210,0.25); border-radius:999px; padding:4px 16px;
+    font-size:12px; font-weight:500; margin-bottom:16px;
   }
+  .report-hero h1 {
+    font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:700;
+    letter-spacing:-0.03em; color:var(--text); line-height:1.25; margin-bottom:12px;
+  }
+  .report-meta { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
   .meta-tag {
     padding:3px 12px; border-radius:999px; font-size:11px; font-weight:500;
     background:var(--surface); color:var(--text3); border:1px solid var(--border);
   }
   .meta-tag.accent { color:var(--accent-bright); border-color:rgba(94,106,210,0.3); background:rgba(94,106,210,0.08); }
+
+  /* KPI row */
+  .kpi-row {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px; margin:28px 0;
+  }
+  .kpi {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:18px; text-align:center;
+  }
+  .kpi .val { font-size:1.6rem; font-weight:700; color:var(--accent-bright); letter-spacing:-0.02em; }
+  .kpi .lbl { font-size:11px; color:var(--text3); margin-top:2px; text-transform:uppercase; letter-spacing:0.03em; }
+
+  /* Pills nav */
+  .pills {
+    display:flex; gap:6px; flex-wrap:wrap; margin:0 0 32px;
+    padding:12px 0; border-bottom:1px solid var(--border-subtle);
+  }
+  .pill {
+    padding:5px 14px; border-radius:999px; font-size:12px; font-weight:500;
+    border:1px solid var(--border); color:var(--text3);
+    cursor:pointer; transition:all .15s; background:transparent;
+  }
+  .pill:hover { background:rgba(94,106,210,0.1); color:var(--accent-bright); border-color:rgba(94,106,210,0.3); }
+
+  /* Content */
+  h1.section-title {
+    font-size:1.8rem; font-weight:700; color:var(--text);
+    letter-spacing:-0.02em; margin:36px 0 16px; line-height:1.25;
+  }
+  h2.section-title {
+    font-size:1.3rem; font-weight:600; color:var(--text);
+    letter-spacing:-0.02em; margin:32px 0 12px; padding-bottom:8px;
+    border-bottom:1px solid var(--border-subtle);
+  }
+  h3 { font-size:1.1rem; font-weight:600; color:var(--text); margin:24px 0 8px; }
+  h4 { font-size:0.95rem; font-weight:600; color:var(--text2); margin:18px 0 6px; }
+  p { color:var(--text2); line-height:1.75; margin:8px 0; }
+  strong { color:var(--text); }
+  code {
+    background:var(--panel); padding:2px 6px; border-radius:4px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent-bright);
+  }
+  a { color:var(--accent-bright); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* Table */
+  .tbl {
+    width:100%; border-collapse:collapse; font-size:13px; margin:16px 0;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden;
+  }
+  .tbl th {
+    text-align:left; padding:10px 14px; color:var(--text3);
+    font-weight:500; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.04em; background:var(--panel);
+    border-bottom:1px solid var(--border);
+  }
+  .tbl td {
+    padding:9px 14px; color:var(--text2); border-bottom:1px solid var(--border-subtle);
+  }
+  .tbl tr:last-child td { border-bottom:none; }
+
+  /* Blockquote */
+  blockquote {
+    border-left:3px solid var(--accent); padding:12px 20px; margin:16px 0;
+    color:var(--text3); background:rgba(94,106,210,0.05);
+    border-radius:0 8px 8px 0; font-size:14px;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background:rgba(94,106,210,0.06); border:1px solid rgba(94,106,210,0.2);
+    border-radius:12px; padding:24px 28px; margin:24px 0;
+  }
+  .insight-box .insight-label {
+    font-size:11px; font-weight:600; color:var(--accent-bright);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;
+  }
+  .insight-box p { color:var(--text); font-size:15px; font-weight:500; }
+
+  /* Code block */
+  .code-block {
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; padding:16px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    line-height:1.7; color:var(--text2); margin:12px 0;
+  }
+
+  ul { list-style:none; padding:0; margin:8px 0; }
+  li { padding:4px 0 4px 16px; color:var(--text2); font-size:14px; position:relative; }
+  li::before { content:"·"; color:var(--accent-bright); font-weight:700; position:absolute; left:0; }
+
+  hr { border:none; border-top:1px solid var(--border-subtle); margin:32px 0; }
+
+  .check { color:var(--green); }
+  .cross { color:var(--red); }
+  .warn { color:var(--orange); }
+
+  footer {
+    text-align:center; padding:40px 24px; color:var(--text4); font-size:12px;
+    border-top:1px solid var(--border-subtle);
+  }
+
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+
+  @media(max-width:640px) {
+    .report-hero h1 { font-size:1.4rem; }
+    .kpi-row { grid-template-columns:repeat(2,1fr); }
+  }
 </style>
 </head>
 <body>
@@ -291,490 +193,148 @@
 
 <nav>
   <div class="inner">
-    <a href="index.html" style="text-decoration:none;color:inherit"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html" style="text-decoration:none"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html">← 返回目录</a>
   </div>
 </nav>
 
 <div class="report-body">
   <a href="index.html" class="back-link">← 返回目录</a>
-  <h1>🧠 基座大模型全景调研：面壁智能 + 国内外格局</h1>
-  <div class="report-meta">
-    <span class="meta-tag accent">大模型</span>
-    <span class="meta-tag">来源: feishu</span>
-    
-    <a href="https://zcnytfl3vf1r.feishu.cn/docx/TzmKdTBqqo7ViqxNZr6cZ9vinbb" target="_blank" class="meta-tag" style="text-decoration:none">飞书原文 ↗</a>
+  
+  <div class="report-hero">
+    <div class="badge">🧠 大模型</div>
+    <h1>基座大模型全景调研：面壁智能 + 国内外格局</h1>
+    <div class="report-meta">
+      <span class="meta-tag accent">大模型</span>
+      <span class="meta-tag">来源: feishu</span>
+      
+      <a href="https://zcnytfl3vf1r.feishu.cn/docx/TzmKdTBqqo7ViqxNZr6cZ9vinbb" target="_blank" class="meta-tag">飞书原文 ↗</a>
+    </div>
   </div>
-  <h1 style="font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-0.03em;margin:32px 0 16px;line-height:1.2"><p style="color:var(--text2);line-height:1.75;margin:6px 0">基座大模型全景调研：面壁智能 + 国内外格局</p></h1>
-<br>
-<blockquote style="border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;color:var(--text3);font-style:italic;background:rgba(94,106,210,0.05);border-radius:0 6px 6px 0"><p style="color:var(--text2);line-height:1.75;margin:6px 0">调研时间：2026年5月29日 · 数据源：Metaso AI搜索</p></blockquote>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第一部分：面壁智能（ModelBest）深度调研</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、公司概况</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全称</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">北京面壁智能科技有限责任公司</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">成立</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2022年，北京</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官网</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">modelbest.cn</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">愿景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">"智周万物"——创造安全、普惠的通用AI</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">以"高效"为第一性原理的端侧基座大模型公司</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">融资</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">累计超10亿元，2026年Q1跻身"基座大模型独角兽"</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">荣誉</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年中关村论坛获颁"中国独角兽企业"</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、核心团队</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">角色</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">姓名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">背景</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">CEO</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">李大海</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">前知乎CTO，从零搭建搜索推荐业务</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">联合创始人/首席科学家</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">刘知远</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">清华计算机系长聘副教授、博导，200+篇论文，Google Scholar引用6.9万+</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">董事/CTO</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">曾国洋</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">26岁，竞赛保送清华，大二进清华NLP实验室，悟道·文源核心成员</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">技术副总裁</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">贾超</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">OpenBMB联合发起人，负责MiniCPM全系列研发管理</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">团队特点</strong>：100+人，清北毕业占比80%，平均年龄28岁，出自清华大学自然语言处理实验室（THUNLP）。</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、融资历程</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">时间</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">轮次</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">金额</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">投资方</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2023.04</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">天使轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数千万元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知乎（领投）、智谱AI（跟投）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2024.04</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">A轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数亿元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">春华资本、哈勃投资、北京AI产业基金</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2025.05</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">B轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数亿元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">洪泰基金、国中资本、茅台基金、清控金信</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2025.06</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">B+轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数亿元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">龙芯创投、鼎晖百孚、中关村科学城基金</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026 Q1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">新一轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数亿元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">深创投、汇川产投（领投），累计超10亿</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026（预告）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">新一轮</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数亿元</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中国电信（领投）、中信金石、中信私募</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">四、核心技术：密度法则</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁智能最核心的技术理论——<strong style="color:var(--text)">"密度法则"（Scaling Law of Model Density）</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">大模型能力密度约 <strong style="color:var(--text)">3.5个月翻一番</strong></p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推动行业从"拼规模"转向"拼密度"</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2025年发表于《Nature Machine Intelligence》</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">核心逻辑：同等参数下性能更高、成本更低、功耗更低、速度更快</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">五、产品谱系：MiniCPM系列（"面壁小钢炮"）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">覆盖0.5B\~9B参数，主打端侧部署：</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM（语言）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">端侧高效语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2B参数对标7B级性能，CPU推理</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM-V（多模态）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">端侧多模态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2B+视觉编码器，图文理解</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM-o 4.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全模态旗舰</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音/视频/文本同步交互，类人感知</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM-SALA</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高效推理版</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">进一步压缩推理成本</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM-1.2B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">超轻量</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">12亿参数，25 tok/s，415万tok仅1元</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键数据</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GitHub + Hugging Face <strong style="color:var(--text)">下载量超2400万</strong></p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GitHub <strong style="color:var(--text)">3万+星标</strong></p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">行业格局：<strong style="color:var(--text)">"南Qwen，北面壁"</strong></p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推理成本：170万tokens仅1元（CPU推理，骁龙855），是GPT-4的1/4700</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">六、开源政策（OpenBMB）</p></h3>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2024年6月起：MiniCPM全系<strong style="color:var(--text)">免费商用</strong></p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">协议：Apache 2.0 + 《MiniCPM社区许可协议》</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源社区OpenBMB（github.com/OpenBMB）：</p></li>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">  - MiniCPM（旗舰）、CPM.cu（CUDA推理）、ChatDev（多智能体协作）</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">  - AgentCPM-GUI（Android端GUI代理）、OlympiadBench（ACL 2024基准）</p>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2022年由清华NLP实验室与智源联合发起</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">七、商业化落地</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">行业布局</strong>：汽车 / 手机 / PC / 智能家居</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">合作伙伴</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">吉利、长安、大众（智能座舱）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">华为、联想、英特尔（端侧AI）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">华为云、百度智能云（云服务）</p></li>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">硬件布局</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">松果派开发板</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box（边缘AI盒子）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">计划2026年年中推出独立硬件产品</p></li>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第二部分：国际基座大模型格局</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、国际第一梯队（三强鼎立）</p></h3>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5系列（OpenAI）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输出价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$2.50/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$12-20/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">旗舰版，128K最大输出</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.75/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$14/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">400K</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比版，SWE-bench 80.0%</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4 Mini</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.40/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.60/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">轻量版</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4 Turbo</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$10/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$30/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">128K</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Turbo版</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">能力特点</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全能均衡、生态最成熟（ChatGPT+API+插件）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编程：SWE-bench Verified 74.9%</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推理：AIME 2025 94.6%</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态：MMMU 84.2%</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数学推理准确率96.2%</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文200万tokens</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude系列（Anthropic）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输出价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Opus 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$4/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$20/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K(1M测试)</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">最强能力，编码冠军</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Sonnet 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.50/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$7.50/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Haiku 4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.25/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.25/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">速度优先</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">能力特点</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">编码冠军</strong>：SWE-bench Verified 80.8%（行业最高之一）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Terminal-Bench 2.0领先</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">低幻觉、安全合规最强，适合金融/法律</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高效文档分析，超长上下文处理</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini系列（Google）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输出价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 3.1 Pro</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$2/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$7-10/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1M(2M测试)</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态+性价比之王</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 2.5 Flash</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.10/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.40/1M</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">400K</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">极致成本</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">能力特点</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">原生多模态（视频/3D/图像），多模态理解93分</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">13/16基准测试领先（Gemini 3.1）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1M\~2M超长上下文</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">实时Google搜索集成</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">视频处理、跨境能力顶尖</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、国际第二梯队</p></h3>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4系列（Meta · 开源）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4 Maverick</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">400B级，开源最强之一</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4 Scout</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">轻量版</p></td></tr>
-</table></div>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源、免费、可定制</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">适合数据隐私敏感场景</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多语言生态好</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">地端部署，无API费用</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Mistral系列</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Mistral Large 2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">强推理能力</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Mistral Small 3.1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">轻量高效</p></td></tr>
-</table></div>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">法国团队，欧洲最强</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源策略灵活</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Grok 4（xAI）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">实时信息，低延迟</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$3/1M输入，\$15/1M输出</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">马斯克团队出品</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、国际总格局</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年国际TOP10模型排名：</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">1. <strong style="color:var(--text)">Gemini 3.1 Pro</strong>（Google）—— 多模态/长上下文王者（94.6分）</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2. <strong style="color:var(--text)">Claude Opus 4.6</strong>（Anthropic）—— 深度推理/低幻觉（90.8分）</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">3. <strong style="color:var(--text)">GPT-5.4</strong>（OpenAI）—— 全能均衡/生态成熟（92.5分）</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">4. <strong style="color:var(--text)">GPT-5.2</strong>（OpenAI）—— 性价比次旗舰</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">5. <strong style="color:var(--text)">Grok 4.1</strong>（xAI）—— 实时信息</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">6. <strong style="color:var(--text)">Llama 4</strong>（Meta）—— 开源代表</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">7. <strong style="color:var(--text)">Mistral Large 2</strong> —— 欧洲最强开源</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三部分：国内基座大模型格局</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、2026年国产第一梯队</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年格局：<strong style="color:var(--text)">"三足鼎立"+"五强争霸"</strong></p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1. DeepSeek V4（深度求索）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1.6T</strong>（全球最大开源MoE）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">49B（V4-Pro）/ 13B（V4-Flash）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1M tokens</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">架构</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MoE-v2稀疏架构</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源协议</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">MIT</strong>（最开放）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥1/百万token（约\$0.14/M）—— <strong style="color:var(--text)">性价比之王</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SWE-bench</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">80%（代码能力超Claude Opus 4.6）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">LiveCodeBench</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">93.5%</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SuperCLUE</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">70.98分（国内第一）</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文本召回率</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">V3.2的45%飙升至V4的97%</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">价格对比</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">仅为GPT-5.5的1/70</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：开源封神、代码屠榜、极致性价比、MIT协议最开放</p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2. 通义千问 Qwen3.5-Max / 3.6（阿里巴巴）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">397B\~235B</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">17B\~22B</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">最高1M tokens</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源协议</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Apache 2.0</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">国产综合最强（部分榜单），开源生态最完善</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文字/视觉/音频/代码/数学全覆盖</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥8/百万token（256K-1M分档）</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：开源最完善、多模态均衡、企业部署首选</p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3. GLM-5 / GLM-5.1（智谱AI）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">744B\~1T</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">32B\~40B</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源协议</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源领先</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编程+Agent能力突出，国产芯片训练</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SWE-bench</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">80%（开源模型断层领先）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥4\~6/百万token</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">国际排名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">开源模型全球第一</strong>（2026年4月）</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：开源天花板、Agent能力强、安全合规拉满</p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4. Kimi K2.5 / K2.6（月之暗面）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.04T\~1.1T</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">32B</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">256K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源协议</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MIT</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">长文本王者</strong>，百万字上下文无敌</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">HLE</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全球第一（特定评测）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥4\~6.9/百万token</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：长文本定义者、Agent集群协同、办公自动化</p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">5. MiniMax M2.5 / M2.7（MiniMax）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">230B</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">10B（最轻量）</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">205K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推理速度100 TPS，角色扮演/情感陪伴最佳</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥2.1/百万token——<strong style="color:var(--text)">最低价</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">调用量</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">全球调用量TOP1</strong>（2026年2月，国产占TOP5的4席）</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：性价比之王、速度最快、C端体验佳</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、国产第二梯队</p></h3>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">6. 豆包 Seed 2.0 Pro（字节跳动）</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">项目</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文理解顶尖，具身智能领先</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全球月活</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1.2亿+</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音体验极佳</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">关键词</strong>：移动端霸主、中文理解第一、用户量最大</p>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">7. 文心一言 4.5 / 5.0 / 6.0（百度）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知识图谱融合，中文理解与生成优秀</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">专业领域处理能力强</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">联动AI搜索，实时问答精准</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">综合得分约85.8分</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">8. 讯飞星火 4.0（科大讯飞）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音识别与合成能力全国领先</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">教育/办公场景深度结合</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">超拟人数字人</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">9. 混元 3.0（腾讯）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">深度融入微信生态</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态能力</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容生态丰富</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">10. 百川 Baichuan-M3 Plus（百川智能）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">医疗等垂直领域表现出色</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">11. 零一万物 Yi-Large（李开复团队）</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中英双语处理强</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源生态</p></li>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">12. 其他</p></h4>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">阶跃星辰 Step Audio R1.1（语音能力全球第一，已落地4200万台手机）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">华为盘古（行业定制）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">商汤 SenseNova-MARS（动态视觉推理）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">昆仑万维天工（音乐生成+搜索增强）</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上海AI Lab InternLM / 书生·浦语（开源）</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、国产大模型综合得分排名（2026年）</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">排名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">综合得分</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">类别</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DeepSeek V4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">70.98（SuperCLUE）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源/代码</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">豆包Seed 2.0</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">移动端/语音</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GLM-5.1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">90.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源/Agent</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Qwen3-Max</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">89.7</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源/多模态</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Kimi K2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">88.9</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文本/Agent</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax M2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比/C端</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">7</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文心一言4.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">85.8</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知识/搜索</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">8</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">讯飞星火4.0</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">83.2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音/教育</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">四、国产模型调用量排名（全球）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年2月，<strong style="color:var(--text)">国产4款模型占全球调用量TOP5的85.7%</strong>：</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">1. MiniMax M2.5</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2. Kimi K2.5</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">3. GLM-5</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">4. DeepSeek V3.2/V4</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">5. （美国模型）</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第四部分：国际 vs 国产 多维交叉对比</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、参数规模对比</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">总参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">激活参数</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">架构</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5系列（未公开）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">未公开</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Dense/MoE混合</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude Opus 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">未公开</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 3.1 Pro</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">未公开</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">原生多模态</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\~400B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Dense</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">DeepSeek V4</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1.6T</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">49B</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">MoE-v2</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Kimi K2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.04T</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">32B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MoE</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GLM-5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">744B\~1T</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">40B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MoE</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Qwen3.5-Max</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">397B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">17B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MoE</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax M2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">230B</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">10B</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MoE（最轻）</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、上下文窗口对比</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上下文窗口</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 3.1 Pro</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1M\~2M（最长）</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1M</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DeepSeek V4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">1M</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Qwen3.5-Plus</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\~1M</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude Opus 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K（1M测试）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Kimi K2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">256K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GLM-5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">200K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax M2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">205K</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">128K</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、API价格对比（每百万token，2026年）</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输入价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输出价格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比评级</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 2.5 Flash</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">\$0.10</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.40</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DeepSeek V4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">\$0.14\~0.30</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.50</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4 Mini</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$0.40</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.60</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax M2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥2.1（\~\$0.30）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥8.4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$2.50</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$12-20</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 3.1 Pro</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$2.00</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$7-10</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude Sonnet 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$1.50</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$7.50</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Kimi K2.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥4（\~\$0.60）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥21</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GLM-5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥4-6（\~\$0.60-1.0）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">¥22-24</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude Opus 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">\$20</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">四、核心能力雷达对比</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">能力维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DeepSeek</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通义千问</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GLM-5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Kimi</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">代码能力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数学推理</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文理解</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">安全合规</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Agent能力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★★</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">五、综合实力排行榜（2026年5月）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">国际+国产TOP排名</strong>：</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">排名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">国家</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">综合得分</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">最强维度</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Gemini 3.1 Pro</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">美国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">94.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态/长上下文</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GPT-5.4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">美国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">92.5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">全能均衡/生态</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Claude Opus 4.6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">美国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">90.8</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编码/低幻觉</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Qwen 3.5-Max</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">89.7</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">开源/多模态</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">5</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Grok 4.1</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">美国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">实时信息</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">6</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">DeepSeek V4</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">70.98(SC)</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">代码/性价比</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">7</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">豆包Seed 2.0</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中文/语音</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">8</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">GLM-5.1</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">90.5(国产)</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">开源/Agent</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">9</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Kimi K2.5</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">88.9</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">长文本</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">10</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Llama 4</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">美国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源/多语言</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">11</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">MiniMax M2.5</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">中国</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">性价比/速度</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">12</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Mistral Large 2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">法国</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">欧洲最强</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">六、关键趋势判断</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">1. <strong style="color:var(--text)">中美差距缩小</strong>：国产模型在中文处理、速度、成本和合规方面已具明显优势</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">2. <strong style="color:var(--text)">开源阵营</strong>：国产模型称霸，TOP10开源模型中国占8席</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">3. <strong style="color:var(--text)">MoE成为主流架构</strong>：几乎所有新模型均采用MoE稀疏架构</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">4. <strong style="color:var(--text)">长上下文成标配</strong>：百万token上下文窗口将普及</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">5. <strong style="color:var(--text)">AI Agent成为标配</strong>：2026年所有旗舰模型均强化Agent能力</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">6. <strong style="color:var(--text)">价格战白热化</strong>：DeepSeek V4 Flash仅\$0.14/M输入，是GPT-5.5的1/70</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">7. <strong style="color:var(--text)">端侧是大趋势</strong>：面壁智能、MiniMax等专注端侧轻量路线</p>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">8. <strong style="color:var(--text)">模型能力趋同</strong>：顶级模型之间的差距在缩小，选择越来越取决于价格和场景特化</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">七、面壁智能在全局中的位置</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁定位</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">路线</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">端侧高效小模型</strong>（非云端大参数竞赛）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">差异化核心</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">密度法则</strong>——理论创新，行业共识推动者</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">参数规模</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">0.5B\~9B（远小于云端大模型的230B\~1.6T）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">优势场景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">汽车座舱/手机/IoT/边缘计算</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源影响力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">"南Qwen，北面壁"</strong>（2400万下载量）</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">与中科领创关联</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">AIoT智能硬件场景高度匹配，可关注端侧合作可能</p></td></tr>
-</table></div>
+
+  <div class="kpi-row"><div class="kpi"><div class="val">80%</div><div class="lbl"></div></div><div class="kpi"><div class="val">4款</div><div class="lbl"></div></div><div class="kpi"><div class="val">85.7%</div><div class="lbl"></div></div></div>
+  
+  <div class="pills"><span class="pill" onclick="document.getElementById('s-0').scrollIntoView({behavior:'smooth'})">第一部分</span>
+<span class="pill" onclick="document.getElementById('s-1').scrollIntoView({behavior:'smooth'})">第二部分</span>
+<span class="pill" onclick="document.getElementById('s-2').scrollIntoView({behavior:'smooth'})">第三部分</span>
+<span class="pill" onclick="document.getElementById('s-3').scrollIntoView({behavior:'smooth'})">第四部分</span></div>
+  
+  <h1 class="section-title">基座大模型全景调研：面壁智能 + 国内外格局</h1>
+<blockquote>调研时间：2026年5月29日 · 数据源：Metaso AI搜索</blockquote>
+<hr>
+<h2 class="section-title" id="s-1">第一部分：面壁智能（ModelBest）深度调研</h2>
+<h3>一、公司概况</h3>
+<table class="tbl"><thead><tr><th>维度</th><th>内容</th></tr></thead><tbody><tr><td>全称</td><td>北京面壁智能科技有限责任公司</td></tr><tr><td>成立</td><td>2022年，北京</td></tr><tr><td>官网</td><td>modelbest.cn</td></tr><tr><td>愿景</td><td>"智周万物"——创造安全、普惠的通用AI</td></tr><tr><td>定位</td><td>以"高效"为第一性原理的端侧基座大模型公司</td></tr><tr><td>融资</td><td>累计超10亿元，2026年Q1跻身"基座大模型独角兽"</td></tr><tr><td>荣誉</td><td>2026年中关村论坛获颁"中国独角兽企业"</td></tr></tbody></table>
+<h3>二、核心团队</h3>
+<table class="tbl"><thead><tr><th>角色</th><th>姓名</th><th>背景</th></tr></thead><tbody><tr><td>CEO</td><td>李大海</td><td>前知乎CTO，从零搭建搜索推荐业务</td></tr><tr><td>联合创始人/首席科学家</td><td>刘知远</td><td>清华计算机系长聘副教授、博导，200+篇论文，Google Scholar引用6.9万+</td></tr><tr><td>董事/CTO</td><td>曾国洋</td><td>26岁，竞赛保送清华，大二进清华NLP实验室，悟道·文源核心成员</td></tr><tr><td>技术副总裁</td><td>贾超</td><td>OpenBMB联合发起人，负责MiniCPM全系列研发管理</td></tr></tbody></table>
+<p><strong>团队特点</strong>：100+人，清北毕业占比80%，平均年龄28岁，出自清华大学自然语言处理实验室（THUNLP）。</p>
+<h3>三、融资历程</h3>
+<table class="tbl"><thead><tr><th>时间</th><th>轮次</th><th>金额</th><th>投资方</th></tr></thead><tbody><tr><td>2023.04</td><td>天使轮</td><td>数千万元</td><td>知乎（领投）、智谱AI（跟投）</td></tr><tr><td>2024.04</td><td>A轮</td><td>数亿元</td><td>春华资本、哈勃投资、北京AI产业基金</td></tr><tr><td>2025.05</td><td>B轮</td><td>数亿元</td><td>洪泰基金、国中资本、茅台基金、清控金信</td></tr><tr><td>2025.06</td><td>B+轮</td><td>数亿元</td><td>龙芯创投、鼎晖百孚、中关村科学城基金</td></tr><tr><td>2026 Q1</td><td>新一轮</td><td>数亿元</td><td>深创投、汇川产投（领投），累计超10亿</td></tr><tr><td>2026（预告）</td><td>新一轮</td><td>数亿元</td><td>中国电信（领投）、中信金石、中信私募</td></tr></tbody></table>
+<h3>四、核心技术：密度法则</h3>
+<p>面壁智能最核心的技术理论——<strong>"密度法则"（Scaling Law of Model Density）</strong>：</p>
+<ul><li>大模型能力密度约 <strong>3.5个月翻一番</strong></li><li>推动行业从"拼规模"转向"拼密度"</li><li>2025年发表于《Nature Machine Intelligence》</li><li>核心逻辑：同等参数下性能更高、成本更低、功耗更低、速度更快</li></ul>
+<h3>五、产品谱系：MiniCPM系列（"面壁小钢炮"）</h3>
+<p>覆盖0.5B\~9B参数，主打端侧部署：</p>
+<table class="tbl"><thead><tr><th>模型</th><th>定位</th><th>特点</th></tr></thead><tbody><tr><td>MiniCPM（语言）</td><td>端侧高效语言</td><td>2B参数对标7B级性能，CPU推理</td></tr><tr><td>MiniCPM-V（多模态）</td><td>端侧多模态</td><td>2B+视觉编码器，图文理解</td></tr><tr><td>MiniCPM-o 4.5</td><td>全模态旗舰</td><td>语音/视频/文本同步交互，类人感知</td></tr><tr><td>MiniCPM-SALA</td><td>高效推理版</td><td>进一步压缩推理成本</td></tr><tr><td>MiniCPM-1.2B</td><td>超轻量</td><td>12亿参数，25 tok/s，415万tok仅1元</td></tr></tbody></table>
+<p><strong>关键数据</strong>：</p>
+<ul><li>GitHub + Hugging Face <strong>下载量超2400万</strong></li><li>GitHub <strong>3万+星标</strong></li><li>行业格局：<strong>"南Qwen，北面壁"</strong></li><li>推理成本：170万tokens仅1元（CPU推理，骁龙855），是GPT-4的1/4700</li></ul>
+<h3>六、开源政策（OpenBMB）</h3>
+<ul><li>2024年6月起：MiniCPM全系<strong>免费商用</strong></li><li>协议：Apache 2.0 + 《MiniCPM社区许可协议》</li><li>开源社区OpenBMB（github.com/OpenBMB）：</li></ul>
+<ul><li>MiniCPM（旗舰）、CPM.cu（CUDA推理）、ChatDev（多智能体协作）</li><li>AgentCPM-GUI（Android端GUI代理）、OlympiadBench（ACL 2024基准）</li><li>2022年由清华NLP实验室与智源联合发起</li></ul>
+<h3>七、商业化落地</h3>
+<p><strong>行业布局</strong>：汽车 / 手机 / PC / 智能家居</p>
+<p><strong>合作伙伴</strong>：</p>
+<ul><li>吉利、长安、大众（智能座舱）</li><li>华为、联想、英特尔（端侧AI）</li><li>华为云、百度智能云（云服务）</li></ul>
+<p><strong>硬件布局</strong>：</p>
+<ul><li>松果派开发板</li><li>EdgeClaw Box（边缘AI盒子）</li><li>计划2026年年中推出独立硬件产品</li></ul>
+<hr>
+<h2 class="section-title" id="s-2">第二部分：国际基座大模型格局</h2>
+<h3>一、国际第一梯队（三强鼎立）</h3>
+<h4>GPT-5系列（OpenAI）</h4>
+<table class="tbl"><thead><tr><th>版本</th><th>输入价格</th><th>输出价格</th><th>上下文</th><th>特点</th></tr></thead><tbody><tr><td>GPT-5.4</td><td>\$2.50/1M</td><td>\$12-20/1M</td><td>1M</td><td>旗舰版，128K最大输出</td></tr><tr><td>GPT-5.2</td><td>\$1.75/1M</td><td>\$14/1M</td><td>400K</td><td>性价比版，SWE-bench 80.0%</td></tr><tr><td>GPT-5.4 Mini</td><td>\$0.40/1M</td><td>\$1.60/1M</td><td>-</td><td>轻量版</td></tr><tr><td>GPT-5.4 Turbo</td><td>\$10/1M</td><td>\$30/1M</td><td>128K</td><td>Turbo版</td></tr></tbody></table>
+<p><strong>能力特点</strong>：</p>
+<ul><li>全能均衡、生态最成熟（ChatGPT+API+插件）</li><li>编程：SWE-bench Verified 74.9%</li><li>推理：AIME 2025 94.6%</li><li>多模态：MMMU 84.2%</li><li>数学推理准确率96.2%</li><li>上下文200万tokens</li></ul>
+<h4>Claude系列（Anthropic）</h4>
+<table class="tbl"><thead><tr><th>版本</th><th>输入价格</th><th>输出价格</th><th>上下文</th><th>特点</th></tr></thead><tbody><tr><td>Opus 4.6</td><td>\$4/1M</td><td>\$20/1M</td><td>200K(1M测试)</td><td>最强能力，编码冠军</td></tr><tr><td>Sonnet 4.6</td><td>\$1.50/1M</td><td>\$7.50/1M</td><td>200K</td><td>性价比</td></tr><tr><td>Haiku 4</td><td>\$0.25/1M</td><td>\$1.25/1M</td><td>200K</td><td>速度优先</td></tr></tbody></table>
+<p><strong>能力特点</strong>：</p>
+<ul><li><strong>编码冠军</strong>：SWE-bench Verified 80.8%（行业最高之一）</li><li>Terminal-Bench 2.0领先</li><li>低幻觉、安全合规最强，适合金融/法律</li><li>高效文档分析，超长上下文处理</li></ul>
+<h4>Gemini系列（Google）</h4>
+<table class="tbl"><thead><tr><th>版本</th><th>输入价格</th><th>输出价格</th><th>上下文</th><th>特点</th></tr></thead><tbody><tr><td>Gemini 3.1 Pro</td><td>\$2/1M</td><td>\$7-10/1M</td><td>1M(2M测试)</td><td>多模态+性价比之王</td></tr><tr><td>Gemini 2.5 Flash</td><td>\$0.10/1M</td><td>\$0.40/1M</td><td>400K</td><td>极致成本</td></tr></tbody></table>
+<p><strong>能力特点</strong>：</p>
+<ul><li>原生多模态（视频/3D/图像），多模态理解93分</li><li>13/16基准测试领先（Gemini 3.1）</li><li>1M\~2M超长上下文</li><li>实时Google搜索集成</li><li>视频处理、跨境能力顶尖</li></ul>
+<h3>二、国际第二梯队</h3>
+<h4>Llama 4系列（Meta · 开源）</h4>
+<table class="tbl"><thead><tr><th>版本</th><th>特点</th></tr></thead><tbody><tr><td>Llama 4 Maverick</td><td>400B级，开源最强之一</td></tr><tr><td>Llama 4 Scout</td><td>轻量版</td></tr></tbody></table>
+<ul><li>开源、免费、可定制</li><li>适合数据隐私敏感场景</li><li>多语言生态好</li><li>地端部署，无API费用</li></ul>
+<h4>Mistral系列</h4>
+<table class="tbl"><thead><tr><th>版本</th><th>特点</th></tr></thead><tbody><tr><td>Mistral Large 2</td><td>强推理能力</td></tr><tr><td>Mistral Small 3.1</td><td>轻量高效</td></tr></tbody></table>
+<ul><li>法国团队，欧洲最强</li><li>开源策略灵活</li></ul>
+<h4>Grok 4（xAI）</h4>
+<ul><li>实时信息，低延迟</li><li>\$3/1M输入，\$15/1M输出</li><li>马斯克团队出品</li></ul>
+<h3>三、国际总格局</h3>
+<p>2026年国际TOP10模型排名：</p>
+<p>1. <strong>Gemini 3.1 Pro</strong>（Google）—— 多模态/长上下文王者（94.6分） 2. <strong>Claude Opus 4.6</strong>（Anthropic）—— 深度推理/低幻觉（90.8分） 3. <strong>GPT-5.4</strong>（OpenAI）—— 全能均衡/生态成熟（92.5分） 4. <strong>GPT-5.2</strong>（OpenAI）—— 性价比次旗舰 5. <strong>Grok 4.1</strong>（xAI）—— 实时信息 6. <strong>Llama 4</strong>（Meta）—— 开源代表 7. <strong>Mistral Large 2</strong> —— 欧洲最强开源</p>
+<hr>
+<h2 class="section-title" id="s-3">第三部分：国内基座大模型格局</h2>
+<h3>一、2026年国产第一梯队</h3>
+<p>2026年格局：<strong>"三足鼎立"+"五强争霸"</strong></p>
+<h4>1. DeepSeek V4（深度求索）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>总参数</td><td><strong>1.6T</strong>（全球最大开源MoE）</td></tr><tr><td>激活参数</td><td>49B（V4-Pro）/ 13B（V4-Flash）</td></tr><tr><td>上下文</td><td><strong>1M tokens</strong></td></tr><tr><td>架构</td><td>MoE-v2稀疏架构</td></tr><tr><td>开源协议</td><td><strong>MIT</strong>（最开放）</td></tr><tr><td>输入价格</td><td>¥1/百万token（约\$0.14/M）—— <strong>性价比之王</strong></td></tr><tr><td>SWE-bench</td><td>80%（代码能力超Claude Opus 4.6）</td></tr><tr><td>LiveCodeBench</td><td>93.5%</td></tr><tr><td>SuperCLUE</td><td><strong>70.98分（国内第一）</strong></td></tr><tr><td>长文本召回率</td><td>V3.2的45%飙升至V4的97%</td></tr><tr><td>价格对比</td><td>仅为GPT-5.5的1/70</td></tr></tbody></table>
+<p><strong>关键词</strong>：开源封神、代码屠榜、极致性价比、MIT协议最开放</p>
+<h4>2. 通义千问 Qwen3.5-Max / 3.6（阿里巴巴）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>总参数</td><td>397B\~235B</td></tr><tr><td>激活参数</td><td>17B\~22B</td></tr><tr><td>上下文</td><td><strong>最高1M tokens</strong></td></tr><tr><td>开源协议</td><td>Apache 2.0</td></tr><tr><td>特点</td><td>国产综合最强（部分榜单），开源生态最完善</td></tr><tr><td>多模态</td><td>文字/视觉/音频/代码/数学全覆盖</td></tr><tr><td>输入价格</td><td>¥8/百万token（256K-1M分档）</td></tr></tbody></table>
+<p><strong>关键词</strong>：开源最完善、多模态均衡、企业部署首选</p>
+<h4>3. GLM-5 / GLM-5.1（智谱AI）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>总参数</td><td>744B\~1T</td></tr><tr><td>激活参数</td><td>32B\~40B</td></tr><tr><td>上下文</td><td>200K</td></tr><tr><td>开源协议</td><td>开源领先</td></tr><tr><td>特点</td><td>编程+Agent能力突出，国产芯片训练</td></tr><tr><td>SWE-bench</td><td>80%（开源模型断层领先）</td></tr><tr><td>输入价格</td><td>¥4\~6/百万token</td></tr><tr><td>国际排名</td><td><strong>开源模型全球第一</strong>（2026年4月）</td></tr></tbody></table>
+<p><strong>关键词</strong>：开源天花板、Agent能力强、安全合规拉满</p>
+<h4>4. Kimi K2.5 / K2.6（月之暗面）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>总参数</td><td>1.04T\~1.1T</td></tr><tr><td>激活参数</td><td>32B</td></tr><tr><td>上下文</td><td>256K</td></tr><tr><td>开源协议</td><td>MIT</td></tr><tr><td>特点</td><td><strong>长文本王者</strong>，百万字上下文无敌</td></tr><tr><td>HLE</td><td>全球第一（特定评测）</td></tr><tr><td>输入价格</td><td>¥4\~6.9/百万token</td></tr></tbody></table>
+<p><strong>关键词</strong>：长文本定义者、Agent集群协同、办公自动化</p>
+<h4>5. MiniMax M2.5 / M2.7（MiniMax）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>总参数</td><td>230B</td></tr><tr><td>激活参数</td><td><strong>10B（最轻量）</strong></td></tr><tr><td>上下文</td><td>205K</td></tr><tr><td>特点</td><td>推理速度100 TPS，角色扮演/情感陪伴最佳</td></tr><tr><td>输入价格</td><td>¥2.1/百万token——<strong>最低价</strong></td></tr><tr><td>调用量</td><td><strong>全球调用量TOP1</strong>（2026年2月，国产占TOP5的4席）</td></tr></tbody></table>
+<p><strong>关键词</strong>：性价比之王、速度最快、C端体验佳</p>
+<h3>二、国产第二梯队</h3>
+<h4>6. 豆包 Seed 2.0 Pro（字节跳动）</h4>
+<table class="tbl"><thead><tr><th>项目</th><th>内容</th></tr></thead><tbody><tr><td>特点</td><td>中文理解顶尖，具身智能领先</td></tr><tr><td>全球月活</td><td><strong>1.2亿+</strong></td></tr><tr><td>多模态</td><td>语音体验极佳</td></tr></tbody></table>
+<p><strong>关键词</strong>：移动端霸主、中文理解第一、用户量最大</p>
+<h4>7. 文心一言 4.5 / 5.0 / 6.0（百度）</h4>
+<ul><li>知识图谱融合，中文理解与生成优秀</li><li>专业领域处理能力强</li><li>联动AI搜索，实时问答精准</li><li>综合得分约85.8分</li></ul>
+<h4>8. 讯飞星火 4.0（科大讯飞）</h4>
+<ul><li>语音识别与合成能力全国领先</li><li>教育/办公场景深度结合</li><li>超拟人数字人</li></ul>
+<h4>9. 混元 3.0（腾讯）</h4>
+<ul><li>深度融入微信生态</li><li>多模态能力</li><li>内容生态丰富</li></ul>
+<h4>10. 百川 Baichuan-M3 Plus（百川智能）</h4>
+<ul><li>医疗等垂直领域表现出色</li></ul>
+<h4>11. 零一万物 Yi-Large（李开复团队）</h4>
+<ul><li>中英双语处理强</li><li>开源生态</li></ul>
+<h4>12. 其他</h4>
+<ul><li>阶跃星辰 Step Audio R1.1（语音能力全球第一，已落地4200万台手机）</li><li>华为盘古（行业定制）</li><li>商汤 SenseNova-MARS（动态视觉推理）</li><li>昆仑万维天工（音乐生成+搜索增强）</li><li>上海AI Lab InternLM / 书生·浦语（开源）</li></ul>
+<h3>三、国产大模型综合得分排名（2026年）</h3>
+<table class="tbl"><thead><tr><th>排名</th><th>模型</th><th>综合得分</th><th>类别</th></tr></thead><tbody><tr><td>1</td><td>DeepSeek V4</td><td>70.98（SuperCLUE）</td><td>开源/代码</td></tr><tr><td>2</td><td>豆包Seed 2.0</td><td>-</td><td>移动端/语音</td></tr><tr><td>3</td><td>GLM-5.1</td><td>90.5</td><td>开源/Agent</td></tr><tr><td>4</td><td>Qwen3-Max</td><td>89.7</td><td>开源/多模态</td></tr><tr><td>5</td><td>Kimi K2.5</td><td>88.9</td><td>长文本/Agent</td></tr><tr><td>6</td><td>MiniMax M2.5</td><td>-</td><td>性价比/C端</td></tr><tr><td>7</td><td>文心一言4.5</td><td>85.8</td><td>知识/搜索</td></tr><tr><td>8</td><td>讯飞星火4.0</td><td>83.2</td><td>语音/教育</td></tr></tbody></table>
+<h3>四、国产模型调用量排名（全球）</h3>
+<p>2026年2月，<strong>国产4款模型占全球调用量TOP5的85.7%</strong>：</p>
+<p>1. MiniMax M2.5 2. Kimi K2.5 3. GLM-5 4. DeepSeek V3.2/V4 5. （美国模型）</p>
+<hr>
+<h2 class="section-title" id="s-4">第四部分：国际 vs 国产 多维交叉对比</h2>
+<h3>一、参数规模对比</h3>
+<table class="tbl"><thead><tr><th>模型</th><th>总参数</th><th>激活参数</th><th>架构</th></tr></thead><tbody><tr><td>GPT-5系列（未公开）</td><td>未公开</td><td>-</td><td>Dense/MoE混合</td></tr><tr><td>Claude Opus 4.6</td><td>未公开</td><td>-</td><td>-</td></tr><tr><td>Gemini 3.1 Pro</td><td>未公开</td><td>-</td><td>原生多模态</td></tr><tr><td>Llama 4</td><td>\~400B</td><td>-</td><td>Dense</td></tr><tr><td><strong>DeepSeek V4</strong></td><td><strong>1.6T</strong></td><td><strong>49B</strong></td><td><strong>MoE-v2</strong></td></tr><tr><td>Kimi K2.5</td><td>1.04T</td><td>32B</td><td>MoE</td></tr><tr><td>GLM-5</td><td>744B\~1T</td><td>40B</td><td>MoE</td></tr><tr><td>Qwen3.5-Max</td><td>397B</td><td>17B</td><td>MoE</td></tr><tr><td>MiniMax M2.5</td><td>230B</td><td><strong>10B</strong></td><td>MoE（最轻）</td></tr></tbody></table>
+<h3>二、上下文窗口对比</h3>
+<table class="tbl"><thead><tr><th>模型</th><th>上下文窗口</th></tr></thead><tbody><tr><td>Gemini 3.1 Pro</td><td><strong>1M\~2M（最长）</strong></td></tr><tr><td>GPT-5.4</td><td>1M</td></tr><tr><td>DeepSeek V4</td><td><strong>1M</strong></td></tr><tr><td>Qwen3.5-Plus</td><td>\~1M</td></tr><tr><td>Claude Opus 4.6</td><td>200K（1M测试）</td></tr><tr><td>Kimi K2.5</td><td>256K</td></tr><tr><td>GLM-5</td><td>200K</td></tr><tr><td>MiniMax M2.5</td><td>205K</td></tr><tr><td>Llama 4</td><td>128K</td></tr></tbody></table>
+<h3>三、API价格对比（每百万token，2026年）</h3>
+<table class="tbl"><thead><tr><th>模型</th><th>输入价格</th><th>输出价格</th><th>性价比评级</th></tr></thead><tbody><tr><td>Gemini 2.5 Flash</td><td><strong>\$0.10</strong></td><td>\$0.40</td><td>★★★★★</td></tr><tr><td>DeepSeek V4</td><td><strong>\$0.14\~0.30</strong></td><td>\$0.50</td><td>★★★★★</td></tr><tr><td>GPT-5.4 Mini</td><td>\$0.40</td><td>\$1.60</td><td>★★★★</td></tr><tr><td>MiniMax M2.5</td><td>¥2.1（\~\$0.30）</td><td>¥8.4</td><td>★★★★★</td></tr><tr><td>GPT-5.4</td><td>\$2.50</td><td>\$12-20</td><td>★★★</td></tr><tr><td>Gemini 3.1 Pro</td><td>\$2.00</td><td>\$7-10</td><td>★★★★</td></tr><tr><td>Claude Sonnet 4.6</td><td>\$1.50</td><td>\$7.50</td><td>★★★★</td></tr><tr><td>Kimi K2.5</td><td>¥4（\~\$0.60）</td><td>¥21</td><td>★★★★</td></tr><tr><td>GLM-5</td><td>¥4-6（\~\$0.60-1.0）</td><td>¥22-24</td><td>★★★</td></tr><tr><td>Claude Opus 4.6</td><td>\$4</td><td>\$20</td><td>★★</td></tr></tbody></table>
+<h3>四、核心能力雷达对比</h3>
+<table class="tbl"><thead><tr><th>能力维度</th><th>GPT-5</th><th>Claude</th><th>Gemini</th><th>DeepSeek</th><th>通义千问</th><th>GLM-5</th><th>Kimi</th><th>MiniMax</th></tr></thead><tbody><tr><td>代码能力</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★</td></tr><tr><td>数学推理</td><td>★★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★</td><td>★★★</td></tr><tr><td>长文本</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★</td></tr><tr><td>多模态</td><td>★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td><td>★★★</td></tr><tr><td>中文理解</td><td>★★★★</td><td>★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td></tr><tr><td>性价比</td><td>★★★</td><td>★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★★</td><td>★★★</td><td>★★★★</td><td>★★★★★</td></tr><tr><td>安全合规</td><td>★★★</td><td>★★★★★</td><td>★★★</td><td>★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★</td><td>★★</td></tr><tr><td>Agent能力</td><td>★★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★★</td><td>★★★★★</td><td>★★★★★</td><td>★★★</td></tr></tbody></table>
+<h3>五、综合实力排行榜（2026年5月）</h3>
+<p><strong>国际+国产TOP排名</strong>：</p>
+<table class="tbl"><thead><tr><th>排名</th><th>模型</th><th>国家</th><th>综合得分</th><th>最强维度</th></tr></thead><tbody><tr><td>1</td><td>Gemini 3.1 Pro</td><td>美国</td><td>94.6</td><td>多模态/长上下文</td></tr><tr><td>2</td><td>GPT-5.4</td><td>美国</td><td>92.5</td><td>全能均衡/生态</td></tr><tr><td>3</td><td>Claude Opus 4.6</td><td>美国</td><td>90.8</td><td>编码/低幻觉</td></tr><tr><td>4</td><td><strong>Qwen 3.5-Max</strong></td><td><strong>中国</strong></td><td><strong>89.7</strong></td><td><strong>开源/多模态</strong></td></tr><tr><td>5</td><td>Grok 4.1</td><td>美国</td><td>-</td><td>实时信息</td></tr><tr><td>6</td><td><strong>DeepSeek V4</strong></td><td><strong>中国</strong></td><td><strong>70.98(SC)</strong></td><td><strong>代码/性价比</strong></td></tr><tr><td>7</td><td><strong>豆包Seed 2.0</strong></td><td><strong>中国</strong></td><td>-</td><td><strong>中文/语音</strong></td></tr><tr><td>8</td><td><strong>GLM-5.1</strong></td><td><strong>中国</strong></td><td><strong>90.5(国产)</strong></td><td><strong>开源/Agent</strong></td></tr><tr><td>9</td><td><strong>Kimi K2.5</strong></td><td><strong>中国</strong></td><td><strong>88.9</strong></td><td><strong>长文本</strong></td></tr><tr><td>10</td><td>Llama 4</td><td>美国</td><td>-</td><td>开源/多语言</td></tr><tr><td>11</td><td><strong>MiniMax M2.5</strong></td><td><strong>中国</strong></td><td>-</td><td><strong>性价比/速度</strong></td></tr><tr><td>12</td><td>Mistral Large 2</td><td>法国</td><td>-</td><td>欧洲最强</td></tr></tbody></table>
+<h3>六、关键趋势判断</h3>
+<p>1. <strong>中美差距缩小</strong>：国产模型在中文处理、速度、成本和合规方面已具明显优势 2. <strong>开源阵营</strong>：国产模型称霸，TOP10开源模型中国占8席 3. <strong>MoE成为主流架构</strong>：几乎所有新模型均采用MoE稀疏架构 4. <strong>长上下文成标配</strong>：百万token上下文窗口将普及 5. <strong>AI Agent成为标配</strong>：2026年所有旗舰模型均强化Agent能力 6. <strong>价格战白热化</strong>：DeepSeek V4 Flash仅\$0.14/M输入，是GPT-5.5的1/70 7. <strong>端侧是大趋势</strong>：面壁智能、MiniMax等专注端侧轻量路线 8. <strong>模型能力趋同</strong>：顶级模型之间的差距在缩小，选择越来越取决于价格和场景特化</p>
+<h3>七、面壁智能在全局中的位置</h3>
+<table class="tbl"><thead><tr><th>维度</th><th>面壁定位</th></tr></thead><tbody><tr><td>路线</td><td><strong>端侧高效小模型</strong>（非云端大参数竞赛）</td></tr><tr><td>差异化核心</td><td><strong>密度法则</strong>——理论创新，行业共识推动者</td></tr><tr><td>参数规模</td><td>0.5B\~9B（远小于云端大模型的230B\~1.6T）</td></tr><tr><td>优势场景</td><td>汽车座舱/手机/IoT/边缘计算</td></tr><tr><td>开源影响力</td><td><strong>"南Qwen，北面壁"</strong>（2400万下载量）</td></tr><tr><td>与中科领创关联</td><td>AIoT智能硬件场景高度匹配，可关注端侧合作可能</td></tr></tbody></table>
 </div>
 
-<footer style="text-align:center;padding:40px 24px;color:var(--text4);font-size:12px;border-top:1px solid var(--border-subtle);position:relative;z-index:1">
-  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索</p>
+<footer>
+  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p>
 </footer>
 
 <script>
@@ -784,7 +344,7 @@
   let w,h,ps=[],mx=-100,my=-100;
   function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
   rs();addEventListener('resize',rs);
-  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.8,o:Math.random()*.5+.15});
+  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.6,o:Math.random()*.5+.12});
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   (function d(){
     x.clearRect(0,0,w,h);
@@ -792,13 +352,13 @@
       let p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
       let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
-      if(md<180){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
+      if(md<180){p.vx+=dx/md*.01;p.vy+=dy/md*.01}
       let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}
       x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
-      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.25:0),1)})`;x.fill();
+      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.2:0),1)})`;x.fill();
       for(let j=i+1;j<ps.length;j++){
         let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
-        if(dt<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/140)})`;x.lineWidth=.5;x.stroke()}
+        if(dt<130){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.07*(1-dt/130)})`;x.lineWidth=.5;x.stroke()}
       }
     }
     requestAnimationFrame(d);
@@ -812,8 +372,8 @@
 })();
 // Scroll reveal
 (function(){
-  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.1});
-  document.querySelectorAll('.report-body h1,.report-body h2,.report-body h3,.report-body p,.report-body table,.report-body blockquote,.report-body pre').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.08});
+  document.querySelectorAll('.kpi,.tbl,blockquote,.insight-box,h2.section-title').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
 })();
 </script>
 </body>

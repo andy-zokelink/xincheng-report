@@ -4,285 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coze CLI 完整工具清单与点评 · AI 调研中心</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
   :root {
-    --bg: #08090a;
-    --panel: #0f1011;
-    --surface: #191a1b;
-    --surface2: #222326;
-    --text: #f7f8f8;
-    --text2: #d0d6e0;
-    --text3: #8a8f98;
-    --text4: #62666d;
-    --accent: #5e6ad2;
-    --accent-bright: #7170ff;
-    --green: #27a644;
-    --orange: #d2991d;
-    --red: #f85149;
-    --border: rgba(255,255,255,0.08);
-    --border-subtle: rgba(255,255,255,0.05);
+    --bg: #08090a; --panel: #0f1011; --surface: #191a1b;
+    --surface2: #222326; --text: #f7f8f8; --text2: #d0d6e0;
+    --text3: #8a8f98; --text4: #62666d; --accent: #5e6ad2;
+    --accent-bright: #7170ff; --green: #27a644;
+    --orange: #d2991d; --red: #f85149;
+    --border: rgba(255,255,255,0.08); --border-subtle: rgba(255,255,255,0.05);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
-    background: var(--bg);
-    color: var(--text2);
+    background: var(--bg); color: var(--text2);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: 'cv01','ss03';
-    line-height: 1.6;
-    overflow-x: hidden;
+    line-height: 1.6; overflow-x: hidden;
   }
-
-  /* Particle canvas */
   #particles {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none; opacity: 0.65;
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    z-index:0; pointer-events:none; opacity:0.5;
   }
-  /* Ambient glow orb */
   #glow {
-    position: fixed; z-index: 0; pointer-events: none;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    transition: left 0.8s ease-out, top 0.8s ease-out;
+    position: fixed; z-index:0; pointer-events:none;
+    width:600px; height:600px; border-radius:50%;
+    background: radial-gradient(circle, rgba(113,112,255,0.06) 0%, transparent 70%);
+    transform: translate(-50%,-50%); transition: left 0.8s ease-out, top 0.8s ease-out;
   }
+  nav, .report-body, footer { position:relative; z-index:1; }
 
-  /* Reveal on scroll */
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* Ensure content above particles */
-  nav, .hero, .kpi-row, .sec, footer { position: relative; z-index: 1; }
-
-  /* Nav */
   nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(15,16,17,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0 24px;
+    position:sticky; top:0; z-index:100;
+    background: rgba(15,16,17,0.94); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border-subtle); padding:0 24px;
   }
   nav .inner {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: center; gap: 24px;
-    height: 52px;
+    max-width:1100px; margin:0 auto; display:flex;
+    align-items:center; justify-content:space-between; height:52px;
   }
-  nav .logo {
-    font-size: 15px; font-weight: 600; color: var(--text);
-    letter-spacing: -0.2px; white-space: nowrap;
-  }
-  nav .logo span { color: var(--accent-bright); }
-  nav a {
-    font-size: 13px; font-weight: 500; color: var(--text3);
-    text-decoration: none; transition: color .15s;
-    white-space: nowrap;
-  }
-  nav a:hover { color: var(--text); }
+  nav .logo { font-size:15px; font-weight:600; color:var(--text); }
+  nav .logo span { color:var(--accent-bright); }
+  nav a { font-size:13px; font-weight:500; color:var(--text3); text-decoration:none; }
+  nav a:hover { color:var(--text); }
 
-  /* Hero */
-  .hero {
-    max-width: 1200px; margin: 0 auto;
-    padding: 80px 24px 64px;
-    text-align: center;
-  }
-  .hero .badge {
-    display: inline-block;
-    background: rgba(94,106,210,0.12);
-    color: var(--accent-bright);
-    border: 1px solid rgba(94,106,210,0.25);
-    border-radius: 999px; padding: 4px 16px;
-    font-size: 12px; font-weight: 500;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 600; letter-spacing: -0.04em;
-    color: var(--text); line-height: 1.15;
-    margin-bottom: 16px;
-  }
-  .hero h1 span { color: var(--accent-bright); }
-  .hero p {
-    font-size: 1.1rem; color: var(--text3);
-    max-width: 640px; margin: 0 auto;
-    font-weight: 400;
-  }
+  .report-body { max-width:900px; margin:0 auto; padding:32px 24px 80px; }
 
-  /* KPI row */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-    gap: 16px;
-    max-width: 1200px; margin: 0 auto 80px;
-    padding: 0 24px;
-  }
-  .kpi {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 24px; text-align: center;
-  }
-  .kpi .val {
-    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
-    color: var(--text); margin-bottom: 4px;
-  }
-  .kpi .val.accent { color: var(--accent-bright); }
-  .kpi .val.green { color: var(--green); }
-  .kpi .lbl { font-size: 13px; color: var(--text3); }
-
-  /* Section container */
-  .sec {
-    max-width: 1200px; margin: 0 auto 72px;
-    padding: 0 24px;
-  }
-  .sec h2 {
-    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
-    color: var(--text); margin-bottom: 8px;
-  }
-  .sec .sub {
-    font-size: 14px; color: var(--text3); margin-bottom: 32px;
-  }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .card h3 {
-    font-size: 16px; font-weight: 600; color: var(--text);
-    margin-bottom: 12px; letter-spacing: -0.01em;
-  }
-  .card p, .card li { font-size: 14px; color: var(--text2); }
-  .card li { padding: 4px 0; }
-  ul { list-style: none; padding: 0; }
-  li::before { content: "·"; color: var(--accent-bright); font-weight: 700; margin-right: 8px; }
-
-  /* Charts */
-  .chart-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .chart-wrap canvas { max-height: 380px; }
-
-  .chart-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-
-  /* Table styled */
-  .tbl {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .tbl th {
-    text-align: left; padding: 10px 14px;
-    color: var(--text3); font-weight: 500; font-size: 11px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--border);
-  }
-  .tbl td {
-    padding: 10px 14px; color: var(--text2);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .tbl tr:last-child td { border-bottom: none; }
-  .tbl .hi { color: var(--accent-bright); font-weight: 600; }
-  .tbl .lo { color: var(--text4); }
-  .tbl .cl { color: var(--red); }
-
-  /* Accordion */
-  .acc { margin-bottom: 16px; }
-  .acc-hdr {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px 24px;
-    cursor: pointer; display: flex; justify-content: space-between;
-    align-items: center; font-size: 15px; font-weight: 600;
-    color: var(--text); transition: border-color .15s;
-  }
-  .acc-hdr:hover { border-color: rgba(255,255,255,0.15); }
-  .acc-hdr::after { content: "+"; font-size: 18px; color: var(--text3); font-weight: 400; transition: transform .2s; }
-  .acc.open .acc-hdr::after { content: "−"; }
-  .acc-body {
-    display: none; background: var(--surface);
-    border: 1px solid var(--border); border-top: none;
-    border-radius: 0 0 10px 10px; padding: 24px;
-    font-size: 14px; color: var(--text2);
-  }
-  .acc.open .acc-body { display: block; }
-
-  /* Insight box */
-  .insight {
-    background: rgba(94,106,210,0.06);
-    border: 1px solid rgba(94,106,210,0.18);
-    border-radius: 10px; padding: 24px 28px;
-    font-size: 14px;
-  }
-  .insight strong { color: var(--accent-bright); }
-
-  /* Tags */
-  .tag {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: 11px; font-weight: 500; margin-right: 6px;
-  }
-  .tag.g { background: rgba(39,166,68,0.12); color: var(--green); border: 1px solid rgba(39,166,68,0.2); }
-  .tag.p { background: rgba(94,106,210,0.12); color: var(--accent-bright); border: 1px solid rgba(94,106,210,0.2); }
-  .tag.o { background: rgba(210,153,29,0.12); color: var(--orange); border: 1px solid rgba(210,153,29,0.2); }
-  .tag.r { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.18); }
-
-  /* Section nav pills */
-  .pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
-  }
-  .pill {
-    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
-    border: 1px solid var(--border); color: var(--text3);
-    cursor: pointer; transition: all .15s; background: transparent;
-  }
-  .pill:hover, .pill.active {
-    background: rgba(94,106,210,0.1); color: var(--accent-bright);
-    border-color: rgba(94,106,210,0.3);
-  }
-
-  /* Tooltip-style note */
-  .note {
-    font-size: 12px; color: var(--text4); margin-top: 8px;
-  }
-
-  footer {
-    text-align: center; padding: 48px 24px;
-    color: var(--text4); font-size: 12px;
-    border-top: 1px solid var(--border-subtle);
-    margin-top: 80px;
-  }
-  footer a { color: var(--text3); }
-
-  .report-body {
-    max-width:860px; margin:0 auto; padding:24px 24px 80px;
-  }
-  .report-body h1 { font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.03em; margin:32px 0 16px; line-height:1.2; }
-  .report-body h2 { font-size:1.4rem; font-weight:600; color:var(--text); letter-spacing:-0.02em; margin:28px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border-subtle); }
   .back-link {
-    display:inline-flex; align-items:center; gap:6px; color:var(--text3);
-    text-decoration:none; font-size:13px; margin-bottom:24px; transition:color 0.2s;
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--text3); text-decoration:none; font-size:13px;
+    margin-bottom:32px; transition:color 0.2s;
   }
   .back-link:hover { color:var(--text); }
-  .report-meta {
-    display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 28px;
+
+  /* Hero */
+  .report-hero { text-align:center; padding:32px 0 24px; border-bottom:1px solid var(--border-subtle); margin-bottom:32px; }
+  .report-hero .badge {
+    display:inline-block; background:rgba(94,106,210,0.12); color:var(--accent-bright);
+    border:1px solid rgba(94,106,210,0.25); border-radius:999px; padding:4px 16px;
+    font-size:12px; font-weight:500; margin-bottom:16px;
   }
+  .report-hero h1 {
+    font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:700;
+    letter-spacing:-0.03em; color:var(--text); line-height:1.25; margin-bottom:12px;
+  }
+  .report-meta { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
   .meta-tag {
     padding:3px 12px; border-radius:999px; font-size:11px; font-weight:500;
     background:var(--surface); color:var(--text3); border:1px solid var(--border);
   }
   .meta-tag.accent { color:var(--accent-bright); border-color:rgba(94,106,210,0.3); background:rgba(94,106,210,0.08); }
+
+  /* KPI row */
+  .kpi-row {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px; margin:28px 0;
+  }
+  .kpi {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:18px; text-align:center;
+  }
+  .kpi .val { font-size:1.6rem; font-weight:700; color:var(--accent-bright); letter-spacing:-0.02em; }
+  .kpi .lbl { font-size:11px; color:var(--text3); margin-top:2px; text-transform:uppercase; letter-spacing:0.03em; }
+
+  /* Pills nav */
+  .pills {
+    display:flex; gap:6px; flex-wrap:wrap; margin:0 0 32px;
+    padding:12px 0; border-bottom:1px solid var(--border-subtle);
+  }
+  .pill {
+    padding:5px 14px; border-radius:999px; font-size:12px; font-weight:500;
+    border:1px solid var(--border); color:var(--text3);
+    cursor:pointer; transition:all .15s; background:transparent;
+  }
+  .pill:hover { background:rgba(94,106,210,0.1); color:var(--accent-bright); border-color:rgba(94,106,210,0.3); }
+
+  /* Content */
+  h1.section-title {
+    font-size:1.8rem; font-weight:700; color:var(--text);
+    letter-spacing:-0.02em; margin:36px 0 16px; line-height:1.25;
+  }
+  h2.section-title {
+    font-size:1.3rem; font-weight:600; color:var(--text);
+    letter-spacing:-0.02em; margin:32px 0 12px; padding-bottom:8px;
+    border-bottom:1px solid var(--border-subtle);
+  }
+  h3 { font-size:1.1rem; font-weight:600; color:var(--text); margin:24px 0 8px; }
+  h4 { font-size:0.95rem; font-weight:600; color:var(--text2); margin:18px 0 6px; }
+  p { color:var(--text2); line-height:1.75; margin:8px 0; }
+  strong { color:var(--text); }
+  code {
+    background:var(--panel); padding:2px 6px; border-radius:4px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent-bright);
+  }
+  a { color:var(--accent-bright); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* Table */
+  .tbl {
+    width:100%; border-collapse:collapse; font-size:13px; margin:16px 0;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden;
+  }
+  .tbl th {
+    text-align:left; padding:10px 14px; color:var(--text3);
+    font-weight:500; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.04em; background:var(--panel);
+    border-bottom:1px solid var(--border);
+  }
+  .tbl td {
+    padding:9px 14px; color:var(--text2); border-bottom:1px solid var(--border-subtle);
+  }
+  .tbl tr:last-child td { border-bottom:none; }
+
+  /* Blockquote */
+  blockquote {
+    border-left:3px solid var(--accent); padding:12px 20px; margin:16px 0;
+    color:var(--text3); background:rgba(94,106,210,0.05);
+    border-radius:0 8px 8px 0; font-size:14px;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background:rgba(94,106,210,0.06); border:1px solid rgba(94,106,210,0.2);
+    border-radius:12px; padding:24px 28px; margin:24px 0;
+  }
+  .insight-box .insight-label {
+    font-size:11px; font-weight:600; color:var(--accent-bright);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;
+  }
+  .insight-box p { color:var(--text); font-size:15px; font-weight:500; }
+
+  /* Code block */
+  .code-block {
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; padding:16px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    line-height:1.7; color:var(--text2); margin:12px 0;
+  }
+
+  ul { list-style:none; padding:0; margin:8px 0; }
+  li { padding:4px 0 4px 16px; color:var(--text2); font-size:14px; position:relative; }
+  li::before { content:"·"; color:var(--accent-bright); font-weight:700; position:absolute; left:0; }
+
+  hr { border:none; border-top:1px solid var(--border-subtle); margin:32px 0; }
+
+  .check { color:var(--green); }
+  .cross { color:var(--red); }
+  .warn { color:var(--orange); }
+
+  footer {
+    text-align:center; padding:40px 24px; color:var(--text4); font-size:12px;
+    border-top:1px solid var(--border-subtle);
+  }
+
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+
+  @media(max-width:640px) {
+    .report-hero h1 { font-size:1.4rem; }
+    .kpi-row { grid-template-columns:repeat(2,1fr); }
+  }
 </style>
 </head>
 <body>
@@ -291,269 +193,98 @@
 
 <nav>
   <div class="inner">
-    <a href="index.html" style="text-decoration:none;color:inherit"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html" style="text-decoration:none"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html">← 返回目录</a>
   </div>
 </nav>
 
 <div class="report-body">
   <a href="index.html" class="back-link">← 返回目录</a>
-  <h1>🤖 Coze CLI 完整工具清单与点评</h1>
-  <div class="report-meta">
-    <span class="meta-tag accent">AI工具</span>
-    <span class="meta-tag">来源: feishu</span>
-    
-    <a href="https://zcnytfl3vf1r.feishu.cn/docx/LgYMdKvEBoXfjMxasXwcnu6Sn7e" target="_blank" class="meta-tag" style="text-decoration:none">飞书原文 ↗</a>
+  
+  <div class="report-hero">
+    <div class="badge">🤖 AI工具</div>
+    <h1>Coze CLI 完整工具清单与点评</h1>
+    <div class="report-meta">
+      <span class="meta-tag accent">AI工具</span>
+      <span class="meta-tag">来源: feishu</span>
+      
+      <a href="https://zcnytfl3vf1r.feishu.cn/docx/LgYMdKvEBoXfjMxasXwcnu6Sn7e" target="_blank" class="meta-tag">飞书原文 ↗</a>
+    </div>
   </div>
-  <h1 style="font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-0.03em;margin:32px 0 16px;line-height:1.2"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze CLI 完整工具清单与点评</p></h1>
-<br>
-<blockquote style="border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;color:var(--text3);font-style:italic;background:rgba(94,106,210,0.05);border-radius:0 6px 6px 0"><p style="color:var(--text2);line-height:1.75;margin:6px 0">调研日期：2026-05-29 | 调研人：阿爪信源：官方文档 + 社区 + 科技媒体</p></blockquote>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、可用模型清单</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.1 内置模型（Coze平台直接可选）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze平台内置了豆包系列为主的多款模型，可在智能体和工作流中直接选用：</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">厂商</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">类型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">能力特点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Doubao-pro-256K</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">字节跳动</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">128K上下文，综合能力强</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">主力模型，中文理解好</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Doubao-pro-32K</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">字节跳动</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">32K上下文，速度更快</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日常对话首选</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Doubao-pro-128K</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">字节跳动</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">128K，性价比版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">平衡速度和成本</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Doubao-lite-32K</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">字节跳动</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">轻量对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">32K，速度最快</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高频简单任务</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">DeepSeek-R1</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">深度求索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推理模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">思维链推理，数学/代码强</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">复杂推理场景最佳</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">DeepSeek-V3</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">深度求索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">671B MoE，代码和数学强</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">目前最热门之一</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">DeepSeek-V3.2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">深度求索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">V3升级版，性能更好</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推理能力进一步提升</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Qwen-Max</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">阿里云</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通义千问旗舰版</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文内容丰富</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Qwen-Plus</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">阿里云</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">企业级应用可选</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">GLM-4</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智谱AI</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">清华系，Agent能力强</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">适合复杂工具调用</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">GLM-4.5/4.6/4.7</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智谱AI</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">迭代版本</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">持续更新中</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">GLM-5</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智谱AI</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026旗舰，开源领先</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编程能力突出</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Kimi-K2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">月之暗面</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1T MoE，长文本强</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文档分析最佳</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Kimi-K2.5</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">月之暗面</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文本+多模态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">长文本+视觉理解</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">MiniMax-M2.5</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniMax</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">10B激活，速度极快</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">性价比高</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Moonshot-v1-32K</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">月之暗面</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">早期但稳定</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">兼容性备用</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.2 通过第三方API接入的模型（Coze支持OpenAI兼容协议）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">通过配置第三方API，可以在Coze中使用：</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">接入方式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">GPT-5系列</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三方API</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">需自行配置API Key，能力国际领先</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Claude 4 Opus/Sonnet</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三方API</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编程+长文本强，成本较高</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Gemini 2.5/3</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三方API</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多模态最强</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Llama 4</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三方API</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源，可本地部署</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Mistral Large 2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">第三方API</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">欧洲最强开源</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💬 总体点评</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze内置模型以<strong style="color:var(--text)">豆包系列为主力</strong>，同时聚合了DeepSeek、通义千问、智谱GLM、Kimi等国产主流模型。<strong style="color:var(--text)">不足之处</strong>：</p>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">海外模型（GPT/Claude/Gemini）需要自行配置第三方API</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高峰期豆包模型响应可能有波动</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型更新速度略滞后于最新发布</p></li>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">对你够不够用？</strong> 国产主流五虎（豆包/DeepSeek/Qwen/GLM/Kimi）全都有，日常使用完全够。需要海外模型时自己配Key。</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、云电脑与云手机</p></h2>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze 2.5为每个Agent配备的独立云设备，是<strong style="color:var(--text)">扣子独有的能力</strong>，其他三家CLI都没有。</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">规格</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">设备</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">规格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">用途</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">云电脑</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Ubuntu系统，有浏览器、文件系统、终端</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">运行脚本、操作浏览器、处理文件、编程</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">云手机</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Android 13，2vCPU/6GB内存/45GB存储</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">运行原生App，操作手机应用</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">独立邮箱</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">@coze.email</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">对外通信，注册账号</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">专属工作台</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日程+云盘</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">任务调度+文件存储</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">能力</p></h3>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">后台异步运行</strong>：派完任务继续聊天，做完通知你</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">实时屏幕推流</strong>：可以随时看到Agent在干什么</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">登录态保持</strong>：Agent登录的账号、cookie、下载的文件绑在它的身份下</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">7x24小时运行</strong>：持续后台运行</p></li>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">需要人介入时弹确认框</strong>：安全控制</p></li>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">能干的事</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">场景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">怎么做</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">让Agent自动查数据</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">云电脑打开浏览器→登录系统→查数据→截图发你</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">让Agent操作App</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">云手机打开某个App→自动操作→截屏汇报</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">自动处理文件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">云电脑运行脚本→批量处理→结果存云盘</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">让Agent发邮件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">用独立邮箱账号收发邮件</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Agent间协作</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Agent A查完数据→发给Agent B做分析→Agent C生成报告</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💬 点评</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">这是Coze相比其他平台最大的差异化优势。</strong> 阿里百炼/腾讯CloudBase/火山veCLI都没有这个概念。相当于你雇了一个"数字员工"，有自己的电脑和手机，7x24小时在后台干活。你睡一觉，它把活干完了。</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">注意事项</strong>：云电脑/云手机资源有限，大量高频使用可能需要额外付费。具体配额看你的会员等级。</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、插件/工具清单</p></h2>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze平台插件分成三大类：官方插件、社区插件、自定义插件。</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3.1 官方主要插件（按类别）</p></h3>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🔍 搜索与信息获取</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">必应搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">网页搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">最常用的搜索入口</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">百度搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文网页搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">国内信源覆盖好</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">头条搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">头条内容搜索</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">新闻资讯</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Link Reader</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">读取网页链接内容</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">解析URL内容给AI</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">WebPilot</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">网页内容抓取</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">对标Link Reader</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Wolfram Alpha</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">科学计算/知识查询</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数学/科学问题权威</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">墨迹天气</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">天气查询</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日常生活</p></td></tr>
-</table></div>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🖼️ 图像生成与处理</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">ByteArtist</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文生图（豆包模型）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">官方主力生图插件</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SD图片生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Stable Diffusion生图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源模型，可定制</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图片理解</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图片内容分析</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">视觉理解</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图片编辑</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">修图/改图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">局部重绘/扩展</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">QR生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二维码生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">营销场景</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MemOS记忆插件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智能体记忆扩展</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">让Agent长期记忆</p></td></tr>
-</table></div>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🎵 音频与语音</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">TTS文字转语音</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文本转语音</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">基础配音</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音合成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多音色语音生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">可选不同音色</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">字幕获取</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">视频自动生成字幕</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">视频后期</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">音乐生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">AI作曲</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">生成BGM</p></td></tr>
-</table></div>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">📰 新闻与内容</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">头条新闻</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">今日头条热点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">实时资讯</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知乎热榜</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知乎热门内容</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">知识社交</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">抖音视频</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">抖音内容获取</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">短视频素材</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">RSS阅读</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">RSS订阅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定制信息流</p></td></tr>
-</table></div>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🛠️ 效率工具</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">代码执行器</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">运行Python/JS代码</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">工作流中非常有用</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">OCR识别</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图片文字识别</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">提取图片中文字</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">翻译</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多语言翻译</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">常用基础能力</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PDF读取</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PDF文件解析</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文档处理</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Excel处理</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">表格读写</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数据分析基础</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">飞书多维表格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">读写飞书多维表格</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">打通飞书数据</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日历</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日程管理</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">时间管理</p></td></tr>
-</table></div>
-<br>
-<h4 style="font-size:1rem;font-weight:600;color:var(--text2);margin:16px 0 6px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🔗 API与集成</p></h4>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件名</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">点评</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GitHub</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">代码仓库操作</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发者常用</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高德地图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">地理位置/LBS</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">出行/物流场景</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">邮件发送</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发送邮件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通知/报告</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">短信发送</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发送短信</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通知</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3.2 技能商店（365个技能，覆盖各行业）</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze 2.0推出的技能商店（Skill Store），2.5升级后达到<strong style="color:var(--text)">365个技能</strong>。技能不是简单的插件，而是"场景最佳实践+所需工具"的完整封装。</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">领域</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">技能示例</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">用途</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">📚 <strong style="color:var(--text)">教育</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">互动教学、法考批改、作文批改、英语对话</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">教育场景</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚖️ <strong style="color:var(--text)">法律</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">法律类案检索、合同审查、法规查询</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">法律辅助</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💰 <strong style="color:var(--text)">金融</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">投资知识库、财报分析、股票查询</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">金融分析</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">📱 <strong style="color:var(--text)">自媒体</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">封面设计、文案优化、批量视频生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容创作</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💼 <strong style="color:var(--text)">办公</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PPT生成、会议纪要、邮件助手</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">日常办公</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🖥️ <strong style="color:var(--text)">开发</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">代码审查、API调试、数据库查询</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发辅助</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🏥 <strong style="color:var(--text)">医疗</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">药品查询、症状分析</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">医疗辅助</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🛒 <strong style="color:var(--text)">电商</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">商品描述、客服话术、竞品分析</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">电商场景</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💬 点评</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">365个技能是个亮点。<strong style="color:var(--text)">和其他CLI的关键区别</strong>：其他CLI给的是"工具"（API、命令），Coze给的是"技能"（场景+工具的完整封装）。比如"法考批改"技能，打开就能用，不需要你自己搭工作流。你关心供应链管理，技能商店应该有相关的采购/库存管理技能。</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">需要注意</strong>：技能质量参差不齐，社区上传的技能需要经过众测才能上架（虾评平台机制），但官方出品的基本靠谱。</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">四、MCP生态</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4.1 扣子官方MCP Server</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">名称</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">链接/安装</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">功能</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">coze-mcp-server</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">pip install coze-mcp-server</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">列表工作区、列表机器人、创建机器人、获取用户信息、聊天</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">coze-mcp-server (npm)</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">npx coze-mcp-server</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">同上，JS版</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">coze-workflow-mcp-server</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">npx -y coze-workflow-mcp-server</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">把Coze工作流暴露为MCP工具</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4.2 扣子空间已接入的MCP服务</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MCP服务</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">来源</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">用途</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">飞书多维表格 MCP</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">操作飞书多维表格</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高德地图 MCP</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">地图/LBS服务</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图像工具 MCP</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">图片处理</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">语音合成 MCP</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">TTS语音生成</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">火山引擎云服务 MCP</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方（近200种）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数据库/存储/计算等</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">4.3 自定义MCP</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze支持用户通过"扣子开发平台"发布自己的MCP服务到扣子空间。也可以接入外部MCP服务，不受官方列表限制。</p>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💬 点评</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze在MCP生态上<strong style="color:var(--text)">处于国内第一梯队</strong>——有官方MCP Server开源、有扣子空间MCP接入、支持自定义MCP发布。但相比火山引擎的近200种MCP服务（因为火山本身就是云服务商），数量上少一些。Coze的MCP策略是"精而不泛"——优先接入字节生态和自己用得上的。</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">五、整体点评矩阵</p></h2>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Coze扣子</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">你的需求匹配度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">建议</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">模型</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">国产五虎全有+支持第三方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 足够</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">主力用豆包+DeepSeek即可</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">生图</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">ByteArtist+SD插件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 够用</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">需要专业级出图可补火山veCLI</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">生视频</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插件+工作流+Seddance 2.0</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 基本够</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高质量视频可补火山</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">语音</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">TTS+语音合成插件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 够用</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">声音复刻需要火山补充</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">云电脑</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Ubuntu+浏览器+终端+文件系统</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">独有</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">这是最大的差异化</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">云手机</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Android 13，2vCPU/6GB/45GB</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">独有</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">其他三家都没有</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">独立邮箱</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">@coze.email</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">独有</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Agent自己收发电邮</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">插件</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">36+官方插件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 日常够</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">覆盖面广</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">技能商店</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">365个行业技能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">量大</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">省去自己搭工作流</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">MCP生态</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">官方+自定义+扣子空间</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 够用</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数量和深度不如火山</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">工作流</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">可视化编排+条件/循环/并行</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">核心能力</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">比其他三家都强</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Agent World</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Agent社交+协作</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">独有</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">概念领先，实际落地待验证</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">费用</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">你已会员</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">零边际成本</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">不用就是亏</p></td></tr>
-</table></div>
+
+  <div class="kpi-row"><div class="kpi"><div class="val">365个</div><div class="lbl"></div></div><div class="kpi"><div class="val">365个</div><div class="lbl"></div></div></div>
+  
+  <div class="pills"><span class="pill" onclick="document.getElementById('s-0').scrollIntoView({behavior:'smooth'})">一、可用模型清单</span>
+<span class="pill" onclick="document.getElementById('s-1').scrollIntoView({behavior:'smooth'})">二、云电脑与云手机</span>
+<span class="pill" onclick="document.getElementById('s-2').scrollIntoView({behavior:'smooth'})">三、插件/工具清单</span>
+<span class="pill" onclick="document.getElementById('s-3').scrollIntoView({behavior:'smooth'})">四、MCP生态</span>
+<span class="pill" onclick="document.getElementById('s-4').scrollIntoView({behavior:'smooth'})">五、整体点评矩阵</span></div>
+  
+  <h1 class="section-title">Coze CLI 完整工具清单与点评</h1>
+<blockquote>调研日期：2026-05-29 | 调研人：阿爪信源：官方文档 + 社区 + 科技媒体</blockquote>
+<hr>
+<h2 class="section-title" id="s-1">一、可用模型清单</h2>
+<h3>1.1 内置模型（Coze平台直接可选）</h3>
+<p>Coze平台内置了豆包系列为主的多款模型，可在智能体和工作流中直接选用：</p>
+<table class="tbl"><thead><tr><th>模型</th><th>厂商</th><th>类型</th><th>能力特点</th><th>点评</th></tr></thead><tbody><tr><td><strong>Doubao-pro-256K</strong></td><td>字节跳动</td><td>通用对话</td><td>128K上下文，综合能力强</td><td>主力模型，中文理解好</td></tr><tr><td><strong>Doubao-pro-32K</strong></td><td>字节跳动</td><td>通用对话</td><td>32K上下文，速度更快</td><td>日常对话首选</td></tr><tr><td><strong>Doubao-pro-128K</strong></td><td>字节跳动</td><td>通用对话</td><td>128K，性价比版本</td><td>平衡速度和成本</td></tr><tr><td><strong>Doubao-lite-32K</strong></td><td>字节跳动</td><td>轻量对话</td><td>32K，速度最快</td><td>高频简单任务</td></tr><tr><td><strong>DeepSeek-R1</strong></td><td>深度求索</td><td>推理模型</td><td>思维链推理，数学/代码强</td><td>复杂推理场景最佳</td></tr><tr><td><strong>DeepSeek-V3</strong></td><td>深度求索</td><td>通用对话</td><td>671B MoE，代码和数学强</td><td>目前最热门之一</td></tr><tr><td><strong>DeepSeek-V3.2</strong></td><td>深度求索</td><td>通用对话</td><td>V3升级版，性能更好</td><td>推理能力进一步提升</td></tr><tr><td><strong>Qwen-Max</strong></td><td>阿里云</td><td>通用对话</td><td>通义千问旗舰版</td><td>中文内容丰富</td></tr><tr><td><strong>Qwen-Plus</strong></td><td>阿里云</td><td>通用对话</td><td>性价比版本</td><td>企业级应用可选</td></tr><tr><td><strong>GLM-4</strong></td><td>智谱AI</td><td>通用对话</td><td>清华系，Agent能力强</td><td>适合复杂工具调用</td></tr><tr><td><strong>GLM-4.5/4.6/4.7</strong></td><td>智谱AI</td><td>通用对话</td><td>迭代版本</td><td>持续更新中</td></tr><tr><td><strong>GLM-5</strong></td><td>智谱AI</td><td>通用对话</td><td>2026旗舰，开源领先</td><td>编程能力突出</td></tr><tr><td><strong>Kimi-K2</strong></td><td>月之暗面</td><td>通用对话</td><td>1T MoE，长文本强</td><td>长文档分析最佳</td></tr><tr><td><strong>Kimi-K2.5</strong></td><td>月之暗面</td><td>通用对话</td><td>长文本+多模态</td><td>长文本+视觉理解</td></tr><tr><td><strong>MiniMax-M2.5</strong></td><td>MiniMax</td><td>通用对话</td><td>10B激活，速度极快</td><td>性价比高</td></tr><tr><td><strong>Moonshot-v1-32K</strong></td><td>月之暗面</td><td>通用对话</td><td>早期但稳定</td><td>兼容性备用</td></tr></tbody></table>
+<h3>1.2 通过第三方API接入的模型（Coze支持OpenAI兼容协议）</h3>
+<p>通过配置第三方API，可以在Coze中使用：</p>
+<table class="tbl"><thead><tr><th>模型</th><th>接入方式</th><th>点评</th></tr></thead><tbody><tr><td><strong>GPT-5系列</strong></td><td>第三方API</td><td>需自行配置API Key，能力国际领先</td></tr><tr><td><strong>Claude 4 Opus/Sonnet</strong></td><td>第三方API</td><td>编程+长文本强，成本较高</td></tr><tr><td><strong>Gemini 2.5/3</strong></td><td>第三方API</td><td>多模态最强</td></tr><tr><td><strong>Llama 4</strong></td><td>第三方API</td><td>开源，可本地部署</td></tr><tr><td><strong>Mistral Large 2</strong></td><td>第三方API</td><td>欧洲最强开源</td></tr></tbody></table>
+<h3>💬 总体点评</h3>
+<p>Coze内置模型以<strong>豆包系列为主力</strong>，同时聚合了DeepSeek、通义千问、智谱GLM、Kimi等国产主流模型。<strong>不足之处</strong>：</p>
+<ul><li>海外模型（GPT/Claude/Gemini）需要自行配置第三方API</li><li>高峰期豆包模型响应可能有波动</li><li>模型更新速度略滞后于最新发布</li></ul>
+<p><strong>对你够不够用？</strong> 国产主流五虎（豆包/DeepSeek/Qwen/GLM/Kimi）全都有，日常使用完全够。需要海外模型时自己配Key。</p>
+<hr>
+<h2 class="section-title" id="s-2">二、云电脑与云手机</h2>
+<p>Coze 2.5为每个Agent配备的独立云设备，是<strong>扣子独有的能力</strong>，其他三家CLI都没有。</p>
+<h3>规格</h3>
+<table class="tbl"><thead><tr><th>设备</th><th>规格</th><th>用途</th></tr></thead><tbody><tr><td><strong>云电脑</strong></td><td>Ubuntu系统，有浏览器、文件系统、终端</td><td>运行脚本、操作浏览器、处理文件、编程</td></tr><tr><td><strong>云手机</strong></td><td>Android 13，2vCPU/6GB内存/45GB存储</td><td>运行原生App，操作手机应用</td></tr><tr><td><strong>独立邮箱</strong></td><td>@coze.email</td><td>对外通信，注册账号</td></tr><tr><td><strong>专属工作台</strong></td><td>日程+云盘</td><td>任务调度+文件存储</td></tr></tbody></table>
+<h3>能力</h3>
+<ul><li><strong>后台异步运行</strong>：派完任务继续聊天，做完通知你</li><li><strong>实时屏幕推流</strong>：可以随时看到Agent在干什么</li><li><strong>登录态保持</strong>：Agent登录的账号、cookie、下载的文件绑在它的身份下</li><li><strong>7x24小时运行</strong>：持续后台运行</li><li><strong>需要人介入时弹确认框</strong>：安全控制</li></ul>
+<h3>能干的事</h3>
+<table class="tbl"><thead><tr><th>场景</th><th>怎么做</th></tr></thead><tbody><tr><td>让Agent自动查数据</td><td>云电脑打开浏览器→登录系统→查数据→截图发你</td></tr><tr><td>让Agent操作App</td><td>云手机打开某个App→自动操作→截屏汇报</td></tr><tr><td>自动处理文件</td><td>云电脑运行脚本→批量处理→结果存云盘</td></tr><tr><td>让Agent发邮件</td><td>用独立邮箱账号收发邮件</td></tr><tr><td>Agent间协作</td><td>Agent A查完数据→发给Agent B做分析→Agent C生成报告</td></tr></tbody></table>
+<h3>💬 点评</h3>
+<p><strong>这是Coze相比其他平台最大的差异化优势。</strong> 阿里百炼/腾讯CloudBase/火山veCLI都没有这个概念。相当于你雇了一个"数字员工"，有自己的电脑和手机，7x24小时在后台干活。你睡一觉，它把活干完了。</p>
+<p><strong>注意事项</strong>：云电脑/云手机资源有限，大量高频使用可能需要额外付费。具体配额看你的会员等级。</p>
+<hr>
+<h2 class="section-title" id="s-3">三、插件/工具清单</h2>
+<p>Coze平台插件分成三大类：官方插件、社区插件、自定义插件。</p>
+<h3>3.1 官方主要插件（按类别）</h3>
+<h4>🔍 搜索与信息获取</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>必应搜索</td><td>网页搜索</td><td>最常用的搜索入口</td></tr><tr><td>百度搜索</td><td>中文网页搜索</td><td>国内信源覆盖好</td></tr><tr><td>头条搜索</td><td>头条内容搜索</td><td>新闻资讯</td></tr><tr><td>Link Reader</td><td>读取网页链接内容</td><td>解析URL内容给AI</td></tr><tr><td>WebPilot</td><td>网页内容抓取</td><td>对标Link Reader</td></tr><tr><td>Wolfram Alpha</td><td>科学计算/知识查询</td><td>数学/科学问题权威</td></tr><tr><td>墨迹天气</td><td>天气查询</td><td>日常生活</td></tr></tbody></table>
+<h4>🖼️ 图像生成与处理</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>ByteArtist</td><td>文生图（豆包模型）</td><td><strong>官方主力生图插件</strong></td></tr><tr><td>SD图片生成</td><td>Stable Diffusion生图</td><td>开源模型，可定制</td></tr><tr><td>图片理解</td><td>图片内容分析</td><td>视觉理解</td></tr><tr><td>图片编辑</td><td>修图/改图</td><td>局部重绘/扩展</td></tr><tr><td>QR生成</td><td>二维码生成</td><td>营销场景</td></tr><tr><td>MemOS记忆插件</td><td>智能体记忆扩展</td><td>让Agent长期记忆</td></tr></tbody></table>
+<h4>🎵 音频与语音</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>TTS文字转语音</td><td>文本转语音</td><td>基础配音</td></tr><tr><td>语音合成</td><td>多音色语音生成</td><td>可选不同音色</td></tr><tr><td>字幕获取</td><td>视频自动生成字幕</td><td>视频后期</td></tr><tr><td>音乐生成</td><td>AI作曲</td><td>生成BGM</td></tr></tbody></table>
+<h4>📰 新闻与内容</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>头条新闻</td><td>今日头条热点</td><td>实时资讯</td></tr><tr><td>知乎热榜</td><td>知乎热门内容</td><td>知识社交</td></tr><tr><td>抖音视频</td><td>抖音内容获取</td><td>短视频素材</td></tr><tr><td>RSS阅读</td><td>RSS订阅</td><td>定制信息流</td></tr></tbody></table>
+<h4>🛠️ 效率工具</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>代码执行器</td><td>运行Python/JS代码</td><td><strong>工作流中非常有用</strong></td></tr><tr><td>OCR识别</td><td>图片文字识别</td><td>提取图片中文字</td></tr><tr><td>翻译</td><td>多语言翻译</td><td>常用基础能力</td></tr><tr><td>PDF读取</td><td>PDF文件解析</td><td>文档处理</td></tr><tr><td>Excel处理</td><td>表格读写</td><td>数据分析基础</td></tr><tr><td>飞书多维表格</td><td>读写飞书多维表格</td><td><strong>打通飞书数据</strong></td></tr><tr><td>日历</td><td>日程管理</td><td>时间管理</td></tr></tbody></table>
+<h4>🔗 API与集成</h4>
+<table class="tbl"><thead><tr><th>插件名</th><th>功能</th><th>点评</th></tr></thead><tbody><tr><td>GitHub</td><td>代码仓库操作</td><td>开发者常用</td></tr><tr><td>高德地图</td><td>地理位置/LBS</td><td>出行/物流场景</td></tr><tr><td>邮件发送</td><td>发送邮件</td><td>通知/报告</td></tr><tr><td>短信发送</td><td>发送短信</td><td>通知</td></tr></tbody></table>
+<h3>3.2 技能商店（365个技能，覆盖各行业）</h3>
+<p>Coze 2.0推出的技能商店（Skill Store），2.5升级后达到<strong>365个技能</strong>。技能不是简单的插件，而是"场景最佳实践+所需工具"的完整封装。</p>
+<table class="tbl"><thead><tr><th>领域</th><th>技能示例</th><th>用途</th></tr></thead><tbody><tr><td>📚 <strong>教育</strong></td><td>互动教学、法考批改、作文批改、英语对话</td><td>教育场景</td></tr><tr><td>⚖️ <strong>法律</strong></td><td>法律类案检索、合同审查、法规查询</td><td>法律辅助</td></tr><tr><td>💰 <strong>金融</strong></td><td>投资知识库、财报分析、股票查询</td><td>金融分析</td></tr><tr><td>📱 <strong>自媒体</strong></td><td>封面设计、文案优化、批量视频生成</td><td>内容创作</td></tr><tr><td>💼 <strong>办公</strong></td><td>PPT生成、会议纪要、邮件助手</td><td>日常办公</td></tr><tr><td>🖥️ <strong>开发</strong></td><td>代码审查、API调试、数据库查询</td><td>开发辅助</td></tr><tr><td>🏥 <strong>医疗</strong></td><td>药品查询、症状分析</td><td>医疗辅助</td></tr><tr><td>🛒 <strong>电商</strong></td><td>商品描述、客服话术、竞品分析</td><td>电商场景</td></tr></tbody></table>
+<h3>💬 点评</h3>
+<p>365个技能是个亮点。<strong>和其他CLI的关键区别</strong>：其他CLI给的是"工具"（API、命令），Coze给的是"技能"（场景+工具的完整封装）。比如"法考批改"技能，打开就能用，不需要你自己搭工作流。你关心供应链管理，技能商店应该有相关的采购/库存管理技能。</p>
+<p><strong>需要注意</strong>：技能质量参差不齐，社区上传的技能需要经过众测才能上架（虾评平台机制），但官方出品的基本靠谱。</p>
+<hr>
+<h2 class="section-title" id="s-4">四、MCP生态</h2>
+<h3>4.1 扣子官方MCP Server</h3>
+<table class="tbl"><thead><tr><th>名称</th><th>链接/安装</th><th>功能</th></tr></thead><tbody><tr><td>coze-mcp-server</td><td>pip install coze-mcp-server</td><td>列表工作区、列表机器人、创建机器人、获取用户信息、聊天</td></tr><tr><td>coze-mcp-server (npm)</td><td>npx coze-mcp-server</td><td>同上，JS版</td></tr><tr><td>coze-workflow-mcp-server</td><td>npx -y coze-workflow-mcp-server</td><td>把Coze工作流暴露为MCP工具</td></tr></tbody></table>
+<h3>4.2 扣子空间已接入的MCP服务</h3>
+<table class="tbl"><thead><tr><th>MCP服务</th><th>来源</th><th>用途</th></tr></thead><tbody><tr><td>飞书多维表格 MCP</td><td>官方</td><td>操作飞书多维表格</td></tr><tr><td>高德地图 MCP</td><td>官方</td><td>地图/LBS服务</td></tr><tr><td>图像工具 MCP</td><td>官方</td><td>图片处理</td></tr><tr><td>语音合成 MCP</td><td>官方</td><td>TTS语音生成</td></tr><tr><td>火山引擎云服务 MCP</td><td>官方（近200种）</td><td>数据库/存储/计算等</td></tr></tbody></table>
+<h3>4.3 自定义MCP</h3>
+<p>Coze支持用户通过"扣子开发平台"发布自己的MCP服务到扣子空间。也可以接入外部MCP服务，不受官方列表限制。</p>
+<h3>💬 点评</h3>
+<p>Coze在MCP生态上<strong>处于国内第一梯队</strong>——有官方MCP Server开源、有扣子空间MCP接入、支持自定义MCP发布。但相比火山引擎的近200种MCP服务（因为火山本身就是云服务商），数量上少一些。Coze的MCP策略是"精而不泛"——优先接入字节生态和自己用得上的。</p>
+<hr>
+<h2 class="section-title" id="s-5">五、整体点评矩阵</h2>
+<table class="tbl"><thead><tr><th>维度</th><th>Coze扣子</th><th>你的需求匹配度</th><th>建议</th></tr></thead><tbody><tr><td><strong>模型</strong></td><td>国产五虎全有+支持第三方</td><td><span class="check">✅</span> 足够</td><td>主力用豆包+DeepSeek即可</td></tr><tr><td><strong>生图</strong></td><td>ByteArtist+SD插件</td><td><span class="check">✅</span> 够用</td><td>需要专业级出图可补火山veCLI</td></tr><tr><td><strong>生视频</strong></td><td>插件+工作流+Seddance 2.0</td><td><span class="check">✅</span> 基本够</td><td>高质量视频可补火山</td></tr><tr><td><strong>语音</strong></td><td>TTS+语音合成插件</td><td><span class="check">✅</span> 够用</td><td>声音复刻需要火山补充</td></tr><tr><td><strong>云电脑</strong></td><td>Ubuntu+浏览器+终端+文件系统</td><td><span class="check">✅</span><span class="check">✅</span> <strong>独有</strong></td><td>这是最大的差异化</td></tr><tr><td><strong>云手机</strong></td><td>Android 13，2vCPU/6GB/45GB</td><td><span class="check">✅</span><span class="check">✅</span> <strong>独有</strong></td><td>其他三家都没有</td></tr><tr><td><strong>独立邮箱</strong></td><td>@coze.email</td><td><span class="check">✅</span><span class="check">✅</span> <strong>独有</strong></td><td>Agent自己收发电邮</td></tr><tr><td><strong>插件</strong></td><td>36+官方插件</td><td><span class="check">✅</span> 日常够</td><td>覆盖面广</td></tr><tr><td><strong>技能商店</strong></td><td>365个行业技能</td><td><span class="check">✅</span><span class="check">✅</span> <strong>量大</strong></td><td>省去自己搭工作流</td></tr><tr><td><strong>MCP生态</strong></td><td>官方+自定义+扣子空间</td><td><span class="check">✅</span> 够用</td><td>数量和深度不如火山</td></tr><tr><td><strong>工作流</strong></td><td>可视化编排+条件/循环/并行</td><td><span class="check">✅</span><span class="check">✅</span> <strong>核心能力</strong></td><td>比其他三家都强</td></tr><tr><td><strong>Agent World</strong></td><td>Agent社交+协作</td><td><span class="check">✅</span><span class="check">✅</span> <strong>独有</strong></td><td>概念领先，实际落地待验证</td></tr><tr><td><strong>费用</strong></td><td>你已会员</td><td><span class="check">✅</span><span class="check">✅</span> <strong>零边际成本</strong></td><td>不用就是亏</td></tr></tbody></table>
 </div>
 
-<footer style="text-align:center;padding:40px 24px;color:var(--text4);font-size:12px;border-top:1px solid var(--border-subtle);position:relative;z-index:1">
-  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索</p>
+<footer>
+  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p>
 </footer>
 
 <script>
@@ -563,7 +294,7 @@
   let w,h,ps=[],mx=-100,my=-100;
   function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
   rs();addEventListener('resize',rs);
-  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.8,o:Math.random()*.5+.15});
+  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.6,o:Math.random()*.5+.12});
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   (function d(){
     x.clearRect(0,0,w,h);
@@ -571,13 +302,13 @@
       let p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
       let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
-      if(md<180){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
+      if(md<180){p.vx+=dx/md*.01;p.vy+=dy/md*.01}
       let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}
       x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
-      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.25:0),1)})`;x.fill();
+      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.2:0),1)})`;x.fill();
       for(let j=i+1;j<ps.length;j++){
         let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
-        if(dt<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/140)})`;x.lineWidth=.5;x.stroke()}
+        if(dt<130){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.07*(1-dt/130)})`;x.lineWidth=.5;x.stroke()}
       }
     }
     requestAnimationFrame(d);
@@ -591,8 +322,8 @@
 })();
 // Scroll reveal
 (function(){
-  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.1});
-  document.querySelectorAll('.report-body h1,.report-body h2,.report-body h3,.report-body p,.report-body table,.report-body blockquote,.report-body pre').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.08});
+  document.querySelectorAll('.kpi,.tbl,blockquote,.insight-box,h2.section-title').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
 })();
 </script>
 </body>

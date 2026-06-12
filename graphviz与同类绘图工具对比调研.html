@@ -4,285 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Graphviz与同类绘图工具对比调研 · AI 调研中心</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
   :root {
-    --bg: #08090a;
-    --panel: #0f1011;
-    --surface: #191a1b;
-    --surface2: #222326;
-    --text: #f7f8f8;
-    --text2: #d0d6e0;
-    --text3: #8a8f98;
-    --text4: #62666d;
-    --accent: #5e6ad2;
-    --accent-bright: #7170ff;
-    --green: #27a644;
-    --orange: #d2991d;
-    --red: #f85149;
-    --border: rgba(255,255,255,0.08);
-    --border-subtle: rgba(255,255,255,0.05);
+    --bg: #08090a; --panel: #0f1011; --surface: #191a1b;
+    --surface2: #222326; --text: #f7f8f8; --text2: #d0d6e0;
+    --text3: #8a8f98; --text4: #62666d; --accent: #5e6ad2;
+    --accent-bright: #7170ff; --green: #27a644;
+    --orange: #d2991d; --red: #f85149;
+    --border: rgba(255,255,255,0.08); --border-subtle: rgba(255,255,255,0.05);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body {
-    background: var(--bg);
-    color: var(--text2);
+    background: var(--bg); color: var(--text2);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: 'cv01','ss03';
-    line-height: 1.6;
-    overflow-x: hidden;
+    line-height: 1.6; overflow-x: hidden;
   }
-
-  /* Particle canvas */
   #particles {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; pointer-events: none; opacity: 0.65;
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    z-index:0; pointer-events:none; opacity:0.5;
   }
-  /* Ambient glow orb */
   #glow {
-    position: fixed; z-index: 0; pointer-events: none;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
-    transition: left 0.8s ease-out, top 0.8s ease-out;
+    position: fixed; z-index:0; pointer-events:none;
+    width:600px; height:600px; border-radius:50%;
+    background: radial-gradient(circle, rgba(113,112,255,0.06) 0%, transparent 70%);
+    transform: translate(-50%,-50%); transition: left 0.8s ease-out, top 0.8s ease-out;
   }
+  nav, .report-body, footer { position:relative; z-index:1; }
 
-  /* Reveal on scroll */
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* Ensure content above particles */
-  nav, .hero, .kpi-row, .sec, footer { position: relative; z-index: 1; }
-
-  /* Nav */
   nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(15,16,17,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 0 24px;
+    position:sticky; top:0; z-index:100;
+    background: rgba(15,16,17,0.94); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border-subtle); padding:0 24px;
   }
   nav .inner {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: center; gap: 24px;
-    height: 52px;
+    max-width:1100px; margin:0 auto; display:flex;
+    align-items:center; justify-content:space-between; height:52px;
   }
-  nav .logo {
-    font-size: 15px; font-weight: 600; color: var(--text);
-    letter-spacing: -0.2px; white-space: nowrap;
-  }
-  nav .logo span { color: var(--accent-bright); }
-  nav a {
-    font-size: 13px; font-weight: 500; color: var(--text3);
-    text-decoration: none; transition: color .15s;
-    white-space: nowrap;
-  }
-  nav a:hover { color: var(--text); }
+  nav .logo { font-size:15px; font-weight:600; color:var(--text); }
+  nav .logo span { color:var(--accent-bright); }
+  nav a { font-size:13px; font-weight:500; color:var(--text3); text-decoration:none; }
+  nav a:hover { color:var(--text); }
 
-  /* Hero */
-  .hero {
-    max-width: 1200px; margin: 0 auto;
-    padding: 80px 24px 64px;
-    text-align: center;
-  }
-  .hero .badge {
-    display: inline-block;
-    background: rgba(94,106,210,0.12);
-    color: var(--accent-bright);
-    border: 1px solid rgba(94,106,210,0.25);
-    border-radius: 999px; padding: 4px 16px;
-    font-size: 12px; font-weight: 500;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 600; letter-spacing: -0.04em;
-    color: var(--text); line-height: 1.15;
-    margin-bottom: 16px;
-  }
-  .hero h1 span { color: var(--accent-bright); }
-  .hero p {
-    font-size: 1.1rem; color: var(--text3);
-    max-width: 640px; margin: 0 auto;
-    font-weight: 400;
-  }
+  .report-body { max-width:900px; margin:0 auto; padding:32px 24px 80px; }
 
-  /* KPI row */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-    gap: 16px;
-    max-width: 1200px; margin: 0 auto 80px;
-    padding: 0 24px;
-  }
-  .kpi {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 24px; text-align: center;
-  }
-  .kpi .val {
-    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
-    color: var(--text); margin-bottom: 4px;
-  }
-  .kpi .val.accent { color: var(--accent-bright); }
-  .kpi .val.green { color: var(--green); }
-  .kpi .lbl { font-size: 13px; color: var(--text3); }
-
-  /* Section container */
-  .sec {
-    max-width: 1200px; margin: 0 auto 72px;
-    padding: 0 24px;
-  }
-  .sec h2 {
-    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
-    color: var(--text); margin-bottom: 8px;
-  }
-  .sec .sub {
-    font-size: 14px; color: var(--text3); margin-bottom: 32px;
-  }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .card h3 {
-    font-size: 16px; font-weight: 600; color: var(--text);
-    margin-bottom: 12px; letter-spacing: -0.01em;
-  }
-  .card p, .card li { font-size: 14px; color: var(--text2); }
-  .card li { padding: 4px 0; }
-  ul { list-style: none; padding: 0; }
-  li::before { content: "·"; color: var(--accent-bright); font-weight: 700; margin-right: 8px; }
-
-  /* Charts */
-  .chart-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 28px;
-    margin-bottom: 16px;
-  }
-  .chart-wrap canvas { max-height: 380px; }
-
-  .chart-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-
-  /* Table styled */
-  .tbl {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .tbl th {
-    text-align: left; padding: 10px 14px;
-    color: var(--text3); font-weight: 500; font-size: 11px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--border);
-  }
-  .tbl td {
-    padding: 10px 14px; color: var(--text2);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-  .tbl tr:last-child td { border-bottom: none; }
-  .tbl .hi { color: var(--accent-bright); font-weight: 600; }
-  .tbl .lo { color: var(--text4); }
-  .tbl .cl { color: var(--red); }
-
-  /* Accordion */
-  .acc { margin-bottom: 16px; }
-  .acc-hdr {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px 24px;
-    cursor: pointer; display: flex; justify-content: space-between;
-    align-items: center; font-size: 15px; font-weight: 600;
-    color: var(--text); transition: border-color .15s;
-  }
-  .acc-hdr:hover { border-color: rgba(255,255,255,0.15); }
-  .acc-hdr::after { content: "+"; font-size: 18px; color: var(--text3); font-weight: 400; transition: transform .2s; }
-  .acc.open .acc-hdr::after { content: "−"; }
-  .acc-body {
-    display: none; background: var(--surface);
-    border: 1px solid var(--border); border-top: none;
-    border-radius: 0 0 10px 10px; padding: 24px;
-    font-size: 14px; color: var(--text2);
-  }
-  .acc.open .acc-body { display: block; }
-
-  /* Insight box */
-  .insight {
-    background: rgba(94,106,210,0.06);
-    border: 1px solid rgba(94,106,210,0.18);
-    border-radius: 10px; padding: 24px 28px;
-    font-size: 14px;
-  }
-  .insight strong { color: var(--accent-bright); }
-
-  /* Tags */
-  .tag {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: 11px; font-weight: 500; margin-right: 6px;
-  }
-  .tag.g { background: rgba(39,166,68,0.12); color: var(--green); border: 1px solid rgba(39,166,68,0.2); }
-  .tag.p { background: rgba(94,106,210,0.12); color: var(--accent-bright); border: 1px solid rgba(94,106,210,0.2); }
-  .tag.o { background: rgba(210,153,29,0.12); color: var(--orange); border: 1px solid rgba(210,153,29,0.2); }
-  .tag.r { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.18); }
-
-  /* Section nav pills */
-  .pills {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
-  }
-  .pill {
-    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
-    border: 1px solid var(--border); color: var(--text3);
-    cursor: pointer; transition: all .15s; background: transparent;
-  }
-  .pill:hover, .pill.active {
-    background: rgba(94,106,210,0.1); color: var(--accent-bright);
-    border-color: rgba(94,106,210,0.3);
-  }
-
-  /* Tooltip-style note */
-  .note {
-    font-size: 12px; color: var(--text4); margin-top: 8px;
-  }
-
-  footer {
-    text-align: center; padding: 48px 24px;
-    color: var(--text4); font-size: 12px;
-    border-top: 1px solid var(--border-subtle);
-    margin-top: 80px;
-  }
-  footer a { color: var(--text3); }
-
-  .report-body {
-    max-width:860px; margin:0 auto; padding:24px 24px 80px;
-  }
-  .report-body h1 { font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.03em; margin:32px 0 16px; line-height:1.2; }
-  .report-body h2 { font-size:1.4rem; font-weight:600; color:var(--text); letter-spacing:-0.02em; margin:28px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border-subtle); }
   .back-link {
-    display:inline-flex; align-items:center; gap:6px; color:var(--text3);
-    text-decoration:none; font-size:13px; margin-bottom:24px; transition:color 0.2s;
+    display:inline-flex; align-items:center; gap:6px;
+    color:var(--text3); text-decoration:none; font-size:13px;
+    margin-bottom:32px; transition:color 0.2s;
   }
   .back-link:hover { color:var(--text); }
-  .report-meta {
-    display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 28px;
+
+  /* Hero */
+  .report-hero { text-align:center; padding:32px 0 24px; border-bottom:1px solid var(--border-subtle); margin-bottom:32px; }
+  .report-hero .badge {
+    display:inline-block; background:rgba(94,106,210,0.12); color:var(--accent-bright);
+    border:1px solid rgba(94,106,210,0.25); border-radius:999px; padding:4px 16px;
+    font-size:12px; font-weight:500; margin-bottom:16px;
   }
+  .report-hero h1 {
+    font-size:clamp(1.6rem,3.5vw,2.4rem); font-weight:700;
+    letter-spacing:-0.03em; color:var(--text); line-height:1.25; margin-bottom:12px;
+  }
+  .report-meta { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
   .meta-tag {
     padding:3px 12px; border-radius:999px; font-size:11px; font-weight:500;
     background:var(--surface); color:var(--text3); border:1px solid var(--border);
   }
   .meta-tag.accent { color:var(--accent-bright); border-color:rgba(94,106,210,0.3); background:rgba(94,106,210,0.08); }
+
+  /* KPI row */
+  .kpi-row {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px; margin:28px 0;
+  }
+  .kpi {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:18px; text-align:center;
+  }
+  .kpi .val { font-size:1.6rem; font-weight:700; color:var(--accent-bright); letter-spacing:-0.02em; }
+  .kpi .lbl { font-size:11px; color:var(--text3); margin-top:2px; text-transform:uppercase; letter-spacing:0.03em; }
+
+  /* Pills nav */
+  .pills {
+    display:flex; gap:6px; flex-wrap:wrap; margin:0 0 32px;
+    padding:12px 0; border-bottom:1px solid var(--border-subtle);
+  }
+  .pill {
+    padding:5px 14px; border-radius:999px; font-size:12px; font-weight:500;
+    border:1px solid var(--border); color:var(--text3);
+    cursor:pointer; transition:all .15s; background:transparent;
+  }
+  .pill:hover { background:rgba(94,106,210,0.1); color:var(--accent-bright); border-color:rgba(94,106,210,0.3); }
+
+  /* Content */
+  h1.section-title {
+    font-size:1.8rem; font-weight:700; color:var(--text);
+    letter-spacing:-0.02em; margin:36px 0 16px; line-height:1.25;
+  }
+  h2.section-title {
+    font-size:1.3rem; font-weight:600; color:var(--text);
+    letter-spacing:-0.02em; margin:32px 0 12px; padding-bottom:8px;
+    border-bottom:1px solid var(--border-subtle);
+  }
+  h3 { font-size:1.1rem; font-weight:600; color:var(--text); margin:24px 0 8px; }
+  h4 { font-size:0.95rem; font-weight:600; color:var(--text2); margin:18px 0 6px; }
+  p { color:var(--text2); line-height:1.75; margin:8px 0; }
+  strong { color:var(--text); }
+  code {
+    background:var(--panel); padding:2px 6px; border-radius:4px;
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent-bright);
+  }
+  a { color:var(--accent-bright); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* Table */
+  .tbl {
+    width:100%; border-collapse:collapse; font-size:13px; margin:16px 0;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden;
+  }
+  .tbl th {
+    text-align:left; padding:10px 14px; color:var(--text3);
+    font-weight:500; font-size:11px; text-transform:uppercase;
+    letter-spacing:0.04em; background:var(--panel);
+    border-bottom:1px solid var(--border);
+  }
+  .tbl td {
+    padding:9px 14px; color:var(--text2); border-bottom:1px solid var(--border-subtle);
+  }
+  .tbl tr:last-child td { border-bottom:none; }
+
+  /* Blockquote */
+  blockquote {
+    border-left:3px solid var(--accent); padding:12px 20px; margin:16px 0;
+    color:var(--text3); background:rgba(94,106,210,0.05);
+    border-radius:0 8px 8px 0; font-size:14px;
+  }
+
+  /* Insight box */
+  .insight-box {
+    background:rgba(94,106,210,0.06); border:1px solid rgba(94,106,210,0.2);
+    border-radius:12px; padding:24px 28px; margin:24px 0;
+  }
+  .insight-box .insight-label {
+    font-size:11px; font-weight:600; color:var(--accent-bright);
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;
+  }
+  .insight-box p { color:var(--text); font-size:15px; font-weight:500; }
+
+  /* Code block */
+  .code-block {
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; padding:16px; overflow-x:auto;
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    line-height:1.7; color:var(--text2); margin:12px 0;
+  }
+
+  ul { list-style:none; padding:0; margin:8px 0; }
+  li { padding:4px 0 4px 16px; color:var(--text2); font-size:14px; position:relative; }
+  li::before { content:"·"; color:var(--accent-bright); font-weight:700; position:absolute; left:0; }
+
+  hr { border:none; border-top:1px solid var(--border-subtle); margin:32px 0; }
+
+  .check { color:var(--green); }
+  .cross { color:var(--red); }
+  .warn { color:var(--orange); }
+
+  footer {
+    text-align:center; padding:40px 24px; color:var(--text4); font-size:12px;
+    border-top:1px solid var(--border-subtle);
+  }
+
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+
+  @media(max-width:640px) {
+    .report-hero h1 { font-size:1.4rem; }
+    .kpi-row { grid-template-columns:repeat(2,1fr); }
+  }
 </style>
 </head>
 <body>
@@ -291,139 +193,81 @@
 
 <nav>
   <div class="inner">
-    <a href="index.html" style="text-decoration:none;color:inherit"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html" style="text-decoration:none"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+    <a href="index.html">← 返回目录</a>
   </div>
 </nav>
 
 <div class="report-body">
   <a href="index.html" class="back-link">← 返回目录</a>
-  <h1>🛠️ Graphviz与同类绘图工具对比调研</h1>
-  <div class="report-meta">
-    <span class="meta-tag accent">开发工具</span>
-    <span class="meta-tag">来源: feishu</span>
-    
-    <a href="https://zcnytfl3vf1r.feishu.cn/docx/ErStdqSfdoYoFQx5cwHcqskYnze" target="_blank" class="meta-tag" style="text-decoration:none">飞书原文 ↗</a>
+  
+  <div class="report-hero">
+    <div class="badge">🛠️ 开发工具</div>
+    <h1>Graphviz与同类绘图工具对比调研</h1>
+    <div class="report-meta">
+      <span class="meta-tag accent">开发工具</span>
+      <span class="meta-tag">来源: feishu</span>
+      
+      <a href="https://zcnytfl3vf1r.feishu.cn/docx/ErStdqSfdoYoFQx5cwHcqskYnze" target="_blank" class="meta-tag">飞书原文 ↗</a>
+    </div>
   </div>
-  <h1 style="font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-0.03em;margin:32px 0 16px;line-height:1.2"><p style="color:var(--text2);line-height:1.75;margin:6px 0">交叉调研报告：Graphviz 与同类工具对比</p></h1>
-<br>
-<blockquote style="border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;color:var(--text3);font-style:italic;background:rgba(94,106,210,0.05);border-radius:0 6px 6px 0"><p style="color:var(--text2);line-height:1.75;margin:6px 0">调研日期：2026-05-29 | 对象类型：工具 | 调研人：阿爪调研模式：多对象交叉研究（metaso-research skill v2.2.0）</p></blockquote>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">📌 一句话结论</p></h2>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Graphviz是"用代码画图"的元老级工具，核心优势是强大的自动布局算法，适合处理大规模、复杂的网络图和层次结构图。</strong> 但如果你只是偶尔画个流程图、架构图，Mermaid或draw.io更顺手。D2是近年最值得关注的替代品。</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🎯 Graphviz 核心画像</p></h2>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">全称</strong>：Graph Visualization Software<strong style="color:var(--text)">出身</strong>：AT&T Research 和 Lucent Bell 实验室开源<strong style="color:var(--text)">诞生</strong>：1990年代，开源至今<strong style="color:var(--text)">核心语言</strong>：<strong style="color:var(--text)">DOT语言</strong>——纯文本描述图形结构（点、边、子图、属性）<strong style="color:var(--text)">核心理念</strong>："所想即所得"（Describe what you want, get what you need），不是"所见即所得"</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">工作方式</strong>：</p>
-<br>
-<pre style="background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.7;color:var(--text2);margin:12px 0">写 .gv 文件（DOT语言） → graphviz 布局引擎 → 输出 PNG/SVG/PDF 等
-</pre>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">布局引擎</strong>（各有专长）：</p>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">引擎</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">用途</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特点</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">dot</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">有向图（层次布局）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">最常用，树状/流程图</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">neato</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">无向图（弹簧模型）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">网络拓扑、关系图</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">twopi</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">放射状图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">以某节点为中心的辐射布局</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">circo</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">环形布局</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">圆形排列</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">fdp</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">无向图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">类似neato但适合更大图</p></td></tr>
-</table></div>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">应用领域</strong>：软件依赖关系可视化、组织架构图、流程图、数据库ER图、网络拓扑图、算法可视化、决策树等</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">优点</strong>：· 自动布局——给你写节点和边，它自动算位置，大规模图不用手动摆· 输出格式多——PNG/SVG/PDF/PostScript 等· 跨平台——Windows/Mac/Linux 都有· 编程友好——Python/Java/JS 都有绑定库，可程序化生成· 极其成熟——30年历史，生态稳定</p>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">缺点</strong>：· DOT语法比较底层，写起来繁琐· 中文支持差（字体配置麻烦）· 学习曲线比新工具陡· 样式自定义能力有限· 不交互，输出静态图</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">🔍 同类工具横向对比</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">参赛选手</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">工具</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">核心语言/方式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">诞生年份</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Graphviz</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用图可视化</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DOT语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1990s</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Mermaid.js</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Markdown风格图表</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">类Markdown语法</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2015</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">PlantUML</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">UML专业图表</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">类编程语法</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2009</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">D2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">现代图描述语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">D2语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2022</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">draw.io</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">所见即所得画图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">拖拽+自有格式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2015</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Excalidraw</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">手绘风格白板</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">自由绘制</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2020</p></td></tr>
-</table></div>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">横向对比表</p></h2>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Graphviz</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Mermaid.js</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PlantUML</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">D2</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">draw.io</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Excalidraw</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上手难度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★★ 难</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★ 易</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★ 中</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★★★ 中</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★ 极易</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">★ 极易</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">DOT语法</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">核心能力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">自动布局</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">最强</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 一般</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 一般（底层用Graphviz）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ 优秀</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌ 手动</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌ 手动</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">大规模图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ 适合</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌ 卡顿</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 中等</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 适合</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌ 不适合</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌ 不适合</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GitHub原生渲染</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 插件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Markdown嵌入</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文支持</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 需配置字体</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">交互/实时预览</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 浏览器</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 需服务器</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ CLI watch</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">UML专业图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 通用</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 基础</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ <strong style="color:var(--text)">最全</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">输出格式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PNG/SVG/PDF等</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SVG/PNG</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">PNG/SVG/ASCII</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SVG/PNG/PDF</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多种</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">SVG/PNG</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">程序化生成</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅✅ 绑定多语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ JS生态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ 多语言</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">✅ Go/JS</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">❌</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">上手速度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">慢</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">快</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">极快</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">极快</strong></p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">适合谁</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">程序员/数据可视化</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">文档写作者</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">UML设计师</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发文档</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">所有人</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">原型/草图</p></td></tr>
-</table></div>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">关键差异深度剖析</p></h2>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1. 自动化程度</p></h3>
-<br>
-<pre style="background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-family:JetBrains Mono,monospace;font-size:12px;line-height:1.7;color:var(--text2);margin:12px 0">Graphviz ─── 全自动布局（你只管写节点关系，它算位置）
+
+  
+  <div class="insight-box"><div class="insight-label">💡 核心结论</div><p><strong>Graphviz是"用代码画图"的元老级工具，核心优势是强大的自动布局算法，适合处理大规模、复杂的网络图和层次结构图。</strong> 但如果你只是偶尔画个流程图、架构图，Mermaid或draw.io更顺手。D2是近年最值得关注的替代品。</p></div>
+  <div class="pills"><span class="pill" onclick="document.getElementById('s-0').scrollIntoView({behavior:'smooth'})">📌 一句话结论</span>
+<span class="pill" onclick="document.getElementById('s-1').scrollIntoView({behavior:'smooth'})">🎯 Graphviz 核</span>
+<span class="pill" onclick="document.getElementById('s-2').scrollIntoView({behavior:'smooth'})">🔍 同类工具横向对比</span>
+<span class="pill" onclick="document.getElementById('s-3').scrollIntoView({behavior:'smooth'})">横向对比表</span>
+<span class="pill" onclick="document.getElementById('s-4').scrollIntoView({behavior:'smooth'})">关键差异深度剖析</span>
+<span class="pill" onclick="document.getElementById('s-5').scrollIntoView({behavior:'smooth'})">💎 连接性分析</span>
+<span class="pill" onclick="document.getElementById('s-6').scrollIntoView({behavior:'smooth'})">⚠️ 风险提示</span></div>
+  
+  <h1 class="section-title">交叉调研报告：Graphviz 与同类工具对比</h1>
+<blockquote>调研日期：2026-05-29 | 对象类型：工具 | 调研人：阿爪调研模式：多对象交叉研究（metaso-research skill v2.2.0）</blockquote>
+<hr>
+<h2 class="section-title" id="s-1">📌 一句话结论</h2>
+<p><strong>Graphviz是"用代码画图"的元老级工具，核心优势是强大的自动布局算法，适合处理大规模、复杂的网络图和层次结构图。</strong> 但如果你只是偶尔画个流程图、架构图，Mermaid或draw.io更顺手。D2是近年最值得关注的替代品。</p>
+<hr>
+<h2 class="section-title" id="s-2">🎯 Graphviz 核心画像</h2>
+<p><strong>全称</strong>：Graph Visualization Software<strong>出身</strong>：AT&T Research 和 Lucent Bell 实验室开源<strong>诞生</strong>：1990年代，开源至今<strong>核心语言</strong>：<strong>DOT语言</strong>——纯文本描述图形结构（点、边、子图、属性）<strong>核心理念</strong>："所想即所得"（Describe what you want, get what you need），不是"所见即所得"</p>
+<p><strong>工作方式</strong>：</p>
+<pre class="code-block"><code>写 .gv 文件（DOT语言） → graphviz 布局引擎 → 输出 PNG/SVG/PDF 等
+</code></pre>
+<p><strong>布局引擎</strong>（各有专长）：</p>
+<table class="tbl"><thead><tr><th>引擎</th><th>用途</th><th>特点</th></tr></thead><tbody><tr><td>dot</td><td>有向图（层次布局）</td><td>最常用，树状/流程图</td></tr><tr><td>neato</td><td>无向图（弹簧模型）</td><td>网络拓扑、关系图</td></tr><tr><td>twopi</td><td>放射状图</td><td>以某节点为中心的辐射布局</td></tr><tr><td>circo</td><td>环形布局</td><td>圆形排列</td></tr><tr><td>fdp</td><td>无向图</td><td>类似neato但适合更大图</td></tr></tbody></table>
+<p><strong>应用领域</strong>：软件依赖关系可视化、组织架构图、流程图、数据库ER图、网络拓扑图、算法可视化、决策树等</p>
+<p><strong>优点</strong>：· 自动布局——给你写节点和边，它自动算位置，大规模图不用手动摆· 输出格式多——PNG/SVG/PDF/PostScript 等· 跨平台——Windows/Mac/Linux 都有· 编程友好——Python/Java/JS 都有绑定库，可程序化生成· 极其成熟——30年历史，生态稳定</p>
+<p><strong>缺点</strong>：· DOT语法比较底层，写起来繁琐· 中文支持差（字体配置麻烦）· 学习曲线比新工具陡· 样式自定义能力有限· 不交互，输出静态图</p>
+<hr>
+<h2 class="section-title" id="s-3">🔍 同类工具横向对比</h2>
+<h3>参赛选手</h3>
+<table class="tbl"><thead><tr><th>工具</th><th>定位</th><th>核心语言/方式</th><th>开源</th><th>诞生年份</th></tr></thead><tbody><tr><td><strong>Graphviz</strong></td><td>通用图可视化</td><td>DOT语言</td><td><span class="check">✅</span></td><td>1990s</td></tr><tr><td><strong>Mermaid.js</strong></td><td>Markdown风格图表</td><td>类Markdown语法</td><td><span class="check">✅</span></td><td>2015</td></tr><tr><td><strong>PlantUML</strong></td><td>UML专业图表</td><td>类编程语法</td><td><span class="check">✅</span></td><td>2009</td></tr><tr><td><strong>D2</strong></td><td>现代图描述语言</td><td>D2语言</td><td><span class="check">✅</span></td><td>2022</td></tr><tr><td><strong>draw.io</strong></td><td>所见即所得画图</td><td>拖拽+自有格式</td><td><span class="check">✅</span></td><td>2015</td></tr><tr><td><strong>Excalidraw</strong></td><td>手绘风格白板</td><td>自由绘制</td><td><span class="check">✅</span></td><td>2020</td></tr></tbody></table>
+<hr>
+<h2 class="section-title" id="s-4">横向对比表</h2>
+<table class="tbl"><thead><tr><th>维度</th><th>Graphviz</th><th>Mermaid.js</th><th>PlantUML</th><th>D2</th><th>draw.io</th><th>Excalidraw</th></tr></thead><tbody><tr><td>上手难度</td><td>★★★★ 难</td><td>★★ 易</td><td>★★★ 中</td><td>★★★ 中</td><td>★ 极易</td><td>★ 极易</td></tr><tr><td>DOT语法</td><td>核心能力</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>自动布局</td><td><span class="check">✅</span><span class="check">✅</span> <strong>最强</strong></td><td><span class="check">✅</span> 一般</td><td><span class="check">✅</span> 一般（底层用Graphviz）</td><td><span class="check">✅</span><span class="check">✅</span> 优秀</td><td><span class="cross">❌</span> 手动</td><td><span class="cross">❌</span> 手动</td></tr><tr><td>大规模图</td><td><span class="check">✅</span><span class="check">✅</span> 适合</td><td><span class="cross">❌</span> 卡顿</td><td><span class="warn">⚠️</span> 中等</td><td><span class="check">✅</span> 适合</td><td><span class="cross">❌</span> 不适合</td><td><span class="cross">❌</span> 不适合</td></tr><tr><td>GitHub原生渲染</td><td><span class="cross">❌</span></td><td><span class="check">✅</span></td><td><span class="warn">⚠️</span> 插件</td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td></tr><tr><td>Markdown嵌入</td><td><span class="cross">❌</span></td><td><span class="check">✅</span><span class="check">✅</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td></tr><tr><td>中文支持</td><td><span class="warn">⚠️</span> 需配置字体</td><td><span class="check">✅</span></td><td><span class="check">✅</span></td><td><span class="check">✅</span></td><td><span class="check">✅</span></td><td><span class="check">✅</span></td></tr><tr><td>交互/实时预览</td><td><span class="cross">❌</span></td><td><span class="check">✅</span> 浏览器</td><td><span class="warn">⚠️</span> 需服务器</td><td><span class="check">✅</span> CLI watch</td><td><span class="check">✅</span></td><td><span class="check">✅</span></td></tr><tr><td>UML专业图</td><td><span class="warn">⚠️</span> 通用</td><td><span class="check">✅</span> 基础</td><td><span class="check">✅</span><span class="check">✅</span> <strong>最全</strong></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td></tr><tr><td>输出格式</td><td>PNG/SVG/PDF等</td><td>SVG/PNG</td><td>PNG/SVG/ASCII</td><td>SVG/PNG/PDF</td><td>多种</td><td>SVG/PNG</td></tr><tr><td>程序化生成</td><td><span class="check">✅</span><span class="check">✅</span> 绑定多语言</td><td><span class="check">✅</span> JS生态</td><td><span class="check">✅</span> 多语言</td><td><span class="check">✅</span> Go/JS</td><td><span class="cross">❌</span></td><td><span class="cross">❌</span></td></tr><tr><td>上手速度</td><td>慢</td><td><strong>快</strong></td><td>中</td><td>中</td><td><strong>极快</strong></td><td><strong>极快</strong></td></tr><tr><td>适合谁</td><td>程序员/数据可视化</td><td>文档写作者</td><td>UML设计师</td><td>开发文档</td><td>所有人</td><td>原型/草图</td></tr></tbody></table>
+<hr>
+<h2 class="section-title" id="s-5">关键差异深度剖析</h2>
+<h3>1. 自动化程度</h3>
+<pre class="code-block"><code>Graphviz ─── 全自动布局（你只管写节点关系，它算位置）
 D2       ─── 半自动（有自动布局但支持手动微调）
 Mermaid  ─── 自动布局（简单图好，复杂图容易乱）
 draw.io  ─── 全手动（拖拽，灵活但费时）
 Excalidraw ─ 全手动（自由画，最适合白板草图）
-</pre>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2. 适用场景</p></h3>
-<br>
-<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">场景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">推荐工具</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">原因</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">在README里放个流程图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Mermaid</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">GitHub原生渲染，语法最简单</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">画复杂的网络拓扑/依赖图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Graphviz或D2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">自动布局，适合大规模</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">UML图（类图/时序图）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">PlantUML</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">UML标准最全</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">架构图/商业方案流程图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">draw.io</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">所见即所得，图标丰富</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">手绘风格白板/头脑风暴</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Excalidraw</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">手绘效果，随意自由</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">CI/CD中自动生成图</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Graphviz/D2</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">命令行生成，可编程</p></td></tr>
-<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文场景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">Mermaid/D2/draw.io</strong></p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">中文支持好，不用配字体</p></td></tr>
-</table></div>
-<br>
-<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">3. 在AI场景中</p></h3>
-<br>
-<p style="color:var(--text2);line-height:1.75;margin:6px 0">Graphviz + AI 是个特别的组合：LLM（如你）生成DOT代码比生成其他工具的代码更稳定。原因：· DOT语法虽然老但非常结构化，LLM理解准确率高· Graphviz的布局引擎成熟，只要语法对就能出好看的图· 相比Mermaid，DOT对中文支持更好（只需指定<code style="background:var(--panel);padding:2px 6px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--accent-bright)">fontname</code>）· 相比draw.io/Excalidraw，纯文本生成不需要图形界面</p>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">💎 连接性分析</p></h2>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">直接关联</strong>：Graphviz和你之前的工具链（Hermes Agent + 秘塔搜索）互补——Hermes可以调用graphviz生成DOT代码，用于画架构图/流程图/关系图，输出SVG直接嵌入飞书文档或Markdown· <strong style="color:var(--text)">间接启发</strong>：Hermes技能的<code style="background:var(--panel);padding:2px 6px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--accent-bright)">architecture-diagram</code> skill就用了类似原理（SVG架构图），但Graphviz能做的图类型更多（网络拓扑/依赖图/ER图等）· <strong style="color:var(--text)">建议</strong>：从Mermaid或D2上手最快。Graphviz留着处理复杂大规模图时再上</p></li>
-<br>
-<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
-<br>
-<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">⚠️ 风险提示</p></h2>
-<br>
-<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">信源质量</strong>：本文信源来自官方文档+开发者社区+技术博客，可信度高· <strong style="color:var(--text)">信息缺口</strong>：各工具的具体使用体验因个人习惯差异大，建议实际试用再定· <strong style="color:var(--text)">时效性</strong>：D2是2022年新出的，生态还在快速完善中</p></li>
+</code></pre>
+<h3>2. 适用场景</h3>
+<table class="tbl"><thead><tr><th>场景</th><th>推荐工具</th><th>原因</th></tr></thead><tbody><tr><td>在README里放个流程图</td><td><strong>Mermaid</strong></td><td>GitHub原生渲染，语法最简单</td></tr><tr><td>画复杂的网络拓扑/依赖图</td><td><strong>Graphviz或D2</strong></td><td>自动布局，适合大规模</td></tr><tr><td>UML图（类图/时序图）</td><td><strong>PlantUML</strong></td><td>UML标准最全</td></tr><tr><td>架构图/商业方案流程图</td><td><strong>draw.io</strong></td><td>所见即所得，图标丰富</td></tr><tr><td>手绘风格白板/头脑风暴</td><td><strong>Excalidraw</strong></td><td>手绘效果，随意自由</td></tr><tr><td>CI/CD中自动生成图</td><td><strong>Graphviz/D2</strong></td><td>命令行生成，可编程</td></tr><tr><td>中文场景</td><td><strong>Mermaid/D2/draw.io</strong></td><td>中文支持好，不用配字体</td></tr></tbody></table>
+<h3>3. 在AI场景中</h3>
+<p>Graphviz + AI 是个特别的组合：LLM（如你）生成DOT代码比生成其他工具的代码更稳定。原因：· DOT语法虽然老但非常结构化，LLM理解准确率高· Graphviz的布局引擎成熟，只要语法对就能出好看的图· 相比Mermaid，DOT对中文支持更好（只需指定<code>fontname</code>）· 相比draw.io/Excalidraw，纯文本生成不需要图形界面</p>
+<hr>
+<h2 class="section-title" id="s-6">💎 连接性分析</h2>
+<ul><li><strong>直接关联</strong>：Graphviz和你之前的工具链（Hermes Agent + 秘塔搜索）互补——Hermes可以调用graphviz生成DOT代码，用于画架构图/流程图/关系图，输出SVG直接嵌入飞书文档或Markdown· <strong>间接启发</strong>：Hermes技能的<code>architecture-diagram</code> skill就用了类似原理（SVG架构图），但Graphviz能做的图类型更多（网络拓扑/依赖图/ER图等）· <strong>建议</strong>：从Mermaid或D2上手最快。Graphviz留着处理复杂大规模图时再上</li></ul>
+<hr>
+<h2 class="section-title" id="s-7"><span class="warn">⚠️</span> 风险提示</h2>
+<ul><li><strong>信源质量</strong>：本文信源来自官方文档+开发者社区+技术博客，可信度高· <strong>信息缺口</strong>：各工具的具体使用体验因个人习惯差异大，建议实际试用再定· <strong>时效性</strong>：D2是2022年新出的，生态还在快速完善中</li></ul>
 </div>
 
-<footer style="text-align:center;padding:40px 24px;color:var(--text4);font-size:12px;border-top:1px solid var(--border-subtle);position:relative;z-index:1">
-  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索</p>
+<footer>
+  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p>
 </footer>
 
 <script>
@@ -433,7 +277,7 @@ Excalidraw ─ 全手动（自由画，最适合白板草图）
   let w,h,ps=[],mx=-100,my=-100;
   function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
   rs();addEventListener('resize',rs);
-  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.8,o:Math.random()*.5+.15});
+  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.6,o:Math.random()*.5+.12});
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   (function d(){
     x.clearRect(0,0,w,h);
@@ -441,13 +285,13 @@ Excalidraw ─ 全手动（自由画，最适合白板草图）
       let p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
       let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
-      if(md<180){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
+      if(md<180){p.vx+=dx/md*.01;p.vy+=dy/md*.01}
       let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}
       x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
-      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.25:0),1)})`;x.fill();
+      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.2:0),1)})`;x.fill();
       for(let j=i+1;j<ps.length;j++){
         let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
-        if(dt<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/140)})`;x.lineWidth=.5;x.stroke()}
+        if(dt<130){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.07*(1-dt/130)})`;x.lineWidth=.5;x.stroke()}
       }
     }
     requestAnimationFrame(d);
@@ -461,8 +305,8 @@ Excalidraw ─ 全手动（自由画，最适合白板草图）
 })();
 // Scroll reveal
 (function(){
-  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.1});
-  document.querySelectorAll('.report-body h1,.report-body h2,.report-body h3,.report-body p,.report-body table,.report-body blockquote,.report-body pre').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.08});
+  document.querySelectorAll('.kpi,.tbl,blockquote,.insight-box,h2.section-title').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
 })();
 </script>
 </body>
