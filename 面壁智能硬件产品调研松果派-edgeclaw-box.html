@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>面壁智能硬件产品调研：松果派 & EdgeClaw Box · AI 调研中心</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #08090a;
+    --panel: #0f1011;
+    --surface: #191a1b;
+    --surface2: #222326;
+    --text: #f7f8f8;
+    --text2: #d0d6e0;
+    --text3: #8a8f98;
+    --text4: #62666d;
+    --accent: #5e6ad2;
+    --accent-bright: #7170ff;
+    --green: #27a644;
+    --orange: #d2991d;
+    --red: #f85149;
+    --border: rgba(255,255,255,0.08);
+    --border-subtle: rgba(255,255,255,0.05);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text2);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv01','ss03';
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Particle canvas */
+  #particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; opacity: 0.65;
+  }
+  /* Ambient glow orb */
+  #glow {
+    position: fixed; z-index: 0; pointer-events: none;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: left 0.8s ease-out, top 0.8s ease-out;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Ensure content above particles */
+  nav, .hero, .kpi-row, .sec, footer { position: relative; z-index: 1; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,16,17,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 24px;
+  }
+  nav .inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; gap: 24px;
+    height: 52px;
+  }
+  nav .logo {
+    font-size: 15px; font-weight: 600; color: var(--text);
+    letter-spacing: -0.2px; white-space: nowrap;
+  }
+  nav .logo span { color: var(--accent-bright); }
+  nav a {
+    font-size: 13px; font-weight: 500; color: var(--text3);
+    text-decoration: none; transition: color .15s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--text); }
+
+  /* Hero */
+  .hero {
+    max-width: 1200px; margin: 0 auto;
+    padding: 80px 24px 64px;
+    text-align: center;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: rgba(94,106,210,0.12);
+    color: var(--accent-bright);
+    border: 1px solid rgba(94,106,210,0.25);
+    border-radius: 999px; padding: 4px 16px;
+    font-size: 12px; font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 600; letter-spacing: -0.04em;
+    color: var(--text); line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent-bright); }
+  .hero p {
+    font-size: 1.1rem; color: var(--text3);
+    max-width: 640px; margin: 0 auto;
+    font-weight: 400;
+  }
+
+  /* KPI row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+    gap: 16px;
+    max-width: 1200px; margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px; text-align: center;
+  }
+  .kpi .val {
+    font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .kpi .val.accent { color: var(--accent-bright); }
+  .kpi .val.green { color: var(--green); }
+  .kpi .lbl { font-size: 13px; color: var(--text3); }
+
+  /* Section container */
+  .sec {
+    max-width: 1200px; margin: 0 auto 72px;
+    padding: 0 24px;
+  }
+  .sec h2 {
+    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .sec .sub {
+    font-size: 14px; color: var(--text3); margin-bottom: 32px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-size: 16px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px; letter-spacing: -0.01em;
+  }
+  .card p, .card li { font-size: 14px; color: var(--text2); }
+  .card li { padding: 4px 0; }
+  ul { list-style: none; padding: 0; }
+  li::before { content: "·"; color: var(--accent-bright); font-weight: 700; margin-right: 8px; }
+
+  /* Charts */
+  .chart-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 28px;
+    margin-bottom: 16px;
+  }
+  .chart-wrap canvas { max-height: 380px; }
+
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+
+  /* Table styled */
+  .tbl {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .tbl th {
+    text-align: left; padding: 10px 14px;
+    color: var(--text3); font-weight: 500; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl td {
+    padding: 10px 14px; color: var(--text2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl .hi { color: var(--accent-bright); font-weight: 600; }
+  .tbl .lo { color: var(--text4); }
+  .tbl .cl { color: var(--red); }
+
+  /* Accordion */
+  .acc { margin-bottom: 16px; }
+  .acc-hdr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 24px;
+    cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; font-size: 15px; font-weight: 600;
+    color: var(--text); transition: border-color .15s;
+  }
+  .acc-hdr:hover { border-color: rgba(255,255,255,0.15); }
+  .acc-hdr::after { content: "+"; font-size: 18px; color: var(--text3); font-weight: 400; transition: transform .2s; }
+  .acc.open .acc-hdr::after { content: "−"; }
+  .acc-body {
+    display: none; background: var(--surface);
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 10px 10px; padding: 24px;
+    font-size: 14px; color: var(--text2);
+  }
+  .acc.open .acc-body { display: block; }
+
+  /* Insight box */
+  .insight {
+    background: rgba(94,106,210,0.06);
+    border: 1px solid rgba(94,106,210,0.18);
+    border-radius: 10px; padding: 24px 28px;
+    font-size: 14px;
+  }
+  .insight strong { color: var(--accent-bright); }
+
+  /* Tags */
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 500; margin-right: 6px;
+  }
+  .tag.g { background: rgba(39,166,68,0.12); color: var(--green); border: 1px solid rgba(39,166,68,0.2); }
+  .tag.p { background: rgba(94,106,210,0.12); color: var(--accent-bright); border: 1px solid rgba(94,106,210,0.2); }
+  .tag.o { background: rgba(210,153,29,0.12); color: var(--orange); border: 1px solid rgba(210,153,29,0.2); }
+  .tag.r { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.18); }
+
+  /* Section nav pills */
+  .pills {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .pill {
+    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    border: 1px solid var(--border); color: var(--text3);
+    cursor: pointer; transition: all .15s; background: transparent;
+  }
+  .pill:hover, .pill.active {
+    background: rgba(94,106,210,0.1); color: var(--accent-bright);
+    border-color: rgba(94,106,210,0.3);
+  }
+
+  /* Tooltip-style note */
+  .note {
+    font-size: 12px; color: var(--text4); margin-top: 8px;
+  }
+
+  footer {
+    text-align: center; padding: 48px 24px;
+    color: var(--text4); font-size: 12px;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 80px;
+  }
+  footer a { color: var(--text3); }
+
+  .report-body {
+    max-width:860px; margin:0 auto; padding:24px 24px 80px;
+  }
+  .report-body h1 { font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.03em; margin:32px 0 16px; line-height:1.2; }
+  .report-body h2 { font-size:1.4rem; font-weight:600; color:var(--text); letter-spacing:-0.02em; margin:28px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border-subtle); }
+  .back-link {
+    display:inline-flex; align-items:center; gap:6px; color:var(--text3);
+    text-decoration:none; font-size:13px; margin-bottom:24px; transition:color 0.2s;
+  }
+  .back-link:hover { color:var(--text); }
+  .report-meta {
+    display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 28px;
+  }
+  .meta-tag {
+    padding:3px 12px; border-radius:999px; font-size:11px; font-weight:500;
+    background:var(--surface); color:var(--text3); border:1px solid var(--border);
+  }
+  .meta-tag.accent { color:var(--accent-bright); border-color:rgba(94,106,210,0.3); background:rgba(94,106,210,0.08); }
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div id="glow"></div>
+
+<nav>
+  <div class="inner">
+    <a href="index.html" style="text-decoration:none;color:inherit"><div class="logo"><span>◈</span> AI 调研中心</div></a>
+  </div>
+</nav>
+
+<div class="report-body">
+  <a href="index.html" class="back-link">← 返回目录</a>
+  <h1>📦 面壁智能硬件产品调研：松果派 & EdgeClaw Box</h1>
+  <div class="report-meta">
+    <span class="meta-tag accent">AI硬件</span>
+    <span class="meta-tag">来源: feishu</span>
+    
+    <a href="https://zcnytfl3vf1r.feishu.cn/docx/AkJIdFiWdoyKv6xBjc3cO90Wnvg" target="_blank" class="meta-tag" style="text-decoration:none">飞书原文 ↗</a>
+  </div>
+  <h1 style="font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-0.03em;margin:32px 0 16px;line-height:1.2"><p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁智能硬件产品调研：松果派 & EdgeClaw Box</p></h1>
+<br>
+<blockquote style="border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;color:var(--text3);font-style:italic;background:rgba(94,106,210,0.05);border-radius:0 6px 6px 0"><p style="color:var(--text2);line-height:1.75;margin:6px 0">调研时间：2026年5月29日 · 数据源：秘塔AI搜索（Metaso MCP）</p></blockquote>
+<br>
+<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
+<br>
+<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">一、松果派（Pinea Pi）—— 面壁智能首款AI硬件</p></h2>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.1 基本信息</p></h3>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发布</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年2月官宣，预计2026年年中量产上市</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">AI原生（AI Native）端侧智能开发板</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">理念</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">"Agent原生" + "自然语言直驱"</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">命名灵感</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">出自《三体》，寓意更高维度+全能力推动智能发展</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">目标用户</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发者、极客、AI硬件爱好者</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发门槛</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">无技术背景也可快速上手开发</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.2 硬件规格</p></h3>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">硬件平台</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">NVIDIA Jetson系列模组</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">算力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">275 TOPS（INT8）</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">传感器</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内置麦克风、摄像头</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">接口</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">丰富的扩展接口（具体接口类型待量产确认）</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">电源</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">适配端侧低功耗场景</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.3 软件与模型</p></h3>
+<br>
+<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">预装模型</strong>：MiniCPM-o 4.5全模态大模型（语音/视频/文本同步交互）</p></li>
+<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">软件栈</strong>：系统优化 + 本地推理引擎 + 模型量化工具 + 智能中枢 + 开发者工具</p></li>
+<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">运行模式</strong>：全链路离线运行，数据不出设备，隐私安全，断网可用</p></li>
+<li style="margin:4px 0 4px 8px;list-style:disc;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">开发方式</strong>：自然语言直驱，降低传统嵌入式开发门槛</p></li>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.4 目标应用场景</p></h3>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">场景</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">说明</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">离线多模态个人知识助理</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">本地处理文档/图片/语音，不依赖云端</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">具身智能</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">机器人/机械臂等硬件的端侧AI大脑</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">编程与教学</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">教育场景的AI交互开发平台</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智能家居</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">本地AI中控，隐私安全</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">工业边缘计算</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数据敏感场景的离线AI推理</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1.5 总结定位</p></h3>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">松果派是面壁智能"密度法则"从模型到硬件的落地。275 TOPS算力+MiniCPM全模态模型+全离线运行，对标NVIDIA Jetson生态但更强调AI原生和自然语言交互。目前尚未公布定价。</p>
+<br>
+<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
+<br>
+<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">二、EdgeClaw Box（龙虾盒子）</p></h2>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.1 基本信息</p></h3>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">内容</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发布</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年3月19日正式发布</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">安全可控、开箱即用的"AI智能体一体机"</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">核心卖点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插电即用，一个盒子=一个数字员工团队</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">售价状态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">企业版已开启预售，松果派版即将开放众筹</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">目标用户</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">OPC群体（非技术业务人员）+ 数据敏感型企业</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发布方</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁智能 + 清华大学 + OpenBMB社区 + 中国人民大学高瓴AI学院</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.2 核心架构</p></h3>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">EdgeClaw框架</strong>（基于OpenClaw优化开源）：</p>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">特性</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">说明</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">基座</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">OpenClaw（开源智能体框架，昵称"龙虾"）</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">改进点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">弥补OpenClaw在本地部署、数据安全上的不足</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型支持</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">主流云端模型 + 面壁MiniCPM端侧模型</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">运行模式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">端云协同，支持离线运行</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源状态</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">联合清华大学、OpenBMB社区开源</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.3 隐私安全设计：隐私路由中间件</p></h3>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box最核心的技术创新——<strong style="color:var(--text)">自研隐私路由中间件</strong>，实现信息分级处理：</p>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数据类型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">处理方式</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Token消耗</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">敏感数据</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">本地处理</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">MiniCPM系列离线运行</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">零Token消耗</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">非敏感数据</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">脱敏后调用云端</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">主流云端大模型</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">按需计费</p></td></tr>
+</table></div>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0"><strong style="color:var(--text)">双轨记忆机制</strong>：敏感记忆存本地，非敏感记忆可上云，防止隐私泄露。</p>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.4 硬件适配</p></h3>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box已适配市面上主流硬件：</p>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">硬件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">算力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">英伟达DGX Spark</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">1,000 TOPS</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">高性能AI工作站</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">苹果Mac Mini</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">-</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">通用计算平台</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">松果派（Pinea Pi）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">275 TOPS</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁自研AI开发板</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.5 用户价值</p></h3>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">痛点</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box方案</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">部署门槛高（配环境/装Docker）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">插电即用，零部署</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">Token消耗价格过高</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">本地任务零Token，断网也能跑</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">数据不安全</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">隐私路由中间件，敏感数据不出本地</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">非技术人员不会用</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">自然语言交互，OPC也能操作</p></td></tr>
+</table></div>
+<br>
+<h3 style="font-size:1.15rem;font-weight:600;color:var(--text);margin:20px 0 8px"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2.6 总结定位</p></h3>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box不只是一个硬件，而是"硬件+框架+模型+安全"的一体化解决方案。它的核心价值在于降低AI智能体的部署门槛和数据安全顾虑，让企业无需技术团队也能拥有自己的私有AI员工团队。</p>
+<br>
+<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
+<br>
+<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">三、两款产品的关系</p></h2>
+<br>
+<div style="overflow-x:auto;margin:16px 0"><table style="width:100%;border-collapse:collapse;font-size:13px">
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">维度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">松果派（Pinea Pi）</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">EdgeClaw Box</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">发布日</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年2月官宣</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">2026年3月19日</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">定位</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">AI开发板</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">AI智能体一体机</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">目标用户</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发者/极客</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">企业/非技术用户</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">硬件平台</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">NVIDIA Jetson</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">多平台（DGX/Mac Mini/松果派）</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">核心能力</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">端侧AI推理硬件</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智能体框架+硬件一体机</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">软件层次</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">模型运行层</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">智能体应用层</p></td></tr>
+<tr><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开放程度</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开发板</p></td><td style="padding:8px 12px;border:1px solid var(--border);text-align:left;color:var(--text2)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">开源框架+预装硬件</p></td></tr>
+</table></div>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">两者可独立使用，也可组合：EdgeClaw Box已适配松果派作为硬件载体之一。</p>
+<br>
+<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
+<br>
+<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">四、对面壁智能战略布局的意义</p></h2>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">面壁智能形成了"端侧模型（MiniCPM）→ 理论（密度法则）→ 硬件（松果派）→ 智能体框架（EdgeClaw）→ 开源社区（OpenBMB）"的全链路布局：</p>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">1. <strong style="color:var(--text)">松果派</strong>提供端侧AI推理的硬件底座</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">2. <strong style="color:var(--text)">EdgeClaw Box</strong>提供即插即用的企业级智能体方案</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">3. <strong style="color:var(--text)">MiniCPM系列</strong>提供轻量高效的端侧模型能力</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">4. <strong style="color:var(--text)">隐私路由中间件</strong>解决企业最关心的数据安全问题</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">5. 两条腿走路：开发者用松果派做原型，企业用EdgeClaw Box做落地</p>
+<br>
+<hr style="border:none;border-top:1px solid var(--border-subtle);margin:28px 0">
+<br>
+<h2 style="font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-subtle)"><p style="color:var(--text2);line-height:1.75;margin:6px 0">五、与中科领创的业务关联思考</p></h2>
+<br>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">1. <strong style="color:var(--text)">存储配套机会</strong>：松果派基于NVIDIA Jetson，康盈半导体/普冉半导体的存储芯片可作为配套方案切入</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">2. <strong style="color:var(--text)">边缘计算场景</strong>：中科领创的AIoT智能硬件方案 + EdgeClaw Box的边缘AI能力，可打包面向工业客户</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">3. <strong style="color:var(--text)">国产替代空间</strong>：松果派定价未公布，若有国产化替代需求，可关注是否有适配国产算力平台的版本</p>
+<p style="color:var(--text2);line-height:1.75;margin:6px 0">4. <strong style="color:var(--text)">本地化AI中控</strong>：EdgeClaw Box的"隐私AI智能体"概念，适合中科领创客户中对数据安全有高要求的场景（如军工/政务/金融）</p>
+</div>
+
+<footer style="text-align:center;padding:40px 24px;color:var(--text4);font-size:12px;border-top:1px solid var(--border-subtle);position:relative;z-index:1">
+  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索</p>
+</footer>
+
+<script>
+// Particles
+(function(){
+  const c=document.getElementById('particles'),x=c.getContext('2d');
+  let w,h,ps=[],mx=-100,my=-100;
+  function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
+  rs();addEventListener('resize',rs);
+  for(let i=0;i<60;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.8,o:Math.random()*.5+.15});
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function d(){
+    x.clearRect(0,0,w,h);
+    for(let i=0;i<ps.length;i++){
+      let p=ps[i];p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
+      let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
+      if(md<180){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
+      let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.25:0),1)})`;x.fill();
+      for(let j=i+1;j<ps.length;j++){
+        let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
+        if(dt<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/140)})`;x.lineWidth=.5;x.stroke()}
+      }
+    }
+    requestAnimationFrame(d);
+  })();
+})();
+// Glow
+(function(){
+  let g=document.getElementById('glow'),tx=0,ty=0,cx=0,cy=0;
+  addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
+  (function f(){cx+=(tx-cx)*.05;cy+=(ty-cy)*.05;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(f)})();
+})();
+// Scroll reveal
+(function(){
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.1});
+  document.querySelectorAll('.report-body h1,.report-body h2,.report-body h3,.report-body p,.report-body table,.report-body blockquote,.report-body pre').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity .5s ease, transform .5s ease';o.observe(el)});
+})();
+</script>
+</body>
+</html>
