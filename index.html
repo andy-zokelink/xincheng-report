@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新程 Alpha · 国产认知模型深度调研</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d2991d;
+    --red: #f85149;
+    --purple: #a371f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a0d2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(88,166,255,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(163,113,247,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    position: relative;
+    background: linear-gradient(135deg, #58a6ff, #a371f7, #58a6ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    to { background-position: 200% center; }
+  }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 1.15rem;
+    margin-top: 16px;
+    position: relative;
+  }
+  .hero .meta {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    position: relative;
+  }
+  .hero .meta span {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .hero .meta span strong { color: var(--accent); }
+
+  /* Container */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  /* Sections */
+  section { margin-bottom: 56px; }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 1.4rem; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .card h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .card p, .card li { color: var(--text); font-size: 0.95rem; }
+
+  /* Stat grid */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat .value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #58a6ff, #a371f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat .label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Compare table */
+  .compare {
+    display: grid;
+    grid-template-columns: 160px 1fr 1fr;
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .compare > div {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .compare .header {
+    background: var(--card);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+  .compare .dim { color: var(--muted); font-weight: 600; }
+  .compare .highlight { color: var(--green); }
+  .compare .dimmed { color: var(--muted); }
+
+  /* List */
+  ul { list-style: none; padding: 0; }
+  li { padding: 6px 0; display: flex; gap: 10px; align-items: baseline; }
+  li::before { content: "·"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* Key insight */
+  .insight {
+    background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(163,113,247,0.1));
+    border: 1px solid rgba(88,166,255,0.25);
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+  .insight strong { color: var(--accent); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .compare { grid-template-columns: 1fr 1fr; }
+    .compare .header { display: none; }
+    .compare .dim { grid-column: 1 / -1; background: var(--card); font-weight: 700; padding: 8px 16px; }
+    .container { padding: 32px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <span class="badge">2026.06 · 秘塔AI搜索调研</span>
+  <h1>新程 Alpha</h1>
+  <p class="subtitle">行业首个"认知模型"——用 4B 参数击穿千亿级性能天花板</p>
+  <div class="meta">
+    <span>公司 <strong>明日新程 (Nextie)</strong></span>
+    <span>创始人 <strong>李笛</strong></span>
+    <span>成立 <strong>2025.12</strong></span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 关键数据 -->
+  <section>
+    <h2><span class="icon">📊</span> 关键数据</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="value">4B</div>
+        <div class="label">模型参数</div>
+      </div>
+      <div class="stat">
+        <div class="value">2轮</div>
+        <div class="label">融资（4个月内）</div>
+      </div>
+      <div class="stat">
+        <div class="value">GPT-5.4</div>
+        <div class="label">对标的性能级别</div>
+      </div>
+      <div class="stat">
+        <div class="value">220年</div>
+        <div class="label">论文研究跨度</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 公司背景 -->
+  <section>
+    <h2><span class="icon">🏢</span> 公司背景</h2>
+    <div class="card">
+      <p>明日新程（Nextie）是一家成立于 <strong>2025 年 12 月</strong> 的中国 AI 初创公司，由微软小冰创始团队原班人马打造。</p>
+      <ul style="margin-top:16px">
+        <li><strong>创始人/CEO：李笛</strong>——微软亚洲工程院前常务副院长，被称为"小冰之父"，主持开发了全球用户量最大的对话式 AI 产品</li>
+        <li><strong>曾敏</strong>——小冰联合创始人</li>
+        <li><strong>王文斓</strong>——小冰前大模型负责人，曾在日本主导开源模型 rinna（3.6B 参数打榜日本 HuggingFace 第一，碾压 65B Llama）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🟢 融资情况</h3>
+      <p>成立仅 4 个月完成两轮融资，投资方包括：</p>
+      <ul style="margin-top:12px">
+        <li><strong>创新工场</strong>（李开复创立）</li>
+        <li><strong>Atypical Ventures</strong></li>
+        <li><strong>奇绩创坛</strong>（陆奇创立）</li>
+      </ul>
+      <p style="margin-top:12px;color:var(--muted);font-size:0.85rem">三位中国 AI 圈最具分量的投资人/机构联合押注，属罕见同框。</p>
+    </div>
+  </section>
+
+  <!-- 技术路线 -->
+  <section>
+    <h2><span class="icon">🧠</span> 技术路线：什么是"认知模型"？</h2>
+
+    <div class="card">
+      <h3>大白话解释</h3>
+      <p>传统大模型（DeepSeek、Qwen、Kimi）像是一座<strong>超级图书馆</strong>——把所有书都背下来，你问什么它从记忆里找答案。</p>
+      <p style="margin-top:12px">新程 Alpha 像一个<strong>聪明人</strong>——不背书，但知道怎么思考、怎么推理、怎么查资料、怎么知道自己不知道什么。图书馆越大越重，而聪明人只需要一个好脑子。</p>
+    </div>
+
+    <div class="card">
+      <h3>🔧 技术原理</h3>
+      <ul>
+        <li><strong>知识-认知解耦</strong>：把模型的"知识储备"和"思考能力"拆开，剥离死记硬背的部分，只保留纯推理核心</li>
+        <li><strong>强化学习驱动</strong>：对开源推理模型做大规模 RL 训练，让模型学会"怎么想"而不是"记什么"</li>
+        <li><strong>群体智能研究</strong>：梳理了 1800-2020 年共 220 年人类学术论文，归纳出群体智能的演化规律，指导模型设计</li>
+        <li><strong>泛化优先</strong>：不追求在特定数据集上刷分，追求跨领域、跨任务的抽象推理能力</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 对比 -->
+  <section>
+    <h2><span class="icon">⚔️</span> 与主流国产模型对比</h2>
+
+    <div style="overflow-x:auto">
+    <div class="compare">
+      <div class="header">维度</div>
+      <div class="header">新程 Alpha</div>
+      <div class="header">DeepSeek / Qwen / Kimi</div>
+
+      <div class="dim">技术路线</div>
+      <div class="highlight">认知模型（会思考）</div>
+      <div class="dimmed">知识型推理模型（懂很多）</div>
+
+      <div class="dim">参数量</div>
+      <div class="highlight">4B（40亿）</div>
+      <div class="dimmed">百亿 ~ 万亿级</div>
+
+      <div class="dim">部署方式</div>
+      <div class="highlight">端侧可跑（MacBook、机器人、嵌入式设备）</div>
+      <div class="dimmed">需云端 GPU 集群</div>
+
+      <div class="dim">推理成本</div>
+      <div class="highlight">"交电费"级别</div>
+      <div class="dimmed">"烧显卡"级别</div>
+
+      <div class="dim">核心场景</div>
+      <div class="highlight">群体多智能体协作（Harness 框架）</div>
+      <div class="dimmed">单模型问答 / 编程 / 推理</div>
+
+      <div class="dim">运行模式</div>
+      <div class="highlight">Proactive（7×24h 自主决策）</div>
+      <div class="dimmed">Reactive（等用户发指令）</div>
+
+      <div class="dim">技术壁垒</div>
+      <div class="highlight">认知架构设计</div>
+      <div class="dimmed">参数规模 + 数据量</div>
+
+      <div class="dim">性能表现</div>
+      <div class="highlight">群体智能任务匹配 GPT-5.4</div>
+      <div class="dimmed">通用知识/编程任务全面领先</div>
+    </div>
+    </div>
+  </section>
+
+  <!-- 一句话 -->
+  <section>
+    <h2><span class="icon">💡</span> 核心判断</h2>
+    <div class="insight">
+      <p><strong>DeepSeek / Qwen / Kimi 比的是"谁知道得多"，新程 Alpha 比的是"谁会思考"。</strong></p>
+      <p style="margin-top:12px">用 4B 参数做到千亿模型的多智能体协作效果，把 AI 从"烧显卡"变成"交电费"，押注的是<strong>群体智能 + 端侧部署</strong>这两个下一代方向。</p>
+      <p style="margin-top:16px;color:var(--muted);font-size:0.85rem">风险提示：目前公开 benchmarks 集中在群体智能赛道，通用知识/编程/创作能力尚未见横向对比数据。认知模型路径是否正确，取决于规模化后的表现。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>调研时间：2026年6月11日 · 工具：秘塔AI搜索 · 仅供研究参考</p>
+</footer>
+
+</body>
+</html>
