@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 调研中心</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>AI 调研中心 · 年报目录</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #08090a; --panel: #0f1011; --surface: #191a1b;
     --text: #f7f8f8; --text2: #d0d6e0; --text3: #8a8f98; --text4: #62666d;
     --accent: #5e6ad2; --accent-bright: #7170ff; --green: #27a644;
-    --orange: #d2991d; --red: #f85149;
+    --orange: #d2991d; --red: #f85149; --cyan: #39c5cf;
     --border: rgba(255,255,255,0.08); --border-subtle: rgba(255,255,255,0.05);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -18,99 +18,198 @@
   body {
     background: var(--bg); color: var(--text2);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-feature-settings: 'cv01','ss03'; line-height: 1.6; overflow-x: hidden;
+    line-height: 1.6; overflow-x: hidden;
   }
   #particles {
     position: fixed; top:0; left:0; width:100%; height:100%;
-    z-index:0; pointer-events:none; opacity:0.65;
+    z-index:0; pointer-events:none; opacity:0.5;
   }
   #glow {
     position: fixed; z-index:0; pointer-events:none;
     width:600px; height:600px; border-radius:50%;
-    background: radial-gradient(circle, rgba(113,112,255,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(113,112,255,0.06) 0%, transparent 70%);
     transform: translate(-50%,-50%); transition: left 0.8s ease-out, top 0.8s ease-out;
   }
-  nav, header, main, footer { position:relative; z-index:1; }
 
   nav {
     position:sticky; top:0; z-index:100;
-    background: rgba(15,16,17,0.92); backdrop-filter:blur(20px);
+    background: rgba(15,16,17,0.94); backdrop-filter:blur(20px);
     border-bottom:1px solid var(--border-subtle); padding:0 24px;
   }
   nav .inner {
     max-width:1200px; margin:0 auto; display:flex; align-items:center;
-    gap:24px; height:52px;
+    justify-content:space-between; height:52px;
   }
-  nav .logo { font-size:15px; font-weight:600; color:var(--text); }
+  nav .logo { font-size:15px; font-weight:600; color:var(--text); cursor:pointer; }
   nav .logo span { color:var(--accent-bright); }
-
-  header.hero {
-    max-width:1200px; margin:0 auto; padding:100px 24px 64px; text-align:center;
+  nav .quick-links { display:flex; gap:16px; align-items:center; }
+  nav .quick-links a {
+    color:var(--text3); font-size:13px; text-decoration:none;
+    transition:color 0.2s; font-weight:500;
   }
-  header.hero .badge {
+  nav .quick-links a:hover { color:var(--text); }
+  nav .quick-links a.active { color:var(--accent-bright); }
+
+  .container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 24px; }
+
+  /* Hero */
+  .hero {
+    padding:80px 0 48px; text-align:center; border-bottom:1px solid var(--border-subtle);
+    margin-bottom:48px;
+  }
+  .hero .badge {
     display:inline-block; background:rgba(94,106,210,0.12); color:var(--accent-bright);
     border:1px solid rgba(94,106,210,0.25); border-radius:999px; padding:4px 16px;
-    font-size:12px; font-weight:500; margin-bottom:24px;
+    font-size:12px; font-weight:500; margin-bottom:20px;
   }
-  header.hero h1 {
-    font-size:clamp(2.4rem,5vw,4rem); font-weight:600; letter-spacing:-0.04em;
-    color:var(--text); line-height:1.15; margin-bottom:16px;
+  .hero h1 { font-size:clamp(2.2rem,4.5vw,3.5rem); font-weight:700; letter-spacing:-0.04em; color:var(--text); line-height:1.15; margin-bottom:12px; }
+  .hero h1 span { background:linear-gradient(135deg, var(--accent-bright), var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero p { font-size:1.05rem; color:var(--text3); max-width:550px; margin:0 auto 28px; }
+  .hero .search-box {
+    display:flex; max-width:480px; margin:0 auto; gap:8px;
   }
-  header.hero h1 span { color:var(--accent-bright); }
-  header.hero p { font-size:1.1rem; color:var(--text3); max-width:600px; margin:0 auto; }
+  .hero .search-box input {
+    flex:1; background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:10px 16px; color:var(--text);
+    font-size:14px; outline:none; font-family:inherit;
+    transition:border-color 0.2s;
+  }
+  .hero .search-box input:focus { border-color:var(--accent-bright); }
+  .hero .search-box input::placeholder { color:var(--text4); }
+  .hero .search-box button {
+    background:var(--accent); color:#fff; border:none; border-radius:8px;
+    padding:10px 20px; font-size:14px; font-weight:600; cursor:pointer;
+    transition:background 0.2s; font-family:inherit;
+  }
+  .hero .search-box button:hover { background:var(--accent-bright); }
 
-  /* Stats strip */
+  /* Stats */
   .stats-strip {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:16px; max-width:1200px; margin:0 auto 80px; padding:0 24px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:12px; margin-bottom:48px;
   }
   .stat-item {
     background:var(--surface); border:1px solid var(--border);
-    border-radius:10px; padding:20px; text-align:center;
+    border-radius:10px; padding:18px; text-align:center;
   }
-  .stat-item .val { font-size:2rem; font-weight:700; color:var(--text); letter-spacing:-0.02em; }
+  .stat-item .val { font-size:1.8rem; font-weight:700; color:var(--text); letter-spacing:-0.02em; }
   .stat-item .val.accent { color:var(--accent-bright); }
-  .stat-item .lbl { font-size:12px; color:var(--text3); margin-top:4px; }
+  .stat-item .val.cyan { color:var(--cyan); }
+  .stat-item .lbl { font-size:11px; color:var(--text3); margin-top:4px; text-transform:uppercase; letter-spacing:0.04em; }
 
-  /* Cards grid */
-  .cards {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:20px; max-width:1200px; margin:0 auto 80px; padding:0 24px;
+  /* Category sections */
+  .cat-section { margin-bottom:40px; }
+  .cat-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 0; border-bottom:1px solid var(--border-subtle);
+    cursor:pointer; user-select:none; margin-bottom:12px;
   }
-  .card {
+  .cat-header:hover .cat-title { color:var(--accent-bright); }
+  .cat-title {
+    display:flex; align-items:center; gap:12px;
+    font-size:1.15rem; font-weight:600; color:var(--text);
+    transition:color 0.2s; letter-spacing:-0.01em;
+  }
+  .cat-icon { font-size:1.3rem; }
+  .cat-count {
+    font-size:12px; color:var(--text4); font-weight:400;
+    background:var(--surface); padding:2px 10px; border-radius:999px;
+  }
+  .cat-toggle {
+    font-size:13px; color:var(--text3); transition:transform 0.3s;
+    font-weight:500;
+  }
+  .cat-section.collapsed .cat-toggle { transform:rotate(-90deg); }
+  .cat-section.collapsed .cat-body { display:none; }
+
+  /* Report list */
+  .report-list { display:flex; flex-direction:column; gap:6px; }
+  .report-item {
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border-radius:8px; cursor:pointer;
+    transition:background 0.15s, border-color 0.15s;
+    border:1px solid transparent; text-decoration:none; color:inherit;
+  }
+  .report-item:hover {
+    background:var(--surface); border-color:var(--border);
+  }
+  .report-item .ri-icon { font-size:1.1rem; flex-shrink:0; width:24px; text-align:center; }
+  .report-item .ri-title {
+    flex:1; font-size:14px; font-weight:500; color:var(--text);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .report-item .ri-source {
+    font-size:11px; color:var(--text4); background:var(--surface);
+    padding:2px 8px; border-radius:999px; flex-shrink:0;
+  }
+  .report-item .ri-date {
+    font-size:11px; color:var(--text4); flex-shrink:0; width:80px; text-align:right;
+  }
+
+  /* AI Assistant */
+  .ai-assistant {
     background:var(--surface); border:1px solid var(--border);
-    border-radius:12px; padding:28px; cursor:pointer;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    text-decoration:none; display:block;
+    border-radius:14px; margin:48px 0 80px; overflow:hidden;
   }
-  .card:hover {
-    border-color:rgba(113,112,255,0.3);
-    transform:translateY(-2px);
-    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  .ai-assistant .ai-header {
+    padding:16px 20px; border-bottom:1px solid var(--border-subtle);
+    display:flex; align-items:center; gap:10px;
   }
-  .card .icon { font-size:2rem; margin-bottom:12px; }
-  .card h3 { font-size:17px; font-weight:600; color:var(--text); margin-bottom:8px; letter-spacing:-0.01em; }
-  .card p { font-size:13px; color:var(--text3); line-height:1.6; }
-  .card .meta { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
-  .tag {
-    display:inline-block; padding:2px 10px; border-radius:999px;
-    font-size:11px; font-weight:500;
+  .ai-assistant .ai-header .ai-dot {
+    width:8px; height:8px; border-radius:50%; background:var(--green);
+    box-shadow:0 0 8px rgba(39,166,68,0.5);
   }
-  .tag.g { background:rgba(39,166,68,0.12); color:var(--green); border:1px solid rgba(39,166,68,0.2); }
-  .tag.p { background:rgba(94,106,210,0.12); color:var(--accent-bright); border:1px solid rgba(94,106,210,0.2); }
-  .tag.o { background:rgba(210,153,29,0.12); color:var(--orange); border:1px solid rgba(210,153,29,0.2); }
-  .tag.r { background:rgba(248,81,73,0.1); color:var(--red); border:1px solid rgba(248,81,73,0.18); }
-
-  /* Section title */
-  .sec-title {
-    max-width:1200px; margin:0 auto 32px; padding:0 24px;
+  .ai-assistant .ai-header h3 { font-size:15px; font-weight:600; color:var(--text); letter-spacing:-0.01em; }
+  .ai-assistant .ai-header p { font-size:12px; color:var(--text3); }
+  .ai-chat {
+    padding:12px 20px; max-height:300px; overflow-y:auto;
+    display:flex; flex-direction:column; gap:8px; min-height:100px;
   }
-  .sec-title h2 { font-size:1.4rem; font-weight:600; color:var(--text); letter-spacing:-0.02em; }
-  .sec-title p { font-size:13px; color:var(--text3); }
+  .ai-chat .msg { max-width:85%; padding:10px 14px; border-radius:10px; font-size:13px; line-height:1.6; }
+  .ai-chat .msg.user { align-self:flex-end; background:var(--accent); color:#fff; }
+  .ai-chat .msg.bot { align-self:flex-start; background:var(--panel); color:var(--text2); border:1px solid var(--border); }
+  .ai-chat .msg.bot .highlight { color:var(--accent-bright); }
+  .ai-chat .msg.bot .tag-result {
+    display:inline-block; padding:2px 8px; margin:2px; border-radius:6px;
+    background:rgba(94,106,210,0.12); color:var(--accent-bright); font-size:12px;
+    cursor:pointer; text-decoration:none;
+  }
+  .ai-chat .msg.bot .tag-result:hover { background:rgba(94,106,210,0.25); }
+  .ai-input-area {
+    padding:12px 20px; border-top:1px solid var(--border-subtle);
+    display:flex; gap:8px;
+  }
+  .ai-input-area input {
+    flex:1; background:var(--panel); border:1px solid var(--border);
+    border-radius:8px; padding:8px 14px; color:var(--text);
+    font-size:13px; outline:none; font-family:inherit;
+  }
+  .ai-input-area input:focus { border-color:var(--accent-bright); }
+  .ai-input-area input::placeholder { color:var(--text4); }
+  .ai-input-area button {
+    background:var(--accent); color:#fff; border:none; border-radius:8px;
+    padding:8px 18px; font-size:13px; font-weight:600; cursor:pointer;
+    font-family:inherit; white-space:nowrap;
+  }
+  .ai-input-area button:hover { background:var(--accent-bright); }
 
   footer {
-    text-align:center; padding:48px 24px; color:var(--text4); font-size:12px;
-    border-top:1px solid var(--border-subtle);
+    text-align:center; padding:40px 24px; color:var(--text4); font-size:12px;
+    border-top:1px solid var(--border-subtle); position:relative; z-index:1;
+  }
+  footer a { color:var(--text3); text-decoration:none; }
+  footer a:hover { color:var(--text); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+
+  /* Responsive */
+  @media(max-width:640px) {
+    .report-item .ri-date { display:none; }
+    .hero { padding:48px 0 32px; }
+    .hero h1 { font-size:1.8rem; }
   }
 </style>
 </head>
@@ -121,173 +220,276 @@
 
 <nav>
   <div class="inner">
-    <div class="logo"><span>◈</span> AI 调研中心</div>
+    <div class="logo" onclick="scrollToTop()"><span>◈</span> AI 调研中心</div>
+    <div class="quick-links">
+      <a href="#catalog">目录</a>
+      <a href="#stats">概览</a>
+      <a href="#assistant">AI助手</a>
+    </div>
   </div>
 </nav>
 
-<header class="hero">
-  <div class="badge">Hermes Agent · 持续更新</div>
-  <h1>AI 深度调研<br><span>数据驱动 · 交叉验证</span></h1>
-  <p>多模型对比 · 市场量价分析 · 工具生态追踪 · 教育应用评估</p>
-</header>
-
-<section class="stats-strip">
-  <div class="stat-item">
-    <div class="val accent">5</div>
-    <div class="lbl">模型深度对比</div>
-  </div>
-  <div class="stat-item">
-    <div class="val">11</div>
-    <div class="lbl">量价罗盘快照</div>
-  </div>
-  <div class="stat-item">
-    <div class="val">15K+</div>
-    <div class="lbl">Gmail 已索引</div>
-  </div>
-  <div class="stat-item">
-    <div class="val">688</div>
-    <div class="lbl">MKS 科学题库</div>
-  </div>
-  <div class="stat-item">
-    <div class="val accent">9</div>
-    <div class="lbl">已入库报告</div>
-  </div>
-  <div class="stat-item">
-    <div class="val">5</div>
-    <div class="lbl">AI生态简报</div>
-</section>
-
-<div class="sec-title"><h2>📋 调研报告</h2><p>秘塔搜索 × 交叉验证 × 年报风格呈现 · 本地数据库已入库 <strong>9</strong> 份报告</p></div>
-
-<section class="cards">
-
-  <a class="card" href="4b-comparison.html">
-    <div class="icon">📊</div>
-    <h3>5款4B级小模型深度交叉对比</h3>
-    <p>MiniCPM 3.0 · Phi-3.5-mini · Qwen3-4B · Gemma 4 E2B · 新程 Alpha —— 10维度硬指标对比，15轮秘塔搜索，6来源交叉验证</p>
-    <div class="meta">
-      <span class="tag g">2026.06.11</span>
-      <span class="tag p">5模型 × 10维度</span>
-      <span class="tag p">Chart.js 图表</span>
+<div class="container">
+  <header class="hero" id="top">
+    <div class="badge">24 份报告 · 12 个分类 · 持续更新</div>
+    <h1>AI 深度调研<br><span>年报目录</span></h1>
+    <p>秘塔搜索 × 飞书归档 × 交叉验证 —— 模型对比、市场分析、工具生态全覆盖</p>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索报告… 如「金融」「云厂商」「龙虾」" oninput="filterReports()">
+      <button onclick="document.getElementById('searchInput').focus()">搜索</button>
     </div>
-  </a>
+  </header>
 
-  <a class="card" href="4b-comparison.html#competitors">
-    <div class="icon">⚡</div>
-    <h3>新程 Alpha 竞品全景分析</h3>
-    <p>三大方向12个竞品：4B小模型（5款）· 群体智能（Isara/AutoGen/CrewAI/LangGraph/OpenAI Harness）· 端侧国产（面壁/商汤/RockAI）</p>
-    <div class="meta">
-      <span class="tag g">2026.06.11</span>
-      <span class="tag o">群体智能</span>
-      <span class="tag p">11轮搜索</span>
+  <section class="stats-strip" id="stats">
+    <div class="stat-item"><div class="val accent">24</div><div class="lbl">报告总数</div></div>
+    <div class="stat-item"><div class="val cyan">14</div><div class="lbl">飞书调研</div></div>
+    <div class="stat-item"><div class="val">7</div><div class="lbl">分类维度</div></div>
+    <div class="stat-item"><div class="val accent">10</div><div class="lbl">秘塔搜索</div></div>
+    <div class="stat-item"><div class="val">2026.06</div><div class="lbl">最后更新</div></div>
+    <div class="stat-item"><div class="val cyan">2</div><div class="lbl">数据源</div></div>
+  </section>
+</div>
+
+<!-- Report Catalog -->
+<div class="container" id="catalog">
+  <div class="cat-section" data-category="AI工具">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">🤖</span>AI 工具与平台<span class="cat-count">3 份</span></div>
+      <div class="cat-toggle">▾</div>
     </div>
-  </a>
-
-  <a class="card" href="4b-comparison.html#models">
-    <div class="icon">🚀</div>
-    <h3>新程 Alpha 部署与使用指南</h3>
-    <p>开源状态（未开源）· 团子平台使用方式 · 硬件需求推算 · 4大已落地场景 + 4个规划方向</p>
-    <div class="meta">
-      <span class="tag g">2026.06.11</span>
-      <span class="tag p">端侧部署</span>
-      <span class="tag r">闭源待验证</span>
-    </div>
-  </a>
-
-  <a class="card" href="4b-comparison.html#benchmarks">
-    <div class="icon">📐</div>
-    <h3>新程 Alpha 认知模型初探</h3>
-    <p>公司背景（李笛/小冰团队）· 技术路线（知识-认知解耦）· 与DeepSeek/Qwen/Kimi的核心差异 · 220年论文方法论</p>
-    <div class="meta">
-      <span class="tag g">2026.06.11</span>
-      <span class="tag p">认知模型</span>
-      <span class="tag o">3轮搜索</span>
-    </div>
-  </a>
-
-</section>
-
-<div class="sec-title"><h2>🗂️ 历史简报归档</h2><p>从本地 cron 输出 + 飞书知识库拉取 · <strong>5</strong> 份AI生态简报已入库</p></div>
-
-<section class="cards">
-
-  <div class="card" style="cursor:default">
-    <div class="icon">🛠️</div>
-    <h3>趁手工具 × Skills Watch（5期）</h3>
-    <p>06.04 第24期 · 06.05 第N期 · 06.08 趁手工具简报 · 06.08 第24期完整版 · 06.10 第25期（MCTS安全扫描器/Agent桌面管理器）</p>
-    <div class="meta">
-      <span class="tag p">AI工具生态</span>
-      <span class="tag g">GitHub Trending</span>
-      <span class="tag p">MCP/Skills</span>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="AI编程组合横向对比：Hermes vs Kimi Code CLI" data-keywords="hermes kimi 编程 code cli 组合 对比">
+        <span class="ri-icon">📋</span>
+        <span class="ri-title">AI编程组合横向对比：Hermes vs Kimi Code CLI</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="Coze CLI 完整工具清单与点评" data-keywords="coze 扣子 cli 工具 清单 点评 模型 插件">
+        <span class="ri-icon">📋</span>
+        <span class="ri-title">Coze CLI 完整工具清单与点评</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="扣子Coze CLI深度调研：能力全景与实战案例" data-keywords="coze 扣子 cli 深度 调研 实战 全景">
+        <span class="ri-icon">🔬</span>
+        <span class="ri-title">扣子Coze CLI深度调研：能力全景与实战案例</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
     </div>
   </div>
 
-  <div class="card" style="cursor:default">
-    <div class="icon">🏪</div>
-    <h3>工具兵器库周度采集</h3>
-    <p>06.07 —— 42plugin 全量采集 + GitHub Trending + SQLite 存储 + 趋势分析</p>
-    <div class="meta">
-      <span class="tag p">周度报告</span>
-      <span class="tag g">42plugin</span>
+  <div class="cat-section" data-category="大模型">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">🧠</span>大模型与趋势<span class="cat-count">2 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="基座大模型全景调研：面壁智能 + 国内外格局" data-keywords="基座 大模型 面壁 智能 deepseek qwen kimi gpt claude gemini 格局">
+        <span class="ri-icon">🌐</span>
+        <span class="ri-title">基座大模型全景调研：面壁智能 + 国内外格局</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="5款4B级小模型深度交叉对比" data-keywords="4b 小模型 minicpm phi qwen gemma 新程 alpha 对比">
+        <span class="ri-icon">📊</span>
+        <span class="ri-title">5款4B级小模型深度交叉对比</span>
+        <span class="ri-source">秘塔搜索×15</span>
+        <span class="ri-date">06-11</span>
+      </div>
     </div>
   </div>
 
-</section>
-
-<div class="sec-title"><h2>🔗 哈分（MKS）学习影响评估</h2><p>基于调研结果的 AI 模型在科学备考中的应用分析</p></div>
-
-<section class="cards">
-
-  <div class="card" style="cursor:default;border-color:var(--border)">
-    <div class="icon">🎓</div>
-    <h3>Qwen3-4B → 科学题库生成</h3>
-    <p>中文最强 + 36T tokens 训练 + 119 语言覆盖，可本地部署生成高质量科学选择题和解析。688 题 MKS 题库可通过 Qwen3-4B 自动扩展题目变体，覆盖更多概念点。</p>
-    <div class="meta">
-      <span class="tag g">推荐首选</span>
-      <span class="tag p">GGUF Q4 ~3GB</span>
-      <span class="tag p">Mac 可跑</span>
+  <div class="cat-section" data-category="AI硬件">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">📦</span>AI 硬件与边缘计算<span class="cat-count">2 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="龙虾盒子（OpenClaw Box）市场全景调研报告" data-keywords="龙虾 openclaw box 边缘 盒子 ai 硬件 中科可控 面壁 nvidia">
+        <span class="ri-icon">🦞</span>
+        <span class="ri-title">龙虾盒子（OpenClaw Box）市场全景调研报告</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="面壁智能硬件产品调研：松果派 & EdgeClaw Box" data-keywords="面壁 智能 硬件 松果派 edgeclaw box 开发板">
+        <span class="ri-icon">🔧</span>
+        <span class="ri-title">面壁智能硬件产品调研：松果派 & EdgeClaw Box</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
     </div>
   </div>
 
-  <div class="card" style="cursor:default;border-color:var(--border)">
-    <div class="icon">🔍</div>
-    <h3>MiniCPM 3.0 → 知识检索增强</h3>
-    <p>RAG 三件套 + Function Calling 接近 GPT-4o，可将 99 个科学概念建为向量知识库，学生疑问随时检索。LLMxMapReduce 支持无限长科学文献分析。</p>
-    <div class="meta">
-      <span class="tag g">RAG 专家</span>
-      <span class="tag p">GGUF Q4 ~2GB</span>
-      <span class="tag p">FC 最强</span>
+  <div class="cat-section" data-category="金融工具">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">📈</span>金融工具与量化<span class="cat-count">4 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="6个开源AI金融工具横向对比" data-keywords="开源 ai 金融 工具 对比 vibe-trading tradingagents dexter">
+        <span class="ri-icon">📊</span>
+        <span class="ri-title">6个开源AI金融工具横向对比</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="Vibe-Trading深度调研报告" data-keywords="vibe trading 深度 调研 量化 akshare 回测">
+        <span class="ri-icon">🔬</span>
+        <span class="ri-title">Vibe-Trading深度调研报告</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-30</span>
+      </div>
+      <div class="report-item" data-title="Vibe-Trading竞品横向对比" data-keywords="vibe trading 竞品 对比 alphabench composer openbb">
+        <span class="ri-icon">⚔️</span>
+        <span class="ri-title">Vibe-Trading竞品横向对比</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-30</span>
+      </div>
+      <div class="report-item" data-title="金融工具与A股数据源综合测评" data-keywords="金融 工具 a股 数据源 测评 akshare tushare">
+        <span class="ri-icon">📐</span>
+        <span class="ri-title">金融工具与A股数据源综合测评</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-30</span>
+      </div>
     </div>
   </div>
 
-  <div class="card" style="cursor:default;border-color:var(--border)">
-    <div class="icon">🖼️</div>
-    <h3>Gemma 4 E2B → 科学图表理解</h3>
-    <p>唯一小参数多模态模型（文本+图像+视频+音频），可解析科学示意图、电路图、实验装置图。156 t/s 实时响应，树莓派都能跑。</p>
-    <div class="meta">
-      <span class="tag o">多模态唯一</span>
-      <span class="tag p">INT4 1.3GB</span>
-      <span class="tag r">中文待提升</span>
+  <div class="cat-section" data-category="云服务">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">☁️</span>云厂商与 CLI 工具<span class="cat-count">3 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="三大云厂商AI CLI交叉调研" data-keywords="云厂商 ai cli 交叉 调研 阿里 百炼 腾讯 cloudbase 火山 vecli">
+        <span class="ri-icon">📋</span>
+        <span class="ri-title">三大云厂商AI CLI交叉调研：阿里百炼 vs 腾讯CloudBase vs 火山veCLI</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="三大云厂商AI能力全景 vs 中科领创业务场景调研" data-keywords="云厂商 ai 能力 全景 中科领创 业务 场景">
+        <span class="ri-icon">🏢</span>
+        <span class="ri-title">三大云厂商AI能力全景 vs 中科领创业务场景</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="四家云AI CLI交叉调研" data-keywords="四家 云 ai cli 交叉 调研 百炼 cloudbase vecli coze">
+        <span class="ri-icon">🔀</span>
+        <span class="ri-title">四家云AI CLI交叉调研：百炼 vs CloudBase vs veCLI vs Coze</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
     </div>
   </div>
 
-  <div class="card" style="cursor:default;border-color:var(--border);background:rgba(94,106,210,0.04);border-color:rgba(94,106,210,0.18)">
-    <div class="icon">💡</div>
-    <h3>综合建议：双模型组合方案</h3>
-    <p><strong>主引擎 Qwen3-4B</strong>：出题、批改、概念讲解（中文最强）<br>
-    <strong>辅引擎 MiniCPM 3.0</strong>：知识检索、RAG 问答（FC 最强）<br>
-    两台 MacBook 即可跑通，无需云端 API 费用。科学备考的 AI 化，硬件成本仅需一台笔记本。</p>
-    <div class="meta">
-      <span class="tag p">可落地</span>
-      <span class="tag g">零 API 成本</span>
+  <div class="cat-section" data-category="工具生态">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">🛠️</span>工具生态与简报<span class="cat-count">7 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="Graphviz与同类绘图工具对比调研" data-keywords="graphviz 绘图 工具 对比 mermaid plantuml d2 drawio">
+        <span class="ri-icon">📐</span>
+        <span class="ri-title">Graphviz与同类绘图工具对比调研</span>
+        <span class="ri-source">飞书</span>
+        <span class="ri-date">05-29</span>
+      </div>
+      <div class="report-item" data-title="新程 Alpha 竞品全景分析" data-keywords="新程 alpha 竞品 全景 分析 小模型 群体智能">
+        <span class="ri-icon">⚡</span>
+        <span class="ri-title">新程 Alpha 竞品全景分析</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+      <div class="report-item" data-title="新程 Alpha 部署与使用指南" data-keywords="新程 alpha 部署 使用 指南 团子 硬件">
+        <span class="ri-icon">🚀</span>
+        <span class="ri-title">新程 Alpha 部署与使用指南</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+      <div class="report-item" data-title="新程 Alpha 认知模型初探" data-keywords="新程 alpha 认知 模型 小冰 李笛 知识 认知 解耦">
+        <span class="ri-icon">🧠</span>
+        <span class="ri-title">新程 Alpha 认知模型初探</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+      <div class="report-item" data-title="趁手工具推荐榜 × Skills Watch（5期）" data-keywords="趁手 工具 skills watch 简报 github trending">
+        <span class="ri-icon">📰</span>
+        <span class="ri-title">趁手工具推荐榜 × Skills Watch（5期）</span>
+        <span class="ri-source">GitHub Trending</span>
+        <span class="ri-date">06-10</span>
+      </div>
+      <div class="report-item" data-title="工具兵器库周度采集 2026-06-07" data-keywords="工具 兵器库 周度 采集 42plugin">
+        <span class="ri-icon">🏪</span>
+        <span class="ri-title">工具兵器库周度采集 2026-06-07</span>
+        <span class="ri-source">42plugin</span>
+        <span class="ri-date">06-07</span>
+      </div>
+      <div class="report-item" data-title="品味AI每天简报 2026-05-23" data-keywords="品味 ai 简报 行业 产业 趋势">
+        <span class="ri-icon">💎</span>
+        <span class="ri-title">品味AI每天简报 2026-05-23</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">05-23</span>
+      </div>
     </div>
   </div>
 
-</section>
+  <div class="cat-section" data-category="教育应用">
+    <div class="cat-header" onclick="toggleCategory(this)">
+      <div class="cat-title"><span class="cat-icon">🎓</span>哈分（MKS）教育应用<span class="cat-count">3 份</span></div>
+      <div class="cat-toggle">▾</div>
+    </div>
+    <div class="cat-body report-list">
+      <div class="report-item" data-title="Qwen3-4B → 科学题库生成（推荐首选）" data-keywords="qwen3 4b 科学 题库 mks 教育 gguf">
+        <span class="ri-icon">📝</span>
+        <span class="ri-title">Qwen3-4B → 科学题库生成（推荐首选）</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+      <div class="report-item" data-title="MiniCPM 3.0 → 知识检索增强（RAG 最强）" data-keywords="minicpm rag 知识 检索 mks">
+        <span class="ri-icon">🔍</span>
+        <span class="ri-title">MiniCPM 3.0 → 知识检索增强（RAG 最强）</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+      <div class="report-item" data-title="Gemma 4 E2B → 科学图表理解（多模态）" data-keywords="gemma e2b 多模态 图表 mks 科学">
+        <span class="ri-icon">🖼️</span>
+        <span class="ri-title">Gemma 4 E2B → 科学图表理解（多模态）</span>
+        <span class="ri-source">秘塔搜索</span>
+        <span class="ri-date">06-11</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Assistant -->
+<div class="container" id="assistant">
+  <div class="ai-assistant">
+    <div class="ai-header">
+      <div class="ai-dot"></div>
+      <div>
+        <h3>AI 调研助手</h3>
+        <p>本地检索 · 快速定位报告 · 试试问「有哪些金融相关的报告？」</p>
+      </div>
+    </div>
+    <div class="ai-chat" id="chatWindow">
+      <div class="msg bot">
+        👋 你好！我是调研中心 AI 助手。<br>
+        你可以问我：<br>
+        · 「有哪些金融工具相关的报告？」<br>
+        · 「云厂商 AI CLI 怎么选？」<br>
+        · 「新程 Alpha 是什么？」<br>
+        · 「龙虾盒子有哪些竞品？」
+      </div>
+    </div>
+    <div class="ai-input-area">
+      <input type="text" id="chatInput" placeholder="问点什么…" onkeydown="if(event.key==='Enter')askAI()">
+      <button onclick="askAI()">发送</button>
+    </div>
+  </div>
+</div>
 
 <footer>
-  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索</p>
-  <p style="margin-top:4px"><a href="https://github.com/andy-zokelink/xincheng-report" style="color:var(--text3)">GitHub 仓库</a></p>
+  <p>AI 调研中心 · Powered by Hermes Agent + 秘塔 AI 搜索 + 飞书 Drive</p>
+  <p style="margin-top:4px"><a href="https://github.com/andy-zokelink/xincheng-report">GitHub 仓库</a> · 持续更新中</p>
 </footer>
 
 <script>
@@ -297,21 +499,21 @@
   let w,h,ps=[],mx=-100,my=-100;
   function rs(){w=c.width=innerWidth;h=c.height=innerHeight}
   rs();addEventListener('resize',rs);
-  for(let i=0;i<90;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:Math.random()*2+.8,o:Math.random()*.6+.2});
+  for(let i=0;i<80;i++)ps.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+.8,o:Math.random()*.5+.15});
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
   (function d(){
     x.clearRect(0,0,w,h);
     for(let i=0;i<ps.length;i++){
       let p=ps[i];p.x+=p.vx;p.y+=p.vy;
       if(p.x<-50||p.x>w+50)p.vx*=-1;if(p.y<-50||p.y>h+50)p.vy*=-1;
-      let mdx=p.x-mx,mdy=p.y-my,md=Math.sqrt(mdx*mdx+mdy*mdy);
-      if(md<200){p.vx+=mdx/md*.015;p.vy+=mdy/md*.015}
-      let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.8){p.vx*=.98;p.vy*=.98}
+      let dx=p.x-mx,dy=p.y-my,md=Math.sqrt(dx*dx+dy*dy);
+      if(md<180){p.vx+=dx/md*.012;p.vy+=dy/md*.012}
+      let sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy);if(sp>.7){p.vx*=.98;p.vy*=.98}
       x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
-      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<200?.3:0),1)})`;x.fill();
+      x.fillStyle=`rgba(113,112,255,${Math.min(p.o+(md<180?.25:0),1)})`;x.fill();
       for(let j=i+1;j<ps.length;j++){
-        let q=ps[j],dx=p.x-q.x,dy=p.y-q.y,dt=Math.sqrt(dx*dx+dy*dy);
-        if(dt<160){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.1*(1-dt/160)})`;x.lineWidth=.6;x.stroke()}
+        let q=ps[j],x2=p.x-q.x,y2=p.y-q.y,dt=Math.sqrt(x2*x2+y2*y2);
+        if(dt<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=`rgba(113,112,255,${.08*(1-dt/140)})`;x.lineWidth=.5;x.stroke()}
       }
     }
     requestAnimationFrame(d);
@@ -322,14 +524,119 @@
 (function(){
   let g=document.getElementById('glow'),tx=0,ty=0,cx=0,cy=0;
   addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
-  (function f(){cx+=(tx-cx)*.06;cy+=(ty-cy)*.06;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(f)})();
+  (function f(){cx+=(tx-cx)*.05;cy+=(ty-cy)*.05;g.style.left=cx+'px';g.style.top=cy+'px';requestAnimationFrame(f)})();
 })();
 
 // Scroll reveal
 (function(){
-  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.12});
-  document.querySelectorAll('.card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .7s ease, transform .7s ease';o.observe(el)});
+  let o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';o.unobserve(e.target)}}),{threshold:.1});
+  document.querySelectorAll('.cat-section, .report-item, .ai-assistant').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';o.observe(el)});
 })();
+
+// Category toggle
+function toggleCategory(header) {
+  header.parentElement.classList.toggle('collapsed');
+}
+
+// Filter reports
+function filterReports() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.querySelectorAll('.cat-section').forEach(section => {
+    let visible = 0;
+    section.querySelectorAll('.report-item').forEach(item => {
+      const kw = item.dataset.keywords || '';
+      const title = item.dataset.title || '';
+      if (!q || title.toLowerCase().includes(q) || kw.toLowerCase().includes(q)) {
+        item.style.display = 'flex';
+        visible++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    section.style.display = visible > 0 ? '' : 'none';
+    if (visible > 0 && section.classList.contains('collapsed')) {
+      section.classList.remove('collapsed');
+    }
+  });
+}
+
+// AI Assistant
+const reportIndex = [
+  {t:"AI编程组合横向对比：Hermes vs Kimi Code CLI",c:"AI工具",k:"hermes kimi code cli 编程 会员 订阅 成本 工具链"},
+  {t:"Coze CLI 完整工具清单与点评",c:"AI工具",k:"coze 扣子 cli 工具 模型 插件 技能 云电脑 云手机 多模态"},
+  {t:"扣子Coze CLI深度调研：能力全景与实战案例",c:"AI工具",k:"coze 扣子 cli 工作流 agent world 实战 案例 视频 语音"},
+  {t:"基座大模型全景调研：面壁智能 + 国内外格局",c:"大模型",k:"基座 大模型 面壁 deepseek qwen kimi gpt claude gemini 格局 miniCPM"},
+  {t:"5款4B级小模型深度交叉对比",c:"大模型",k:"4b 小模型 minicpm phi qwen gemma 新程 alpha benchmark 对比"},
+  {t:"龙虾盒子（OpenClaw Box）市场全景调研报告",c:"AI硬件",k:"龙虾 openclaw edgeclaw box 边缘 ai 硬件 中科可控 nvidia 安全 漏洞"},
+  {t:"面壁智能硬件产品调研：松果派 & EdgeClaw Box",c:"AI硬件",k:"面壁 松果派 edgeclaw box 开发板 隐私 路由 jetson"},
+  {t:"6个开源AI金融工具横向对比",c:"金融工具",k:"开源 ai 金融 工具 对比 vibe-trading tradingagents dexter anthropics"},
+  {t:"Vibe-Trading深度调研报告",c:"金融工具",k:"vibe trading 量化 akshare 回测 a股 策略 自然语言"},
+  {t:"Vibe-Trading竞品横向对比",c:"金融工具",k:"vibe trading 竞品 alphabench composer openbb 量化"},
+  {t:"金融工具与A股数据源综合测评",c:"金融工具",k:"金融 a股 数据源 akshare tushare 测评"},
+  {t:"三大云厂商AI CLI交叉调研",c:"云服务",k:"云厂商 ai cli 百炼 cloudbase vecli 阿里 腾讯 火山"},
+  {t:"三大云厂商AI能力全景 vs 中科领创业务场景",c:"云服务",k:"云厂商 ai 中科领创 业务 生图 视频 语音 小程序"},
+  {t:"四家云AI CLI交叉调研",c:"云服务",k:"四家 云 ai cli 百炼 cloudbase vecli coze 扣子"},
+  {t:"Graphviz与同类绘图工具对比调研",c:"工具生态",k:"graphviz 绘图 mermaid plantuml d2 drawio excalidraw"},
+  {t:"新程 Alpha 竞品全景分析",c:"工具生态",k:"新程 alpha 竞品 群体智能 isara autogen"},
+  {t:"新程 Alpha 部署与使用指南",c:"工具生态",k:"新程 alpha 部署 团子 硬件"},
+  {t:"新程 Alpha 认知模型初探",c:"工具生态",k:"新程 alpha 认知 小冰 李笛 知识 解耦"},
+  {t:"趁手工具推荐榜 × Skills Watch（5期）",c:"工具生态",k:"趁手 工具 skills watch github trending mcp"},
+  {t:"工具兵器库周度采集",c:"工具生态",k:"工具 兵器库 42plugin 采集"},
+  {t:"品味AI每天简报",c:"工具生态",k:"品味 ai 简报 行业 产业"},
+];
+
+function askAI() {
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim();
+  if (!q) return;
+
+  const chat = document.getElementById('chatWindow');
+
+  // User message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.textContent = q;
+  chat.appendChild(userMsg);
+
+  // Bot response
+  const botMsg = document.createElement('div');
+  botMsg.className = 'msg bot';
+
+  // Search index
+  const ql = q.toLowerCase();
+  const matches = reportIndex.filter(r => {
+    const all = (r.t + ' ' + r.c + ' ' + r.k).toLowerCase();
+    const terms = ql.split(/\s+/);
+    return terms.some(t => all.includes(t));
+  }).slice(0, 5);
+
+  if (matches.length > 0) {
+    let html = `找到 <b>${matches.length}</b> 份相关报告：<br><br>`;
+    matches.forEach((r, i) => {
+      html += `<span class="tag-result" onclick="scrollToReport('${r.t.replace(/'/g,"\\'")}')">${i+1}. ${r.t.substring(0,40)}${r.t.length>40?'…':''}</span><br>`;
+      html += `<small style="color:var(--text4)">📂 ${r.c}</small><br><br>`;
+    });
+    html += `<small style="color:var(--text3)">💡 点击标签可跳转定位</small>`;
+    botMsg.innerHTML = html;
+  } else {
+    botMsg.innerHTML = `未找到直接匹配「${q}」的报告。<br><br>试试：<br>· 「金融」「量化」「云厂商」「龙虾」<br>· 「新程」「面壁」「Coze」「Vibe」<br>· 或用顶部的搜索框筛查整个目录`;
+  }
+
+  chat.appendChild(botMsg);
+  chat.scrollTop = chat.scrollHeight;
+  input.value = '';
+}
+
+function scrollToReport(title) {
+  document.getElementById('searchInput').value = title.substring(0, 20);
+  filterReports();
+  // Scroll to catalog
+  document.getElementById('catalog').scrollIntoView({behavior:'smooth'});
+}
+
+function scrollToTop() {
+  window.scrollTo({top:0, behavior:'smooth'});
+}
 </script>
 </body>
 </html>
